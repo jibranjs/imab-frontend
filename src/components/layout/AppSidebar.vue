@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import Button from 'primevue/button'
+import logo from '@/assets/images/logo.png'
 
 const menuItems = ref([
   {
@@ -65,7 +66,7 @@ const liveTime = ref(new Date().toLocaleTimeString());
 
     <!-- lOGO & Time -->
     <div class="!my-2 text-center">
-      <img src="../../assets/images/logo.png" alt="Logo"
+      <img :src="logo" alt="Logo"
         class="w-[5rem] mx-auto">
       <p class="text-white bg-gray-500 w-[130px] my-3 rounded-lg !mx-auto"><span
           class="text-gray-700 font-bold mr-2">UK</span>{{ liveTime }}</p>
