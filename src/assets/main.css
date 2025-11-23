@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './base.css';
+@import './primevue.css';
 
 #app {
   width: 100%;
@@ -50,17 +51,4 @@ a {
   margin-right: 3px;
   background-color: #a12222;
   color: #fff;
-}
-.p-datatable-table{
-  background-color: #1F2937;
-}
-.p-datatable-column-header-content{
-  background-color: #1F2937;
-  padding: 0px;
-}
-.p-datatable-header-cell{
-  padding: 0px !important;
-}
-.p-datatable-column-title{
-  color: #fff
 }

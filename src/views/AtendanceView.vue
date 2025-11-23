@@ -1,52 +1,50 @@
 <template>
-    <div class="py-3 ">
-        <DataTable :value="informations" paginator :rows="10" :rowsPerPageOptions="[10, 20]" class="py-12 px-6" >
-            <Column header="Employee Name" class="!py-2 !px-6 bg-[#1F2937]" sortable="" >
-                <template #body="slotProps">
-                    <div class="text-white">{{ slotProps.data.employee_name }}</div>
-                    <div class="text-gray-500 text-sm">{{ slotProps.data.employee_company_name }}</div>
-                    <div class="text-gray-500 text-sm">@{{ slotProps.data.employee_id }}</div>
-                </template>
-            </Column>
-            <Column header="Date" class="!py-2 bg-[#1F2937]">
-                <template #body="slotProps">
-                    <div class="text-white">{{ slotProps.data.shift_in_day }}</div>
-                    <div class="text-gray-500 text-sm">{{ slotProps.data.shift_in_month }}</div>
-                </template>
-            </Column>
-            <Column header="Roaster" class="!py-2 bg-[#1F2937]">
-                <template #body="slotProps">
-                    <div class="flex items-center gap-2">
-                        <div class="text-sm">
-                            <div class="text-white">{{ slotProps.data.shift_in }}</div>
-                            <div class="text-white">{{ slotProps.data.shift_out }}</div>
-                        </div>
-                        <div class="bg-gray-500 text-white px-3 py-2 rounded">{{ slotProps.data.shift_in_time }}</div>
-                    </div>
-                </template>
-            </Column>
-            <Column header="Attendance" class="!py-2 bg-[#1F2937]">
-                <template #body="slotProps">
-                    <div class="flex items-center gap-2">
-                        <div class="text-sm">
-                            <div class="text-white">{{ slotProps.data.attendance_checkin }}</div>
-                            <div class="text-white">{{ slotProps.data.attendance_checkout }}</div>
-                        </div>
-                        <div class="bg-gray-500 text-white px-3 py-2 rounded">{{ slotProps.data.shift_in_time }}</div>
-                        <div class="bg-gray-500 text-white px-3 py-2 rounded">{{ slotProps.data.shift_out_time }}</div>
-                    </div>
-                </template>
-            </Column>
-            <Column header="Status" class="!py-2 bg-[#1F2937]">
-                <template #body="slotProps">
-                    <div :class="slotProps.data.attendance_status_in === 'LATE' ? 'bg-yellow-200 rounded text-center' : 'bg-gray-400 rounded text-center'">
-                        {{ slotProps.data.attendance_status_in }}
-                    </div>
-                    <div :class="slotProps.data.attendance_status_out === 'LATE' ? 'bg-yellow-200 rounded px-4 mt-1 text-center' : 'bg-gray-400  rounded mt-1 text-center '">{{ slotProps.data.attendance_status_out }}</div>
-                </template>
-            </Column>
-        </DataTable>
-    </div>
+  <DataTable :value="informations" paginator :rows="10" :rowsPerPageOptions="[10, 20]" class="!py-0 !px-0" >
+      <Column header="Employee Name" class="!py-2 !px-6" sortable="" >
+          <template #body="slotProps">
+              <div class="text-white">{{ slotProps.data.employee_name }}</div>
+              <div class="text-gray-500 text-sm">{{ slotProps.data.employee_company_name }}</div>
+              <div class="text-gray-500 text-sm">@{{ slotProps.data.employee_id }}</div>
+          </template>
+      </Column>
+      <Column header="Date" class="!py-2">
+          <template #body="slotProps">
+              <div class="text-white">{{ slotProps.data.shift_in_day }}</div>
+              <div class="text-gray-500 text-sm">{{ slotProps.data.shift_in_month }}</div>
+          </template>
+      </Column>
+      <Column header="Roaster" class="!py-2">
+          <template #body="slotProps">
+              <div class="flex items-center gap-2">
+                  <div class="text-sm">
+                      <div class="text-white">{{ slotProps.data.shift_in }}</div>
+                      <div class="text-white">{{ slotProps.data.shift_out }}</div>
+                  </div>
+                  <div class="bg-gray-500 text-white px-3 py-2 rounded">{{ slotProps.data.shift_in_time }}</div>
+              </div>
+          </template>
+      </Column>
+      <Column header="Attendance" class="!py-2">
+          <template #body="slotProps">
+              <div class="flex items-center gap-2">
+                  <div class="text-sm">
+                      <div class="text-white">{{ slotProps.data.attendance_checkin }}</div>
+                      <div class="text-white">{{ slotProps.data.attendance_checkout }}</div>
+                  </div>
+                  <div class="bg-gray-500 text-white px-3 py-2 rounded">{{ slotProps.data.shift_in_time }}</div>
+                  <div class="bg-gray-500 text-white px-3 py-2 rounded">{{ slotProps.data.shift_out_time }}</div>
+              </div>
+          </template>
+      </Column>
+      <Column header="Status" class="!py-2">
+          <template #body="slotProps">
+              <div :class="slotProps.data.attendance_status_in === 'LATE' ? 'bg-yellow-200 rounded text-center' : 'bg-gray-400 rounded text-center'">
+                  {{ slotProps.data.attendance_status_in }}
+              </div>
+              <div :class="slotProps.data.attendance_status_out === 'LATE' ? 'bg-yellow-200 rounded px-4 mt-1 text-center' : 'bg-gray-400  rounded mt-1 text-center '">{{ slotProps.data.attendance_status_out }}</div>
+          </template>
+      </Column>
+  </DataTable>
 </template>
 <script setup>
 
