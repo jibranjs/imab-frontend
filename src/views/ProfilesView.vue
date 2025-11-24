@@ -2,10 +2,12 @@
 import { data } from '@/Data/EmployeeData';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import ProfileHeader from '@/components/ProfileComponents/ProfileHeader.vue';
 
 const information = data
 </script>
 <template>
+  <ProfileHeader />
 <div class="flex items-center">
   <DataTable :value="information" class="w-[300px] h-screen overflow-scroll m-3">
     <Column header="Employee">
@@ -18,7 +20,6 @@ const information = data
           <p class="text-gray-600 text-sm">@{{ slotProps.data.employee_id }}</p>
         </div>
       </div>
-
     </template></Column>
 </DataTable>
 <div class="m-3 bg-[#1F2937] py-115 rounded  w-full">
