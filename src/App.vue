@@ -5,8 +5,8 @@ import AppSidebar from './components/layout/AppSidebar.vue'
 
 <template>
   <div class="min-h-screen flex bg-gray-50 relative">
-    <AppSidebar />
-    <div class="flex-1 flex flex-col pl-[11rem]">
+    <AppSidebar v-if="!$route.meta.public" />
+    <div :class="!$route.meta.public ? 'flex-1 flex flex-col pl-[11rem]' : 'flex-1 flex flex-col'">
       <main class="flex-1 bg-[#111827]">
         <RouterView />
       </main>
