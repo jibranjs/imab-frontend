@@ -1,7 +1,7 @@
 <script setup>
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import EmployeeHeader from '@/components/layout/EmployeeComponents/employeeHeader.vue';
+import EmployeeHeader from '@/components/EmployeeComponents/employeeHeader.vue';
 import { data } from '@/Data/EmployeeData';
 
 const informations = data

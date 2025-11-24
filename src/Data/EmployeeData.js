@@ -87,35 +87,6 @@ export const data = [
         "employee_dob": "1998-08-18"
     },
     {
-        "employee_name": "Abdul Hannan Haroon",
-        "employee_id": 625,
-        "tenant_id": null,
-        "employee_company_id": 2712,
-        "employee_company_name": "Ashton Allied Taxis",
-        "employee_badge_id": "0016694741",
-        "employee_badge_pin": 8,
-        "employee_contract": "AUTOMATED10",
-        "employee_department": "HR / Operator",
-        "employee_email": "orionpayroll01+8@gmail.com",
-        "employee_join_date": "2010-01-01",
-        "employee_status": "Terminated",
-        "employee_photo_url": null,
-        "employee_contract_date": "2010-01-01",
-        "employee_extra_bonuses": [
-            "NONE"
-        ],
-        "employee_phone_number_main": null,
-        "employee_phone_number_secondary": null,
-        "employee_next_of_kin": null,
-        "employee_next_of_kin_number": null,
-        "employee_cnic": null,
-        "employee_gender": null,
-        "employee_address_permanent": null,
-        "employee_address_current": null,
-        "employee_father_name": null,
-        "employee_dob": null
-    },
-    {
         "employee_name": "Abdul Haseeb",
         "employee_id": 436,
         "tenant_id": "datacom-8rz4d",
@@ -288,35 +259,6 @@ export const data = [
         "employee_address_current": "House # 249, Street # 10, Sector 2, Airport Housing Society, Rawalpindi",
         "employee_father_name": "Chaudhary Khalid Mehmood",
         "employee_dob": "1996-12-19"
-    },
-    {
-        "employee_name": "Abdullah Khan",
-        "employee_id": 675,
-        "tenant_id": "orion-6sgo6",
-        "employee_company_id": 1450,
-        "employee_company_name": "Royal Cars Stockton",
-        "employee_badge_id": "0016227162",
-        "employee_badge_pin": 2282,
-        "employee_contract": "AUTOMATED10",
-        "employee_department": "HR / Operator",
-        "employee_email": "abdullahjadoon18456@gmail.com",
-        "employee_join_date": "2025-06-20",
-        "employee_status": "Probation",
-        "employee_photo_url": null,
-        "employee_contract_date": "2025-06-20",
-        "employee_extra_bonuses": [
-            "NONE"
-        ],
-        "employee_phone_number_main": "",
-        "employee_phone_number_secondary": "",
-        "employee_next_of_kin": "",
-        "employee_next_of_kin_number": "",
-        "employee_cnic": "",
-        "employee_gender": "",
-        "employee_address_permanent": "",
-        "employee_address_current": "",
-        "employee_father_name": "",
-        "employee_dob": null
     },
     {
         "employee_name": "Adeel Munir",

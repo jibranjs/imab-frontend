@@ -79,8 +79,8 @@ const liveTime = ref(new Date().toLocaleTimeString());
       <ul class="!space-y-1">
         <li v-for="item in menuItems" :key="item.label">
           <router-link :to="item.to"
-            class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-600 transition-colors"
-            :class="{ 'bg-gray-600': $route.path === item.to }">
+            class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-[#1F2937] transition-colors"
+            :class="{ 'bg-[#1F2937]': $route.path === item.to }">
             <Icon :icon="item.icon" class="text-md text-white" />
             <span class="text-white">{{ item.label }}</span>
           </router-link>
