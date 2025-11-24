@@ -7,11 +7,11 @@
       </div>
       <form class="flex flex-col">
         <div class="flex-col flex mb-2">
-          <label for="email" class="text-white pl-[26px]">Email Address</label>
+          <label for="email" class="text-gray-400 pl-[26px]">Email Address</label>
           <InputText id="email" />
         </div>
         <div class="flex-col flex mb-5">
-          <label for="password" class="text-white pl-[26px]">Password</label>
+          <label for="password" class="text-gray-400 pl-[26px]">Password</label>
           <InputText id="password" />
         </div>
         <Button type="submit"
