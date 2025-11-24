@@ -16,14 +16,26 @@ app.component('Icon', Icon)
 app.use(PrimeVue, {
   theme: {
     preset: Aura,
-    options: {
-      darkModeSelector: false,
-    },
+    options: { darkModeSelector: false },
     ripple: true,
   },
 })
 
 app.use(createPinia())
 app.use(router)
+
+/* ---------------------------
+   SIMPLE GLOBAL AUTH GUARD
+---------------------------- */
+router.beforeEach((to, from, next) => {
+  const token = sessionStorage.getItem("idToken");
+
+  // If the route is not public AND user has no token
+  if (!to.meta.public && !token) {
+    next("/login");
+  } else {
+    next();
+  }
+});
 
 app.mount('#app')

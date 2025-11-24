@@ -12,41 +12,31 @@ const router = createRouter({
       path: '/',
       name: 'Dashboard',
       component: DashboardView,
-      meta: {
-        public: false
-      },
+      meta: { public: false },
     },
     {
       path: '/login',
       name: 'Login',
       component: LoginView,
-      meta: {
-        public: true
-      },
+      meta: { public: true },
     },
     {
       path: '/attendance',
       name: 'Attendance',
       component: AtendanceView,
-      meta: {
-        public: false
-      },
+      meta: { public: false },
     },
     {
       path: '/employees',
       name: 'Employees',
       component: EmployeeView,
-      meta: {
-        public: false
-      },
+      meta: { public: false },
     },
     {
       path: '/profiles',
       name: 'Profiles',
       component: ProfilesView,
-      meta: {
-        public: false
-      },
+      meta: { public: false },
     },
   ],
 })
