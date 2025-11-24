@@ -1,12 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import profilePhoto from '@/assets/images/user.png'
 import Button from 'primevue/button'
-
-const currentUser = ref({
-  name: 'John Doe',
-  avatar: profilePhoto
-})
 
 const menuItems = ref([
   {
@@ -15,74 +9,98 @@ const menuItems = ref([
     to: '/'
   },
   {
-    label: 'Users',
+    label: 'Attendance',
     icon: 'mdi:account-group',
-    to: '/users'
+    to: '/attendance'
   },
   {
-    label: 'Analytics',
+    label: 'Roaster',
     icon: 'mdi:chart-bar',
-    to: '/analytics'
+    to: '/roaster'
   },
   {
-    label: 'Settings',
+    label: 'Leaves',
     icon: 'mdi:cog',
-    to: '/settings'
+    to: '/leaves'
+  },
+  {
+    label: 'Calendar',
+    icon: 'mdi:view-dashboard',
+    to: '/calendar'
+  },
+  {
+    label: 'Profiles',
+    icon: 'mdi:account-group',
+    to: '/profiles'
+  },
+  {
+    label: 'Employees',
+    icon: 'mdi:chart-bar',
+    to: '/employees'
+  },
+  {
+    label: 'Complaints',
+    icon: 'mdi:cog',
+    to: '/complaints'
+  },
+  {
+    label: 'Insight',
+    icon: 'mdi:view-dashboard',
+    to: '/insight'
+  },
+  {
+    label: 'Logs',
+    icon: 'mdi:account-group',
+    to: '/logs'
   }
 ])
+
+// Time
+const liveTime = ref(new Date().toLocaleTimeString());
+
 </script>
 
 <template>
-  <aside class="fixed top-0 left-0 w-64 bg-white shadow-sm flex flex-col h-screen px-4 overflow-y-auto z-40">
+  <aside class="fixed top-0 left-0 w-[11rem] bg-[#374151] shadow-sm flex flex-col h-screen px-4 overflow-y-auto z-40">
+
+    <!-- lOGO & Time -->
     <div class="!my-2 text-center">
-      <h1 class="text-sm uppercase bg-gray-200 rounded-lg p-2 font-bold">Vuejs3 Skeleton</h1>
+      <img src="/home/xiots/Documents/vuejs/imab-frontend/src/assets/images/logo.png" alt="Logo"
+        class="w-[5rem] mx-auto">
+      <p class="text-white bg-gray-500 w-[130px] my-3 rounded-lg !mx-auto"><span
+          class="text-gray-700 font-bold mr-2">UK</span>{{ liveTime }}</p>
+      <p class="text-white bg-gray-500 w-[130px] rounded-lg !mx-auto"><span
+          class="text-gray-700 font-bold mr-2">PK</span>{{ liveTime }}</p>
     </div>
 
     <!-- Navigation Menu -->
     <nav class="flex-1">
       <ul class="!space-y-1">
         <li v-for="item in menuItems" :key="item.label">
-          <router-link
-            :to="item.to"
-            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-100 transition-colors"
-            :class="{ 'bg-gray-100': $route.path === item.to }"
-          >
-            <Icon :icon="item.icon" class="text-md" />
-            <span>{{ item.label }}</span>
+          <router-link :to="item.to"
+            class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-600 transition-colors"
+            :class="{ 'bg-gray-600': $route.path === item.to }">
+            <Icon :icon="item.icon" class="text-md text-white" />
+            <span class="text-white">{{ item.label }}</span>
           </router-link>
         </li>
       </ul>
     </nav>
 
-    <!-- User Profile Section -->
-    <div class="pb-4">
-      <div class="flex items-center gap-2 !mb-2 bg-gray-100 rounded-lg px-2 py-1 border-1 border-gray-300">
-        <img
-          :src="currentUser.avatar"
-          class="w-10 h-10 rounded-full border-2 border-white shadow-sm"
-          :alt="currentUser.name"
-        >
-        <div>
-          <div class="font-semibold text-sm text-gray-800">{{ currentUser.name }}</div>
-          <div class="text-xs text-gray-600">Administrator</div>
-        </div>
-      </div>
-      <div class="flex gap-2">
-        <Button
-          class="flex-1 !text-xs !bg-white !text-black !border-black !p-1 hover:!bg-gray-300"
-          @click="() => {}"
-        >
-          <Icon icon="mdi:cog" class="mr-2" />
-          Settings
-        </Button>
-        <Button
-          class="flex-1 !text-xs !bg-white !text-black !border-black !p-1 hover:!bg-gray-300"
-          @click="() => {}"
-        >
-          <Icon icon="mdi:logout" class="mr-2" />
-          Logout
-        </Button>
+    <!-- IMAB -->
+    <div class="p-3 mb-3">
+      <div class="text-center flex gap-2 items-center justify-center">
+        <Button class="!bg-gray-600 !border-none hover:!bg-[#6B7280]"><span class=" pi pi-refresh"></span></Button>
+        <Button class="!bg-gray-600 !border-none hover:!bg-[#6B7280]"><span class=" pi pi-power-off"></span></Button>
       </div>
     </div>
+    <div class="text-center flex items-center justify-center">
+        <span class="I">I</span>
+        <span class="M">M</span>
+        <span class="A">A</span>
+        <span class="B">B</span>
+      </div>
+    <p class="text-sm text-gray-400 text-center mt-3" style="letter-spacing: 1rem;">core</p>
+    <span class="text-sm text-white bg-gray-600 w-[120px] text-center mx-auto rounded-lg mt-3 py-[2.5px] mb-5">production</span>
   </aside>
 </template>
