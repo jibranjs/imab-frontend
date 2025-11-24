@@ -3,7 +3,7 @@
     <div class="bg-[#1F2937]  p-6 rounded lg:w-[26rem]">
       <div class="text-center my-2">
         <img :src="logo" alt="Logo" class="h-[110px] mx-auto">
-        <h2 class="text-2xl text-gray-400">Welcome</h2>
+        <h2 class="text-2xl text-gray-400 mt-3">Welcome</h2>
       </div>
       <form class="flex flex-col">
         <div class="flex-col flex mb-2">
