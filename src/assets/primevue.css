@@ -1,4 +1,7 @@
 :root {
-  --p-datatable-header-cell-background: #000000 !important;
+  --p-datatable-header-cell-background: #1F2937 !important;
   --p-datatable-header-cell-color: #FFFFFF !important;
+  --p-datatable-body-cell-border-color: #111827 !important;
+  --p-datatable-body-cell-padding: 7px 20px !important;
+  --p-datatable-header-cell-border-color: #111827 !important;
 }

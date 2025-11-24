@@ -52,3 +52,20 @@ a {
   background-color: #a12222;
   color: #fff;
 }
+.p-datatable {
+    background-color: #1F2937 !important;
+}
+
+.p-datatable-header {
+    background-color: #1F2937 !important;
+    color: #F9FAFB !important;
+}
+.p-datatable-tbody tr {
+    background-color: #1F2937 !important;
+}
+.p-paginator{
+  background-color: #1F2937 !important;
+  color: #1F2937 !important;
+  margin-top: 10px !important;
+}
+

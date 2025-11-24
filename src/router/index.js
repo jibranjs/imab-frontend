@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import AtendanceView from '../views/AtendanceView.vue'
+import EmployeeView from '@/views/EmployeeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,6 +10,11 @@ const router = createRouter({
       name: 'Attendance',
       component: AtendanceView,
     },
+    {
+      path: '/employees',
+      name: 'Employees',
+      component: EmployeeView,
+    }
   ],
 })
 

@@ -11,12 +11,12 @@ const menuItems = ref([
   },
   {
     label: 'Attendance',
-    icon: 'mdi:account-group',
+    icon: 'prime:key',
     to: '/attendance'
   },
   {
     label: 'Roaster',
-    icon: 'mdi:chart-bar',
+    icon: 'streamline-ultimate:notes-upload',
     to: '/roaster'
   },
   {
@@ -26,7 +26,7 @@ const menuItems = ref([
   },
   {
     label: 'Calendar',
-    icon: 'mdi:view-dashboard',
+    icon: 'solar:calendar-outline',
     to: '/calendar'
   },
   {
@@ -36,22 +36,22 @@ const menuItems = ref([
   },
   {
     label: 'Employees',
-    icon: 'mdi:chart-bar',
+    icon: 'iconamoon:profile-thin',
     to: '/employees'
   },
   {
     label: 'Complaints',
-    icon: 'mdi:cog',
+    icon: 'ion:flag-outline',
     to: '/complaints'
   },
   {
     label: 'Insight',
-    icon: 'mdi:view-dashboard',
+    icon: 'si:insights-line',
     to: '/insight'
   },
   {
     label: 'Logs',
-    icon: 'mdi:account-group',
+    icon: 'bi:code',
     to: '/logs'
   }
 ])
@@ -75,7 +75,7 @@ const liveTime = ref(new Date().toLocaleTimeString());
     </div>
 
     <!-- Navigation Menu -->
-    <nav class="flex-1">
+    <nav class="flex-1 mt-3">
       <ul class="!space-y-1">
         <li v-for="item in menuItems" :key="item.label">
           <router-link :to="item.to"
