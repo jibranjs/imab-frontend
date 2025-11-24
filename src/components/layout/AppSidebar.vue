@@ -2,6 +2,9 @@
 import { ref } from 'vue'
 import Button from 'primevue/button'
 import logo from '@/assets/images/logo.png'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const menuItems = ref([
   {
@@ -56,6 +59,11 @@ const menuItems = ref([
   }
 ])
 
+const logout = () => {
+  sessionStorage.clear()     // remove token + user data
+  router.push('/login')
+}
+
 // Time
 const liveTime = ref(new Date().toLocaleTimeString());
 
@@ -92,7 +100,7 @@ const liveTime = ref(new Date().toLocaleTimeString());
     <div class="p-3 mb-3">
       <div class="text-center flex gap-2 items-center justify-center">
         <Button class="!bg-gray-600 !border-none hover:!bg-[#6B7280]"><span class=" pi pi-refresh"></span></Button>
-        <Button class="!bg-gray-600 !border-none hover:!bg-[#6B7280]"><span class=" pi pi-power-off"></span></Button>
+        <Button class="!bg-gray-600 !border-none hover:!bg-[#6B7280]" @click="logout"><span class=" pi pi-power-off"></span></Button>
       </div>
     </div>
     <div class="text-center flex items-center justify-center">
