@@ -14,8 +14,8 @@ import MultiSelect from 'primevue/multiselect';
         <MultiSelect  placeholder="All Companies" :maxSelectedLabels="3" />
          <MultiSelect  placeholder="Active" :maxSelectedLabels="3" />
           <MultiSelect  placeholder="All" :maxSelectedLabels="3" />
-          <Button class="bg-gray-500 px-4 !py-2 rounded hover:bg-white"><span class="pi pi-check"></span> Add Employee</Button>
-          <Button><span class="pi pi-refresh"></span></Button>
+          <Button class="bg-gray-500 px-4 !py-2 rounded hover:bg-gray-300"><span class="pi pi-check"></span> Add Employee</Button>
+          <Button class="bg-gray-500 px-4 rounded hover:bg-gray-300"><span class="pi pi-refresh"></span></Button>
       </div>
     </div>
   </div>

@@ -1,29 +1,3 @@
-<script setup>
-import { ref } from "vue";
-import InputText from "primevue/inputtext";
-import Password from "primevue/password";
-import { useAuth } from "@/composables/useAuth";
-import logo from "@/assets/images/logo.png";
-
-const email = ref("");
-const password = ref("");
-const { login, loading, error } = useAuth();
-
-const handleLogin = async () => {
-  if (email.value === "" || password.value === "") {
-    error.value = "Please fill in all fields";
-    return;
-  }
-
-  const result = await login(email.value, password.value);
-
-  if (result) {
-    // redirect or go to dashboard
-    window.location.href = "/dashboard";
-  }
-};
-</script>
-
 <template>
   <div class="flex justify-center h-screen items-center">
     <div class="bg-[#1F2937] p-6 rounded lg:w-[26rem]">
@@ -33,7 +7,7 @@ const handleLogin = async () => {
         <h2 class="text-2xl text-gray-400 mt-3">Welcome</h2>
       </div>
 
-      <form class="flex flex-col" @submit.prevent="handleLogin">
+      <div class="flex flex-col">
         <div class="flex-col flex mb-2">
           <label class="text-gray-400 pl-[26px]">Email Address</label>
           <InputText class="!text-white" v-model="email" />
@@ -47,6 +21,7 @@ const handleLogin = async () => {
         <Button
           type="submit"
           class="bg-[#60A5FA] text-info flex px-4 py-3 rounded w-[320px] mx-auto gap-4 items-center justify-center font-bold"
+          @click="handleLogin"
         >
           <span v-if="!loading" class="pi pi-user"></span>
           <span v-if="loading">Loading...</span>
@@ -54,7 +29,7 @@ const handleLogin = async () => {
         </Button>
 
         <p v-if="error" class="text-red-400 text-center mt-3">{{ error }}</p>
-      </form>
+      </div>
 
       <p class="text-gray-500 my-3 text-center text-[13px] w-[320px] mx-auto">
         If you forgot your password, please contact the admin.
@@ -78,3 +53,32 @@ const handleLogin = async () => {
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref } from "vue";
+import logo from "@/assets/images/logo.png";
+import Button from "primevue/button";
+import InputText from "primevue/inputtext";
+import Password from "primevue/password";
+import { useAuth } from "@/composables/useAuth";
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const email = ref("");
+const password = ref("");
+const { login, loading, error } = useAuth();
+
+const handleLogin = async () => {
+  if (email.value === "" || password.value === "") {
+    error.value = "Please fill in all fields";
+    return;
+  }
+
+  const result = await login(email.value, password.value);
+
+  if (result) {
+    router.push('/')
+  }
+};
+</script>

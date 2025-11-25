@@ -4,4 +4,6 @@
   --p-datatable-body-cell-border-color: #111827 !important;
   --p-datatable-body-cell-padding: 7px 20px !important;
   --p-datatable-header-cell-border-color: #111827 !important;
+  --p-multiselect-overlay-background:#111827 !important;
+  --p-multiselect-overlay-border-color:#6A7282 !important;
 }

@@ -1,18 +1,3 @@
-<script setup>
-import { onMounted } from "vue";
-import { useEmployee } from "@/composables/useEmployee";
-
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import EmployeeHeader from '@/components/EmployeeComponents/employeeHeader.vue';
-
-const { employees, loading, error, fetchEmployees } = useEmployee();
-
-onMounted(() => {
-  fetchEmployees();
-});
-</script>
-
 <template>
   <EmployeeHeader />
 
@@ -88,3 +73,18 @@ onMounted(() => {
 
   </DataTable>
 </template>
+
+<script setup>
+import { onMounted } from "vue";
+import { useEmployee } from "@/composables/useEmployee";
+
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import EmployeeHeader from '@/components/EmployeeComponents/employeeHeader.vue';
+
+const { employees, loading, error, fetchEmployees } = useEmployee();
+
+onMounted(() => {
+  fetchEmployees();
+});
+</script>
