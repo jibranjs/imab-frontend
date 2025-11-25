@@ -8,11 +8,11 @@
       <form class="flex flex-col">
         <div class="flex-col flex mb-2">
           <label for="email" class="text-gray-400 pl-[26px]">Email Address</label>
-          <InputText id="email" />
+          <InputText id="email" class="!text-white" />
         </div>
         <div class="flex-col flex mb-5">
           <label for="password" class="text-gray-400 pl-[26px]">Password</label>
-          <InputText id="password" />
+          <Password :feedback="false" showClear id="password" />
         </div>
         <Button type="submit"
           class="bg-[#60A5FA] text-info flex px-4 py-3 rounded w-[320px] mx-auto gap-4 items-center justify-center font-bold"><span
@@ -37,5 +37,7 @@
 <script setup>
 import logo from '@/assets/images/logo.png'
 import InputText from 'primevue/inputtext';
+import Password from 'primevue/password';
+
 
 </script>
