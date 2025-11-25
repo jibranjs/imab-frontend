@@ -11,8 +11,8 @@
         <MultiSelect placeholder="All Companies" :maxSelectedLabels="3" />
         <MultiSelect placeholder="All" :maxSelectedLabels="3" />
         <DatePicker v-model="value" inputId="date" showIcon iconDisplay="input" variant="filled" />
-        <Button class="bg-gray-500 px-4 !py-2 rounded hover:bg-gray-300"><span class="pi pi-plus"></span></Button>
-        <Button class="bg-gray-500 px-4 rounded hover:bg-gray-300"><span class="pi pi-refresh"></span></Button>
+        <Button class="!bg-gray-500 px-4 !text-[#1F2937] !border-none !py-2 rounded hover:!bg-gray-300"><span class="pi pi-plus"></span></Button>
+        <Button class="!bg-gray-500 px-4 !text-[#1F2937] !border-none rounded hover:!bg-gray-300"><span class="pi pi-refresh"></span></Button>
       </div>
     </div>
   </div>
