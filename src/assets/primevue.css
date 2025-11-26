@@ -6,4 +6,7 @@
   --p-datatable-header-cell-border-color: #111827 !important;
   --p-multiselect-overlay-background:#111827 !important;
   --p-multiselect-overlay-border-color:#6A7282 !important;
+  --p-select-overlay-background:#6A7282 !important;
+  --p-select-overlay-border-color:none !important;
+  --p-button-primary-color:#111827 !important;
 }
