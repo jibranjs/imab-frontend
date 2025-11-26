@@ -8,11 +8,6 @@ const router = useRouter()
 
 const menuItems = ref([
   {
-    label: 'Dashboard',
-    icon: 'mdi:view-dashboard',
-    to: '/'
-  },
-  {
     label: 'Attendance',
     icon: 'prime:key',
     to: '/attendance'
@@ -23,45 +18,15 @@ const menuItems = ref([
     to: '/roaster'
   },
   {
-    label: 'Leaves',
-    icon: 'mdi:cog',
-    to: '/leaves'
-  },
-  {
-    label: 'Calendar',
-    icon: 'solar:calendar-outline',
-    to: '/calendar'
-  },
-  {
-    label: 'Profiles',
-    icon: 'mdi:account-group',
-    to: '/profiles'
-  },
-  {
     label: 'Employees',
     icon: 'iconamoon:profile-thin',
     to: '/employees'
-  },
-  {
-    label: 'Complaints',
-    icon: 'ion:flag-outline',
-    to: '/complaints'
-  },
-  {
-    label: 'Insight',
-    icon: 'si:insights-line',
-    to: '/insight'
-  },
-  {
-    label: 'Logs',
-    icon: 'bi:code',
-    to: '/logs'
   }
 ])
 
 const logout = () => {
   sessionStorage.clear()     // remove token + user data
-  router.push('/login')
+  router.push('/')
 }
 
 // Time

@@ -6,11 +6,10 @@
     </div>
     <div>
       <div class="flex gap-4">
-        <MultiSelect v-model="info" display="chip" optionLabel="name" filter placeholder="All Employee"
-          :maxSelectedLabels="3" class="w-full md:w-80" />
+        <MultiSelect placeholder="All Employee" />
         <MultiSelect placeholder="All Companies" :maxSelectedLabels="3" />
         <MultiSelect placeholder="All" :maxSelectedLabels="3" />
-        <DatePicker v-model="value" inputId="date" showIcon iconDisplay="input" variant="filled" />
+        <DatePicker inputId="date" showIcon iconDisplay="input" variant="filled" />
         <Button class="!bg-gray-500 px-4 !text-[#1F2937] !border-none !py-2 rounded hover:!bg-gray-300"><span class="pi pi-plus"></span></Button>
         <Button class="!bg-gray-500 px-4 !text-[#1F2937] !border-none rounded hover:!bg-gray-300"><span class="pi pi-refresh"></span></Button>
       </div>
@@ -19,13 +18,13 @@
   <p v-if="loading" class="text-gray-400 text-center mt-4">Loading Roaster...</p>
   <p v-if="error" class="text-gray-400 text-center mt-4">{{ error }}</p>
   <DataTable :value="roaster">
+      <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
     <Column header="Employee">
       <template #body="slotProps">
         <div>
           <div class="flex gap-6 items-center">
-            <Checkbox binary size="large" />
             <div class="flex items-center gap-4">
-              <img src="/home/xiots/Documents/vuejs/imab-frontend/src/assets/images/profile.png"
+              <img src="@/assets/images/profile.png"
                 :alt="slotProps.data.employee_name" class="w-[3rem] h-[3rem] bg-gray-300 p-1 rounded">
               <div>
                 <h2 class="text-white">{{ slotProps.data.employee_name }}</h2>
@@ -80,12 +79,11 @@ import { onMounted } from 'vue';
 import Button from 'primevue/button'
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import Checkbox from 'primevue/checkbox';
 
 const { roaster, loading, error, fetchRoaster } = useRoaster();
 
-onMounted(
+onMounted( () => {
   fetchRoaster()
-)
+});
 
 </script>

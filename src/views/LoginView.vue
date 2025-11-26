@@ -20,7 +20,7 @@
 
         <Button
           type="submit"
-          class="!bg-[#60A5FA] text-info flex px-4 py-3 rounded w-[320px] mx-auto gap-4 items-center justify-center font-bold"
+          class="!bg-[#60A5FA] !border-none text-info flex px-4 py-3 rounded w-[320px] mx-auto gap-4 items-center justify-center font-bold"
           @click="handleLogin">
           <span v-if="!loading" class="pi pi-user"></span>
           <span v-if="loading">Loading...</span>
@@ -77,7 +77,7 @@ const handleLogin = async () => {
   const result = await login(email.value, password.value);
 
   if (result) {
-    router.push('/')
+    router.push('/attendance')
   }
 };
 </script>
