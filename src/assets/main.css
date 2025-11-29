@@ -93,3 +93,11 @@ a {
   font-size: 14px;
   font-weight: 700;
 }
+.p-select-list-container{
+  background-color: #111827 !important;
+  border: 1px solid #6A7282 !important;
+}
+.p-dialog-title{
+  color: white;
+}
+

@@ -1,30 +1,20 @@
 import { ref } from "vue";
 
 export function useEmployee() {
-  const employees = ref([]);
+  const employee = ref([]);
   const loading = ref(false);
   const error = ref("");
 
-  const fetchEmployees = async () => {
+  const fetchemployees = async () => {
     loading.value = true;
     error.value = "";
 
     try {
-      const token = sessionStorage.getItem("idToken");
-
-      if (!token) {
-        error.value = "You are not logged in.";
-        loading.value = false;
-        return;
-      }
-
       const response = await fetch(
-        "https://core-api-pv3ymi55wa-uc.a.run.app/view-employees/employees-data-short/0/0/0",
+        "https://my-flask-9.vercel.app/employee/all",
         {
           method: "GET",
-          headers: {
-            "Authorization": `Bearer ${token}`
-          }
+          type: "application/json"
         }
       );
 
@@ -36,7 +26,7 @@ export function useEmployee() {
         return;
       }
 
-      employees.value = data; // Save to reactive data
+      employee.value = data;
 
     } catch (error) {
       console.log(error);
@@ -48,5 +38,5 @@ export function useEmployee() {
     loading.value = false;
   };
 
-  return { employees, loading, error, fetchEmployees };
+  return { employee, loading, error, fetchemployees };
 }

@@ -8,25 +8,16 @@ const router = useRouter()
 
 const menuItems = ref([
   {
-    label: 'Attendance',
-    icon: 'prime:key',
-    to: '/attendance'
-  },
-  {
-    label: 'Roaster',
-    icon: 'streamline-ultimate:notes-upload',
-    to: '/roaster'
-  },
-  {
     label: 'Employees',
-    icon: 'iconamoon:profile-thin',
+    icon: 'prime:key',
     to: '/employees'
-  }
+  },
+
 ])
 
 const logout = () => {
   sessionStorage.clear()     // remove token + user data
-  router.push('/')
+  router.push('/employees')
 }
 
 // Time
