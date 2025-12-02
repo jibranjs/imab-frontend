@@ -21,7 +21,7 @@ export const useDeletePayroll = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to delete payroll');
+         Error('Failed to delete payroll');
       }
 
       const result = await response.json();
@@ -34,9 +34,5 @@ export const useDeletePayroll = () => {
     }
   };
 
-  return {
-    deletePayroll,
-    loading,
-    error
-  };
+  return { deletePayroll,loading,error};
 };

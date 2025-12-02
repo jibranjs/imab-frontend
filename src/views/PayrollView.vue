@@ -34,7 +34,7 @@
   <Dialog v-model:visible="showDetail" modal header="Payroll Details" :style="{ width: '400px' }">
     <div v-if="selected">
       <div class="space-y-3">
-        <div v-for="field in fields" :key="field" class="flex justify-between border-b border-gray-600 pb-2">
+        <div v-for="field in fields" :key="field" class="flex justify-between">
           <span class="font-semibold text-white">
             {{ field.charAt(0).toUpperCase() + field.slice(1).replace(/_/g, ' ') }}:
           </span>
