@@ -1,174 +1,181 @@
 <template>
+  <!-- Top Bar -->
   <div class="flex justify-end items-center px-6">
     <div class="relative !m-5">
-      <InputText v-model="globalFilter" placeholder="Search..." class="pr-10" @keyup.enter="doSearch" />
-      <Button icon="pi pi-search" @click="doSearch" class="!absolute right-1 top-1/2 -translate-y-1/2 !p-2 !border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
+      <InputText placeholder="Search..." class="pr-10" />
+      <Button icon="pi pi-search"
+        class="!absolute right-1 top-1/2 -translate-y-1/2 !p-2 !border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
     </div>
-    <Button label="Refresh" @click="fetchemployees" class="!m-5 !border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
-    <Button label="Add Employee" @click="showAdd = true" class="!border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
+    <Button label="Refresh" @click="fetchPayroll"
+      class="!m-5 !border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
+    <Button label="Add Payroll" @click="showAdd = true"
+      class="!border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
   </div>
-  <p v-if="loading" class="text-white text-center text-xl mb-2">Loading...</p>
-  <p v-if="error" class="text-red-300 text-center">{{ error }}</p>
-  <DataTable v-model:selection="selected" selectionMode="single" :value="filteredEmployees" tableStyle="min-width: 50rem" @rowSelect="showDetail = true" rowHover :rowClass="rowClass">
-    <Column field="id" header="ID" />
-    <Column field="name" header="Name" />
-    <Column field="username" header="Username" />
-    <Column field="password" header="Password" />
-    <Column field="role" header="Role" />
-    <Column field="email" header="Email" />
-  </DataTable>
 
-
-  <!-- Detail Dialog -->
-  <Dialog v-model:visible="showDetail" modal header="Employee Details" :style="{ width: '400px' }">
-    <div v-if="selected" class="text-white space-y-2">
-      <div v-for="(value, key) in selected" :key="key">
-        <strong>{{ key }}:</strong> {{ value }}
-      </div>
-    </div>
-    <div class="flex gap-2 justify-between mt-4">
-      <div>
-        <Button @click="openEditDialog" class="!bg-[#1F2937] !border-none !text-white">
-          <span class="pi pi-pencil"></span>
-        </Button>
-        <Button icon="pi pi-trash" @click="deleteRow" class="!bg-[#1F2937] !text-red-500 !border-none" />
-      </div>
-      <Button label="Close" @click="showDetail = false" class="!bg-gray-600 !border-none !text-white" />
-    </div>
-  </Dialog>
-
-  <!-- Edit Employee Dialog -->
-  <Dialog v-model:visible="showEdit" modal header="Edit Employee" :style="{ width: '370px' }">
-    <div v-if="editEmployee" class="space-y-4">
-      <div v-for="field in fields" :key="field" class="flex flex-col gap-1 mb-2">
-        <label :for="'edit-'+field" class="font-semibold text-white">
-          {{ field.charAt(0).toUpperCase() + field.slice(1) }}
-        </label>
-        <InputText :id="'edit-'+field" v-model="editEmployee[field]" :placeholder="field" />
-      </div>
-    </div>
-    <div class="flex justify-end gap-2 mt-4">
-      <Button label="Cancel" @click="showEdit = false" class="!bg-gray-600 !border-none !text-white" />
-      <Button label="Save" @click="saveEdit" class="!bg-white !text-[#0A0E17] !border-none bg-success" />
-    </div>
-  </Dialog>
-
-  <!-- Add employee -->
-  <Dialog v-model:visible="showAdd" modal header="Create Employee" :style="{ width: '370px' }">
-    <div v-for="field in fields" :key="field" class="flex flex-col w-24 gap-4 mb-4">
-      <label :for="field" class="font-semibold w-full text-white">{{ field.charAt(0).toUpperCase() + field.slice(1) }}</label>
-      <InputText :id="field" v-model="form[field]" class="flex-auto" :placeholder="field" autocomplete="off" />
+  <!-- Add Dialog -->
+  <Dialog v-model:visible="showAdd" modal header="Create Payroll" :style="{ width: '370px' }">
+    <div v-for="field in fields" :key="field" class="flex flex-col gap-2 mb-4">
+      <label class="font-semibold text-white">
+        {{ field.charAt(0).toUpperCase() + field.slice(1).replace(/_/g, ' ') }}
+      </label>
+      <InputText v-model="form[field]" :placeholder="field" />
     </div>
     <div class="flex justify-end gap-2">
-      <Button label="Cancel" @click="showAdd = false" class="!bg-gray-600 hover:!bg-red-300 !border-none !text-[#0A0E17]" />
-      <Button label="Save" @click="addEmployee" class="!bg-white !text-[#0A0E17] !border-none bg-success" />
+      <Button label="Cancel" @click="showAdd = false"
+        class="!bg-gray-600 hover:!bg-red-300 !border-none !text-white" />
+      <Button label="Save" @click="addPayroll"
+        class="!bg-white !text-[#0A0E17] !border-none" />
     </div>
   </Dialog>
+
+  <!-- Detail Dialog -->
+  <Dialog v-model:visible="showDetail" modal header="Payroll Details" :style="{ width: '400px' }">
+    <div v-if="selected" class="space-y-3">
+      <div v-for="field in fields" :key="field" class="flex justify-between border-b border-gray-600 pb-2">
+        <span class="font-semibold text-white">
+          {{ field.charAt(0).toUpperCase() + field.slice(1).replace(/_/g, ' ') }}:
+        </span>
+        <span class="text-gray-300">{{ selected[field] }}</span>
+      </div>
+    </div>
+    <div class="flex justify-end mt-6">
+      <Button label="Edit" @click="openEdit"
+        class="!bg-blue-600 hover:!bg-blue-700 !border-none !text-white" />
+    </div>
+  </Dialog>
+
+  <!-- Edit Dialog -->
+  <Dialog v-model:visible="showEdit" modal header="Edit Payroll" :style="{ width: '370px' }">
+    <div v-if="editPayroll">
+      <div v-for="field in fields" :key="field" class="flex flex-col gap-2 mb-4">
+        <label class="font-semibold text-white">
+          {{ field.charAt(0).toUpperCase() + field.slice(1).replace(/_/g, ' ') }}
+        </label>
+        <InputText v-model="editPayroll[field]" :placeholder="field" />
+      </div>
+    </div>
+    <div class="flex justify-end gap-2">
+      <Button label="Cancel" @click="showEdit = false"
+        class="!bg-gray-600 hover:!bg-red-300 !border-none !text-white" />
+      <Button label="Save" @click="saveEdit"
+        class="!bg-white !text-[#0A0E17] !border-none" />
+    </div>
+  </Dialog>
+
+  <!-- Loading & Error Messages -->
+  <p v-if="loading" class="text-white text-center text-xl mb-2">Loading...</p>
+  <p v-if="error" class="text-red-300 text-center">{{ error }}</p>
+
+  <!-- Data Table -->
+  <DataTable
+    :value="payroll"
+    v-model:selection="selected"
+    selectionMode="single"
+    @rowSelect="showDetail = true"
+    rowHover
+    :rowClass="rowClass"
+    tableStyle="min-width: 50rem"
+  >
+    <Column field="employee_id" header="ID"></Column>
+    <Column field="batch" header="Batch"></Column>
+    <Column field="early" header="Early"></Column>
+    <Column field="late" header="Late"></Column>
+    <Column field="leaves" header="Leaves"></Column>
+    <Column field="hourly_rate" header="Hourly Rate"></Column>
+    <Column field="worked_hours" header="Worked Hours"></Column>
+    <Column field="monthly_hours" header="Monthly Hours"></Column>
+    <Column field="bonus1" header="Bonus 1"></Column>
+    <Column field="bonus2" header="Bonus 2"></Column>
+    <Column field="basic_salary" header="Basic Salary"></Column>
+  </DataTable>
 </template>
 
 <script setup>
-// Import Vue and needed components
-import { ref, onMounted, watch } from 'vue'
-import { useEmployee } from '@/composables/useEmployees'
-import { useCreateEmployee } from '@/composables/useCreateEmployee'
-import { useDeleteEmployee } from '@/composables/useDeleteEmployee'
-import { useSearch } from '@/composables/useSearch'
-import DataTable from 'primevue/datatable'
-import Column from 'primevue/column'
-import InputText from 'primevue/inputtext'
-import Button from 'primevue/button'
-import Dialog from 'primevue/dialog'
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import Dialog from 'primevue/dialog';
+import { usePayroll } from '@/composables/payroll/usePayroll.js';
+import { useCreatePayroll } from '@/composables/payroll/useCreatePayroll.js';
+import { onMounted, ref, reactive } from 'vue';
 
-// State and composables
-const { employee, loading, error, fetchemployees } = useEmployee()
-const { createEmployee } = useCreateEmployee()
-const { deleteEmployee } = useDeleteEmployee()
-const { results, searchEmployees } = useSearch()
+// Composables
+const { payroll, loading, error, fetchPayroll } = usePayroll();
+const { createPayroll } = useCreatePayroll();
 
-// UI state
-const selected = ref(null)
-const showDetail = ref(false)
-const showAdd = ref(false)
-const showEdit = ref(false)
-const globalFilter = ref('')
-const fields = ['username', 'email', 'name', 'role', 'password']
-const form = ref({ username: '', email: '', name: '', role: '', password: '' })
-const editEmployee = ref(null)
+// Dialog visibility
+const showAdd = ref(false);
+const showDetail = ref(false);
+const showEdit = ref(false);
 
-const filteredEmployees = ref(employee.value)
+// Selected row
+const selected = ref(null);
 
-// Search employees by name
-const doSearch = async () => {
-  if (!globalFilter.value) {
-    await fetchemployees();
-    filteredEmployees.value = employee.value;
+// Form fields
+const fields = [
+  'employee_id', 'batch', 'early', 'late', 'leaves',
+  'hourly_rate', 'worked_hours', 'monthly_hours',
+  'bonus1', 'bonus2', 'basic_salary'
+];
+
+// Add form
+const form = reactive({
+  employee_id: '', batch: '', early: '', late: '', leaves: '',
+  hourly_rate: '', worked_hours: '', monthly_hours: '',
+  bonus1: '', bonus2: '', basic_salary: ''
+});
+
+// Edit form
+const editPayroll = ref(null);
+
+// Row styling
+const rowClass = row =>
+  selected.value && selected.value.employee_id === row.employee_id
+    ? '!bg-gray-600 !text-white !border-none'
+    : 'hover:!bg-gray-600 hover:!text-white';
+
+// Add new payroll
+function addPayroll() {
+  if (Object.values(form).some(value => !value)) {
+    alert('Please fill in all fields');
     return;
   }
-  await searchEmployees(globalFilter.value);
-  filteredEmployees.value = results.value.filter(r =>
-    String(r.name || '').toLowerCase().includes(globalFilter.value.toLowerCase())
-  );
+
+  createPayroll(form)
+    .then(() => {
+      fetchPayroll();
+      showAdd.value = false;
+      Object.keys(form).forEach(key => form[key] = '');
+    })
+    .catch(err => {
+      console.error('Error creating payroll:', err);
+      alert('Error creating payroll');
+    });
 }
 
-// Refresh list when search is cleared
-watch(globalFilter, async (val, oldVal) => {
-  if (!val && oldVal) {
-    await fetchemployees();
-    filteredEmployees.value = employee.value;
-  }
-})
-
-// Keep filteredEmployees in sync
-watch(employee, (val) => {
-  if (!globalFilter.value) filteredEmployees.value = val;
-})
-
-// Add employee
-const addEmployee = async () => {
-  await createEmployee({ ...form.value })
-  showAdd.value = false
-  Object.keys(form.value).forEach(k => form.value[k] = '')
-  fetchemployees()
+// Open edit dialog
+function openEdit() {
+  if (!selected.value) return;
+  editPayroll.value = { ...selected.value };
+  showDetail.value = false;
+  showEdit.value = true;
 }
 
-// Delete employee
-const deleteRow = async () => {
-  if (!selected.value?.username) return
-  const res = await deleteEmployee(selected.value.username)
-  if (res?.success) {
-    employee.value = employee.value.filter(e => e.username !== selected.value.username)
-    showDetail.value = false
-    selected.value = null
-  } else {
-    alert(res?.error || 'Failed to delete employee.')
-  }
-}
-
-// Open edit dialog and fill with selected employee
-function openEditDialog() {
-  if (!selected.value) return
-  editEmployee.value = { ...selected.value }
-  showDetail.value = false
-  showEdit.value = true
-}
-
+// Save edited payroll
 function saveEdit() {
-  if (!editEmployee.value) return
+  if (!editPayroll.value) return;
 
-  const idx = employee.value.findIndex(e => e.username === editEmployee.value.username)
-  if (idx !== -1) {
-    employee.value[idx] = { ...editEmployee.value }
-    selected.value = { ...editEmployee.value }
+  const index = payroll.value.findIndex(p => p.employee_id === editPayroll.value.employee_id);
+  if (index !== -1) {
+    payroll.value[index] = { ...editPayroll.value };
+    selected.value = { ...editPayroll.value };
   }
-  showEdit.value = false
+  showEdit.value = false;
 }
 
-// Row highlight
-const rowClass = row =>
-  selected.value && selected.value.username === row.username
-    ? '!bg-gray-600 !text-white !border-none'
-    : 'hover:!bg-gray-600 hover:!text-white'
-
-// Fetch employees on mtoun
-onMounted(fetchemployees)
+// Load data on mount
+onMounted(() => {
+  fetchPayroll();
+});
 </script>
