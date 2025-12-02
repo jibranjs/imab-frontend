@@ -100,4 +100,12 @@ a {
 .p-dialog-title{
   color: white;
 }
-
+:deep(.p-datatable .p-datatable-tbody > tr.p-datatable-row-selected) {
+  background-color: #4b5563 !important;
+  color: white !important;
+  border: none !important;
+}
+:deep(.p-datatable .p-datatable-tbody > tr.p-datatable-row-selected > td) {
+  color: white !important;
+  border: none !important;
+}

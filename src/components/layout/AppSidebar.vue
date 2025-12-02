@@ -12,7 +12,11 @@ const menuItems = ref([
     icon: 'prime:key',
     to: '/employees'
   },
-
+    {
+    label: 'Payroll',
+    icon: 'prime:key',
+    to: '/payroll'
+  },
 ])
 
 const logout = () => {
