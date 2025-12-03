@@ -9,6 +9,7 @@
       class="!m-5 !border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
     <Button label="Add Employee" @click="showAdd = true"
       class="!border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
+
   </div>
   <p v-if="loading" class="text-white text-center text-xl mb-2">Loading...</p>
   <p v-if="error" class="text-red-300 text-center">{{ error }}</p>

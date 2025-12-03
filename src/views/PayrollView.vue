@@ -6,67 +6,202 @@
       <Button icon="pi pi-search"
         class="!absolute right-1 top-1/2 -translate-y-1/2 !p-2 !border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
     </div>
-    <Button label="Refresh" @click="fetchPayroll"
+     <Button label="Refresh" @click="fetchPayroll"
       class="!m-5 !border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
-    <Button label="Add Payroll" @click="showAdd = true"
-      class="!border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
+     <Button label="Add Payroll" @click="showAdd = true"
+      class="!border-none !bg-gray-600 hover:!bg-white !mr-3 hover:!text-gray-600" />
+     <Button icon="pi pi-trash" @click="showDelete = true" class="!border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
   </div>
-
-  <!-- Add Dialog -->
-  <Dialog v-model:visible="showAdd" modal header="Create Payroll" :style="{ width: '370px' }">
+s
+<!-- Create Payroll Dialog -->
+<Dialog v-model:visible="showAdd" modal header="Create Payroll" :style="{ width: '400px' }">
+  <div class="text-white space-y-2 mb-6">
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <label>Employee ID</label>
+        <InputText v-model="form.employee_id" class="!w-full" placeholder="Enter employee ID" />
+      </div>
+      <div>
+        <label>Batch</label>
+        <InputText v-model="form.batch" class="!w-full" placeholder="Enter batch" />
+      </div>
+      <div>
+        <label>Early</label>
+        <InputText v-model="form.early" class="!w-full" placeholder="Enter early count" />
+      </div>
+      <div>
+        <label>Late</label>
+        <InputText v-model="form.late" class="!w-full" placeholder="Enter late count" />
+      </div>
+      <div>
+        <label>Leaves</label>
+        <InputText v-model="form.leaves" class="!w-full" placeholder="Enter leaves" />
+      </div>
+      <div>
+        <label>Hourly Rate</label>
+        <InputText v-model="form.hourly_rate" class="!w-full" placeholder="Enter hourly rate" />
+      </div>
+      <div>
+        <label>Worked Hours</label>
+        <InputText v-model="form.worked_hours" class="!w-full" placeholder="Enter worked hours" />
+      </div>
+      <div>
+        <label>Monthly Hours</label>
+        <InputText v-model="form.monthly_hours" class="!w-full" placeholder="Enter monthly hours" />
+      </div>
+      <div>
+        <label>Bonus 1</label>
+        <InputText v-model="form.bonus1" class="!w-full" placeholder="Enter bonus 1" />
+      </div>
+      <div>
+        <label>Bonus 2</label>
+        <InputText v-model="form.bonus2" class="!w-full" placeholder="Enter bonus 2" />
+      </div>
+    </div>
     <div>
-      <div v-for="field in fields" :key="field" class="flex flex-col gap-2 mb-4">
-        <label class="font-semibold text-white">
-          {{ field.charAt(0).toUpperCase() + field.slice(1).replace(/_/g, ' ') }}
-        </label>
-        <InputText v-model="form[field]" :placeholder="field" />
+        <label>Basic Salary</label>
+        <InputText v-model="form.basic_salary" class="!w-full" placeholder="Enter basic salary" />
       </div>
-    </div>
-    <div class="flex justify-end gap-2">
-      <Button label="Cancel" @click="showAdd = false"
-        class="!bg-gray-600 hover:!bg-red-300 !border-none !text-white" />
-      <Button label="Save" @click="addPayroll"
-        class="!bg-white !text-[#0A0E17] !border-none" />
-    </div>
-  </Dialog>
+  </div>
+  <div class="flex gap-2 justify-between mt-4">
+    <Button label="Cancel" @click="showAdd = false" class="!bg-gray-600 !border-none !text-white" />
+    <Button label="Save" @click="addPayroll" class="!bg-white !text-[#0A0E17] !border-none" />
+  </div>
+</Dialog>
 
-  <!-- Detail Dialog -->
-  <Dialog v-model:visible="showDetail" modal header="Payroll Details" :style="{ width: '400px' }">
-    <div v-if="selected">
-      <div class="space-y-3">
-        <div v-for="field in fields" :key="field" class="flex justify-between">
-          <span class="font-semibold text-white">
-            {{ field.charAt(0).toUpperCase() + field.slice(1).replace(/_/g, ' ') }}:
-          </span>
-          <span class="text-gray-300">{{ selected[field] }}</span>
-        </div>
-      </div>
-    </div>
-    <div class="flex justify-end gap-2 mt-6">
-      <Button label="Delete" @click="openDelete"
-        class="!bg-red-600 hover:!bg-red-700 !border-none !text-white" />
-      <Button label="Edit" @click="openEdit"
-        class="!bg-blue-600 hover:!bg-blue-700 !border-none !text-white" />
-    </div>
-  </Dialog>
 
-  <!-- Edit Dialog -->
-  <Dialog v-model:visible="showEdit" modal header="Edit Payroll" :style="{ width: '370px' }">
-    <div v-if="editPayroll">
-      <div v-for="field in fields" :key="field" class="flex flex-col gap-2 mb-4">
-        <label class="font-semibold text-white">
-          {{ field.charAt(0).toUpperCase() + field.slice(1).replace(/_/g, ' ') }}
-        </label>
-        <InputText v-model="editPayroll[field]" :placeholder="field" />
+<!-- Detail Dialog -->
+<Dialog
+  v-model:visible="showDetail"
+  modal
+  header="Payroll Details"
+  :style="{ width: '400px' }"
+>
+  <div v-if="selected" class="text-white space-y-2">
+    <div class="flex flex-col justify-center gap-3">
+      <div class="flex items-center gap-2">
+        <label class="text-xl font-semibold">Employee ID :</label>
+        <p class="text-gray-300 text-lg">{{ selected.employee_id }}</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-xl font-semibold">Batch :</label>
+        <p class="text-gray-300 text-lg">{{ selected.batch }}</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-xl font-semibold">Early :</label>
+        <p class="text-gray-300 text-lg">{{ selected.early }}</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-xl font-semibold">Late :</label>
+        <p class="text-gray-300 text-lg">{{ selected.late }}</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-xl font-semibold">Leaves :</label>
+        <p class="text-gray-300 text-lg">{{ selected.leaves }}</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-xl font-semibold">Hourly Rate :</label>
+        <p class="text-gray-300 text-lg">{{ selected.hourly_rate }}</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-xl font-semibold">Worked Hours :</label>
+        <p class="text-gray-300 text-lg">{{ selected.worked_hours }}</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-xl font-semibold">Monthly Hours :</label>
+        <p class="text-gray-300 text-lg">{{ selected.monthly_hours }}</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-xl font-semibold">Bonus 1 :</label>
+        <p class="text-gray-300 text-lg">{{ selected.bonus1 }}</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-xl font-semibold">Bonus 2 :</label>
+        <p class="text-gray-300 text-lg">{{ selected.bonus2 }}</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-xl font-semibold">Basic Salary :</label>
+        <p class="text-gray-300 text-lg">{{ selected.basic_salary }}</p>
       </div>
     </div>
-    <div class="flex justify-end gap-2">
-      <Button label="Cancel" @click="showEdit = false"
-        class="!bg-gray-600 hover:!bg-red-300 !border-none !text-white" />
-      <Button label="Save" @click="saveEdit"
-        class="!bg-white !text-[#0A0E17] !border-none" />
+  </div>
+  <div class="flex gap-2 justify-end mt-6">
+    <Button
+      label="Edit"
+      @click="openEdit"
+      class="!bg-gray-600 hover:!bg-blue-700 !border-none !text-white"
+    />
+  </div>
+</Dialog>
+
+<!-- Edit Dialog -->
+<Dialog
+  v-model:visible="showEdit"
+  modal
+  header="Edit Payroll"
+  :style="{ width: '400px' }"
+>
+  <div v-if="editPayroll" class="text-white space-y-2 mb-6">
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <label>Employee ID</label>
+        <InputText v-model="editPayroll.employee_id" class="!w-full" placeholder="Enter employee ID" />
+      </div>
+      <div>
+        <label>Batch</label>
+        <InputText v-model="editPayroll.batch" class="!w-full" placeholder="Enter batch" />
+      </div>
+      <div>
+        <label>Early</label>
+        <InputText v-model="editPayroll.early" class="!w-full" placeholder="Enter early count" />
+      </div>
+      <div>
+        <label>Late</label>
+        <InputText v-model="editPayroll.late" class="!w-full" placeholder="Enter late count" />
+      </div>
+      <div>
+        <label>Leaves</label>
+        <InputText v-model="editPayroll.leaves" class="!w-full" placeholder="Enter leaves" />
+      </div>
+      <div>
+        <label>Hourly Rate</label>
+        <InputText v-model="editPayroll.hourly_rate" class="!w-full" placeholder="Enter hourly rate" />
+      </div>
+      <div>
+        <label>Worked Hours</label>
+        <InputText v-model="editPayroll.worked_hours" class="!w-full" placeholder="Enter worked hours" />
+      </div>
+      <div>
+        <label>Monthly Hours</label>
+        <InputText v-model="editPayroll.monthly_hours" class="!w-full" placeholder="Enter monthly hours" />
+      </div>
+      <div>
+        <label>Bonus 1</label>
+        <InputText v-model="editPayroll.bonus1" class="!w-full" placeholder="Enter bonus 1" />
+      </div>
+      <div>
+        <label>Bonus 2</label>
+        <InputText v-model="editPayroll.bonus2" class="!w-full" placeholder="Enter bonus 2" />
+      </div>
     </div>
-  </Dialog>
+    <div>
+      <label>Basic Salary</label>
+      <InputText v-model="editPayroll.basic_salary" class="!w-full" placeholder="Enter basic salary" />
+    </div>
+  </div>
+  <div class="flex gap-2 justify-between mt-4">
+    <Button
+      label="Cancel"
+      @click="showEdit = false"
+      class="!bg-gray-600 !border-none !text-white"
+    />
+    <Button
+      label="Save"
+      @click="saveEdit"
+      class="!bg-white !text-[#0A0E17] !border-none"
+    />
+  </div>
+</Dialog>
 
   <!-- Delete Dialog -->
   <Dialog v-model:visible="showDelete" modal header="Delete Payroll" :style="{ width: '370px' }">
@@ -87,6 +222,8 @@
         class="!bg-red-600 hover:!bg-red-700 !border-none !text-white" />
     </div>
   </Dialog>
+
+
 
   <!-- Loading & Error Messages -->
   <p v-if="loading" class="text-white text-center text-xl mb-2">Loading...</p>
@@ -129,16 +266,8 @@ const showAdd = ref(false);
 const showDetail = ref(false);
 const showEdit = ref(false);
 const showDelete = ref(false);
-
 // Selected row
 const selected = ref(null);
-
-// Form fields
-const fields = [
-  'employee_id', 'batch', 'early', 'late', 'leaves',
-  'hourly_rate', 'worked_hours', 'monthly_hours',
-  'bonus1', 'bonus2', 'basic_salary'
-];
 
 // Add form
 const form = reactive({
@@ -156,31 +285,12 @@ function openEdit() {
   showDetail.value = false;
   showEdit.value = true;
 }
-// Save edited payroll
-function saveEdit() {
-  if (!editPayroll.value) return;
-
-  const index = payroll.value.findIndex(p => p.employee_id === editPayroll.value.employee_id);
-  if (index !== -1) {
-    payroll.value[index] = { ...editPayroll.value };
-    selected.value = { ...editPayroll.value };
-  }
-  showEdit.value = false;
-}
 
 // Delete form
 const deleteForm = reactive({
   batch: '',
   employee_id: ''
 });
-// Open delete dialog
-function openDelete() {
-  if (!selected.value) return;
-  deleteForm.batch = selected.value.batch;
-  deleteForm.employee_id = selected.value.employee_id;
-  showDetail.value = false;
-  showDelete.value = true;
-}
 
 // Row styling
 const rowClass = row =>
@@ -189,28 +299,41 @@ const rowClass = row =>
     : 'hover:!bg-gray-600 hover:!text-white';
 
 // Add new payroll
-function addPayroll() {
-  if (Object.values(form).some(value => !value)) {
-    alert('Please fill in all fields');
-    return;
-  }
+const addPayroll = async () => {
+  const employee_id = form.employee_id;
+  const batch = form.batch;
+  const early = form.early;
+  const late = form.late;
+  const leaves = form.leaves;
+  const hourly_rate = form.hourly_rate;
+  const worked_hours = form.worked_hours;
+  const monthly_hours = form.monthly_hours;
+  const bonus1 = form.bonus1;
+  const bonus2 = form.bonus2;
+  const basic_salary = form.basic_salary;
 
-  createPayroll(form)
-    .then(() => {
-      fetchPayroll();
-      showAdd.value = false;
-      Object.keys(form).forEach(key => form[key] = '');
-    })
-    .catch(err => {
-      console.error('Error creating payroll:', err);
-      alert('Error creating payroll');
-    });
+  const payrollData = {employee_id,batch,early,late,leaves, hourly_rate,worked_hours,monthly_hours,bonus1,bonus2,basic_salary };
+
+  await createPayroll(payrollData);
+  showAdd.value = false;
+  form.employee_id = '';
+  form.batch = '';
+  form.early = '';
+  form.late = '';
+  form.leaves = '';
+  form.hourly_rate = '';
+  form.worked_hours = '';
+  form.monthly_hours = '';
+  form.bonus1 = '';
+  form.bonus2 = '';
+  form.basic_salary = '';
+  fetchPayroll();
 }
 
 // Confirm delete
 function confirmDelete() {
   if (!deleteForm.batch || !deleteForm.employee_id) {
-    alert('Please fill in all fields');
+    alert('fill in all fields');
     return;
   }
 
