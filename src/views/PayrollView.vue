@@ -145,11 +145,11 @@ s
     <div class="grid grid-cols-2 gap-3">
       <div>
         <label>Employee ID</label>
-        <InputText v-model="editPayroll.employee_id" class="!w-full" placeholder="Enter employee ID" />
+        <InputText v-model="editPayroll.employee_id" :disabled="true" class="!w-full" placeholder="Enter employee ID" />
       </div>
       <div>
         <label>Batch</label>
-        <InputText v-model="editPayroll.batch" class="!w-full" placeholder="Enter batch" />
+        <InputText v-model="editPayroll.batch" :disabled="true" class="!w-full" placeholder="Enter batch" />
       </div>
       <div>
         <label>Early</label>
@@ -197,7 +197,7 @@ s
     />
     <Button
       label="Save"
-      @click="saveEdit"
+      @click="updatePayrollForm(editPayroll)"
       class="!bg-white !text-[#0A0E17] !border-none"
     />
   </div>
@@ -254,12 +254,14 @@ import Dialog from 'primevue/dialog';
 import { usePayroll } from '@/composables/payroll/usePayroll.js';
 import { useCreatePayroll } from '@/composables/payroll/useCreatePayroll.js';
 import { useDeletePayroll } from '@/composables/payroll/useDeletePayroll.js';
+import { useUpdatePayroll } from '@/composables/payroll/useUpdatePayroll.js';
 import { onMounted, ref, reactive } from 'vue';
 
 // Composables
 const { payroll, loading, error, fetchPayroll } = usePayroll();
 const { createPayroll } = useCreatePayroll();
 const { deletePayroll } = useDeletePayroll();
+const { updatePayroll } = useUpdatePayroll();
 
 // Dialog visibility
 const showAdd = ref(false);
@@ -349,6 +351,29 @@ function confirmDelete() {
       console.error('Error deleting payroll:', err);
       alert('Error deleting payroll');
     });
+}
+
+// Update payroll
+const updatePayrollForm = async (fields) => {
+  if (!fields) return;
+
+  const batch = fields.batch;
+  const employee_id = fields.employee_id;
+  const early = fields.early;
+  const late = fields.late;
+  const leaves = fields.leaves;
+  const hourly_rate = fields.hourly_rate;
+  const worked_hours = fields.worked_hours;
+  const monthly_hours = fields.monthly_hours;
+  const bonus1 = fields.bonus1;
+  const bonus2 = fields.bonus2;
+  const basic_salary = fields.basic_salary;
+
+  const payrollData = { batch, employee_id, early, late, leaves, hourly_rate, worked_hours, monthly_hours, bonus1, bonus2, basic_salary };
+
+  await updatePayroll(payrollData);
+  showEdit.value = false;
+  fetchPayroll();
 }
 
 // Load data on mount
