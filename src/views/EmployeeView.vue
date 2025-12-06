@@ -27,7 +27,7 @@
             class="!bg-gray-600 !border-none !text-white hover:!bg-white hover:!text-gray-600">
             <span class="pi pi-pencil w-[20px]"></span>
           </Button>
-          <Button @click="showDelete = true"
+          <Button @click="showDelete(slotProps.data)"
             class="!bg-gray-600 !border-none !text-white hover:!bg-white hover:!text-gray-600">
             <span class="pi pi-trash w-[20px]"></span>
           </Button>
@@ -36,8 +36,8 @@
     </Column>
   </DataTable>
 
-  <!-- Detail Dialog -->
-  <Dialog v-model:visible="showEdit" modal header="Employee Details" :style="{ width: '400px' }">
+  <!-- Update Dialog -->
+  <Dialog v-model:visible="showUpdateDialog" modal header="Employee Details" :style="{ width: '400px' }">
     <div class="text-white space-y-2 mb-6">
       <div class="flex flex-col gap-3">
         <div>
@@ -63,46 +63,49 @@
       </div>
     </div>
     <div class="flex gap-2 justify-between mt-4">
-      <Button label="Close" @click="showEdit = false" class="!bg-gray-600 !border-none !text-white" />
+      <Button label="Close" @click="showUpdateDialog = false" class="!bg-gray-600 !border-none !text-white" />
       <Button label="Update" @click="updateEmployeeForm()" class="!bg-gray-600 !border-none !text-white" />
     </div>
   </Dialog>
 
 
   <!-- Delete Dialog -->
-  <Dialog v-model:visible="showDelete" modal header="Employee Details" :style="{ width: '400px' }">
+  <Dialog v-model:visible="showDeleteDialog" modal header="Delete Employee" :style="{ width: '400px' }">
     <div v-if="selected" class="text-white space-y-2">
       <div class="flex flex-col gap-3">
         <div>
           <label class="test-xl font-semibold">Name :</label>
-          <p>{{ selected.name }}</p>
+          <p>{{ form.name }}</p>
         </div>
         <div>
           <label class="test-xl font-semibold">Username :</label>
-          <p>{{ selected.username }}</p>
+          <p>{{ form.username }}</p>
         </div>
         <div>
           <label class="test-xl font-semibold">Password :</label>
-          <p>{{ selected.password }}</p>
+          <p>{{ form.password }}</p>
         </div>
         <div>
           <label class="test-xl font-semibold">Role :</label>
-          <p>{{ selected.role }}</p>
+          <p>{{ form.role }}</p>
         </div>
         <div>
           <label class="test-xl font-semibold">Email :</label>
-          <p>{{ selected.email }}</p>
+          <p>{{ form.email }}</p>
         </div>
+         <div v-if="deleteEmployeeError" class="bg-red-500 text-white p-2 rounded-md">
+        <p class="text-red-300 text-center">{{ deleteEmployeeError }}</p>
+      </div>
       </div>
     </div>
     <div class="flex gap-2 justify-between mt-4">
-      <Button label="Close" @click="showDelete = false" class="!bg-gray-600 !border-none !text-white" />
-      <Button label="Delete" @click="deleteEmployeeForm(selected)" class="!bg-red-600 !border-none !text-white" />
+      <Button label="Close" @click="showDeleteDialog = false" class="!bg-gray-600 !border-none !text-white" />
+      <Button label="Delete" :loading="deleteEmployeeLoading" @click="deleteEmployeeForm()" class="!bg-red-600 !border-none !text-white" />
     </div>
   </Dialog>
 
   <!-- Add employee -->
-  <Dialog v-model:visible="showAdd" modal header="Create Employee" :style="{ width: '400px' }">
+  <Dialog v-model:visible="showAddEmployee" modal header="Create Employee" :style="{ width: '400px' }">
     <div class="text-white space-y-2 mb-6">
       <div class="flex flex-col gap-3">
         <div>
@@ -154,27 +157,27 @@ import Dialog from 'primevue/dialog'
 // State and composables
 const { employee, loading: employeeLoading, error: employeeError, fetchemployees } = useEmployee()
 const { createEmployee, loading: createEmployeeLoading, error: createEmployeeError } = useCreateEmployee()
-const { deleteEmployee } = useDeleteEmployee()
+const { deleteEmployee, loading: deleteEmployeeLoading, error: deleteEmployeeError } = useDeleteEmployee()
 const { updateEmployee } = useUpdateEmployee()
 
-// UI state
+// Variable Defined
 const selected = ref({})
-const showDelete = ref(false)
+const showDeleteDialog = ref(false)
 const searchField = ref('')
-const showAdd = ref(false)
-const showEdit = ref(false)
+const showAddEmployee = ref(false)
+const showUpdateDialog = ref(false)
 const form = ref({ username: '', email: '', name: '', role: '', password: '' })
 
+// Show employee details in Update dialog
 const showDetail = (data) => {
   form.value.name = data.name;
   form.value.username = data.username;
   form.value.password = data.password;
   form.value.role = data.role;
   form.value.email = data.email;
-  showEdit.value = true;
+  showUpdateDialog.value = true;
 }
-
-// Add new employee
+// Add employee
 const addEmployee = async () => {
   const name = form.value.name;
   const username = form.value.username;
@@ -193,7 +196,7 @@ const addEmployee = async () => {
   const response = await createEmployee(employeeData);
 
   if (response && response.success){
-    showAdd.value = false;
+    showAddEmployee.value = false;
     form.value.name = '';
     form.value.username = '';
     form.value.password = '';
@@ -205,6 +208,31 @@ const addEmployee = async () => {
   }
 }
 
+// Delete employee
+const showDelete = (data) =>{
+  form.value.name = data.name;
+  form.value.username = data.username;
+  form.value.password = data.password;
+  form.value.role = data.role;
+  form.value.email = data.email;
+  showDeleteDialog.value = true;
+}
+const deleteEmployeeForm = async () => {
+  if (!form.value) return;
+
+  const username = form.value.username;
+  const response = await deleteEmployee(username);
+
+  if (response && response.success){
+    showDeleteDialog.value = false;
+    fetchemployees();
+  } else {
+    deleteEmployeeError.value = response.error;
+  }
+
+}
+
+// Update employee
 const updateEmployeeForm = async () => {
 console.log(form.value);
 
@@ -225,20 +253,10 @@ console.log(form.value);
   };
 
   await updateEmployee(employeeData);
-  showEdit.value = false;
+  showUpdateDialog.value = false;
   fetchemployees();
 }
 
-
-const deleteEmployeeForm = async (fields) => {
-  if (!fields) return;
-
-  const username = fields.username;
-
-  await deleteEmployee(username);
-  showDelete.value = false;
-  fetchemployees();
-}
 
 // Row highlight
 const rowClass = row =>

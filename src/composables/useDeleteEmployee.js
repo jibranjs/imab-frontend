@@ -13,30 +13,21 @@ export function useDeleteEmployee() {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username })
-      })
+      });
 
-      let data = null
-      try {
-        data = await response.json()
-      } catch {
-        // ignore parse errors
-      }
+       await response.json()
 
       if (!response.ok) {
-        error.value = (data?.message) || `Failed to delete employee (status ${response.status})`
-        loading.value = false
-        return { success: false, error: error.value }
+       return { success:false, error: response.error };
+      } else {
+        return { success: true, error: null };
       }
-
+    } catch (error) {
+      return { success:false, error: error.error };
+    } finally {
       loading.value = false
-      return { success: true }
-    } catch (err) {
-      console.error(err)
-      error.value = err.message || 'Unknown error'
-      loading.value = false
-      return { success: false, error: error.value }
     }
-  }
+  };
 
   return { loading, error, deleteEmployee }
 }
