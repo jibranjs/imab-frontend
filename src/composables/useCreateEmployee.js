@@ -3,7 +3,6 @@ import { ref } from "vue";
 export function useCreateEmployee() {
   const loading = ref(false);
   const error = ref("");
-
   const createEmployee = async (employeeData) => {
     loading.value = true;
     error.value = "";
@@ -23,19 +22,17 @@ export function useCreateEmployee() {
       await response.json();
 
       if (!response.ok) {
-        error.value = "Failed to create employee.";
-        loading.value = false;
-        return;
+        return { success: false, error: response.error };
+      } else {
+        return { success: true, error: null };
       }
 
     } catch (error) {
       console.log(error);
-      error.value = error.message;
+      return { success: false, error: error.error };
+    } finally {
       loading.value = false;
-      return error.value;
     }
-
-    loading.value = false;
   };
 
   return { loading, error, createEmployee };

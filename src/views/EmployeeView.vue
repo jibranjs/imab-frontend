@@ -1,8 +1,8 @@
 <template>
   <div class="flex justify-end items-center px-6">
     <div class="relative !m-5">
-      <InputText v-model="globalFilter" placeholder="Search..." class="pr-10" @keyup.enter="doSearch" />
-      <Button icon="pi pi-search" @click="doSearch"
+      <InputText v-model="searchField" placeholder="Search..." class="pr-10" />
+      <Button icon="pi pi-search"
         class="!absolute right-1 top-1/2 -translate-y-1/2 !p-2 !border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
     </div>
     <Button label="Refresh" @click="fetchemployees"
@@ -11,20 +11,19 @@
       class="!border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
 
   </div>
-  <p v-if="loading" class="text-white text-center text-xl mb-2">Loading...</p>
-  <p v-if="error" class="text-red-300 text-center">{{ error }}</p>
-  <DataTable v-model:selection="selected" selectionMode="single" :value="filteredEmployees"
+  <p v-if="employeeLoading" class="text-white text-center text-xl mb-2">Loading...</p>
+  <p v-if="employeeError" class="text-red-300 text-center">{{ employeeError }}</p>
+  <DataTable :value="employee"
     tableStyle="min-width: 50rem" rowHover :rowClass="rowClass">
     <Column field="id" header="ID" />
     <Column field="name" header="Name" />
     <Column field="username" header="Username" />
-    <Column field="password" header="Password" />
     <Column field="role" header="Role" />
     <Column field="email" header="Email" />
     <Column field="id" header="Actions">
-      <template #body>
-        <div class="flex gap-2" v-if="selected">
-          <Button @click="showDetail = true"
+      <template #body="slotProps">
+        <div class="flex gap-2">
+          <Button @click="showDetail(slotProps.data)"
             class="!bg-gray-600 !border-none !text-white hover:!bg-white hover:!text-gray-600">
             <span class="pi pi-pencil w-[20px]"></span>
           </Button>
@@ -37,39 +36,37 @@
     </Column>
   </DataTable>
 
-
   <!-- Detail Dialog -->
-  <Dialog v-model:visible="showDetail" modal header="Employee Details" :style="{ width: '400px' }">
-    <div v-if="selected" class="text-white space-y-2 mb-6">
+  <Dialog v-model:visible="showEdit" modal header="Employee Details" :style="{ width: '400px' }">
+    <div class="text-white space-y-2 mb-6">
       <div class="flex flex-col gap-3">
         <div>
           <label>Name</label>
-          <InputText label="Name" v-model="selected.name" class="!w-full" />
+          <InputText label="Name" v-model="form.name" class="!w-full" />
         </div>
         <div>
           <label>Username</label>
-          <InputText label="Username" :value="selected.username" class="!w-full" />
+          <InputText label="Username" v-model="form.username" class="!w-full" />
         </div>
         <div>
           <label>Password</label>
-          <InputText label="Password" :value="selected.password" class="!w-full" />
+          <InputText label="Password" v-model="form.password" class="!w-full" />
         </div>
         <div>
           <label>Role</label>
-          <InputText label="Role" :value="selected.role" class="!w-full" />
+          <InputText label="Role" v-model="form.role" class="!w-full" />
         </div>
         <div>
           <label>Email</label>
-          <InputText label="Email" :value="selected.email" class="!w-full" />
+          <InputText label="Email" v-model="form.email" class="!w-full" />
         </div>
       </div>
     </div>
     <div class="flex gap-2 justify-between mt-4">
-      <Button label="Close" @click="showDetail = false" class="!bg-gray-600 !border-none !text-white" />
-      <Button label="Update" @click="updateEmployeeForm(selected)" class="!bg-gray-600 !border-none !text-white" />
+      <Button label="Close" @click="showEdit = false" class="!bg-gray-600 !border-none !text-white" />
+      <Button label="Update" @click="updateEmployeeForm()" class="!bg-gray-600 !border-none !text-white" />
     </div>
   </Dialog>
-
 
 
   <!-- Delete Dialog -->
@@ -129,22 +126,25 @@
           <InputText v-model="form.email" class="!w-full" placeholder="email" autocomplete="off" />
         </div>
       </div>
+
+      <div v-if="createEmployeeError" class="bg-red-500 text-white p-2 rounded-md">
+        <p class="text-red-300 text-center">{{ createEmployeeError }}</p>
+      </div>
     </div>
     <div class="flex gap-2 justify-between mt-4">
-      <Button label="Cancel" @click="showAdd = false" class="!bg-gray-600 !border-none !text-white" />
-      <Button label="Save" @click="addEmployee" class="!bg-white !text-[#0A0E17] !border-none" />
+      <Button label="Cancel" @click="showAdd = false" :disabled="createEmployeeLoading"  class="!bg-gray-600 !border-none !text-white" />
+      <Button label="Save" :loading="createEmployeeLoading" @click="addEmployee" class="!bg-white !text-[#0A0E17] !border-none" />
     </div>
   </Dialog>
 </template>
 
 <script setup>
 // Import Vue and needed components
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useEmployee } from '@/composables/useEmployees'
 import { useCreateEmployee } from '@/composables/useCreateEmployee'
 import { useDeleteEmployee } from '@/composables/useDeleteEmployee'
 import { useUpdateEmployee } from '@/composables/useUpdateEmployee'
-import { useSearch } from '@/composables/useSearch'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
@@ -152,53 +152,27 @@ import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 
 // State and composables
-const { employee, loading, error, fetchemployees } = useEmployee()
-const { createEmployee } = useCreateEmployee()
+const { employee, loading: employeeLoading, error: employeeError, fetchemployees } = useEmployee()
+const { createEmployee, loading: createEmployeeLoading, error: createEmployeeError } = useCreateEmployee()
 const { deleteEmployee } = useDeleteEmployee()
 const { updateEmployee } = useUpdateEmployee()
-const { results, searchEmployees } = useSearch()
 
 // UI state
-const selected = ref(null)
-const showDetail = ref(false)
+const selected = ref({})
 const showDelete = ref(false)
+const searchField = ref('')
 const showAdd = ref(false)
-const globalFilter = ref('')
+const showEdit = ref(false)
 const form = ref({ username: '', email: '', name: '', role: '', password: '' })
 
-const filteredEmployees = ref(employee.value)
-
-// Search employees by name
-const doSearch = async () => {
-  if (!globalFilter.value) {
-    await fetchemployees();
-    filteredEmployees.value = employee.value;
-    return;
-  }
-  await searchEmployees(globalFilter.value);
-  filteredEmployees.value = results.value.filter(r =>
-    String(r.name || '').toLowerCase().includes(globalFilter.value.toLowerCase())
-  );
+const showDetail = (data) => {
+  form.value.name = data.name;
+  form.value.username = data.username;
+  form.value.password = data.password;
+  form.value.role = data.role;
+  form.value.email = data.email;
+  showEdit.value = true;
 }
-
-// Refresh list when search is cleared
-watch(globalFilter, async (newValue, oldValue) => {
-  const searchCleared = !newValue && oldValue;
-
-  if (searchCleared) {
-    await fetchemployees();
-    filteredEmployees.value = employee.value;
-  }
-})
-
-// Keep filteredEmployees in sync
-watch(employee, (newValue) => {
-  const noSearchActive = !globalFilter.value;
-
-  if (noSearchActive) {
-    filteredEmployees.value = newValue;
-  }
-})
 
 // Add new employee
 const addEmployee = async () => {
@@ -216,24 +190,31 @@ const addEmployee = async () => {
     email
   };
 
-  await createEmployee(employeeData);
-  showAdd.value = false;
-  form.value.name = '';
-  form.value.username = '';
-  form.value.password = '';
-  form.value.role = '';
-  form.value.email = '';
-  fetchemployees();
+  const response = await createEmployee(employeeData);
+
+  if (response && response.success){
+    showAdd.value = false;
+    form.value.name = '';
+    form.value.username = '';
+    form.value.password = '';
+    form.value.role = '';
+    form.value.email = '';
+    fetchemployees();
+  } else {
+    createEmployeeError.value = response.error;
+  }
 }
 
-const updateEmployeeForm = async (fields) => {
-  if (!fields) return;
+const updateEmployeeForm = async () => {
+console.log(form.value);
 
-  const name = fields.name;
-  const username = fields.username;
-  const password = fields.password;
-  const role = fields.role;
-  const email = fields.email;
+  if (!form.value) return;
+
+  const name = form.value.name;
+  const username = form.value.username;
+  const password = form.value.password;
+  const role = form.value.role;
+  const email = form.value.email;
 
   const employeeData = {
     name,
@@ -244,7 +225,7 @@ const updateEmployeeForm = async (fields) => {
   };
 
   await updateEmployee(employeeData);
-  showDetail.value = false;
+  showEdit.value = false;
   fetchemployees();
 }
 
@@ -266,5 +247,7 @@ const rowClass = row =>
     : 'hover:!bg-gray-600 hover:!text-white'
 
 // Fetch employees on mtoun
-onMounted(fetchemployees)
+onMounted(async () => {
+  await fetchemployees();
+})
 </script>
