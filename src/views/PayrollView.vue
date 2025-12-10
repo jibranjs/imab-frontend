@@ -8,13 +8,13 @@
     </div>
      <Button label="Refresh" @click="fetchPayroll"
       class="!m-5 !border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
-     <Button label="Add Payroll" @click="showAdd = true"
+     <Button label="Add Payroll" @click="AddPayrollDialog = true"
       class="!border-none !bg-gray-600 hover:!bg-white !mr-3 hover:!text-gray-600" />
      <Button icon="pi pi-trash" @click="showDelete = true" class="!border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
   </div>
-s
+
 <!-- Create Payroll Dialog -->
-<Dialog v-model:visible="showAdd" modal header="Create Payroll" :style="{ width: '400px' }">
+<Dialog v-model:visible="AddPayrollDialog" modal header="Create Payroll" :style="{ width: '400px' }">
   <div class="text-white space-y-2 mb-6">
     <div class="grid grid-cols-2 gap-3">
       <div>
@@ -264,7 +264,7 @@ const { deletePayroll } = useDeletePayroll();
 const { updatePayroll } = useUpdatePayroll();
 
 // Dialog visibility
-const showAdd = ref(false);
+const AddPayrollDialog = ref(false);
 const showDetail = ref(false);
 const showEdit = ref(false);
 const showDelete = ref(false);
@@ -317,7 +317,7 @@ const addPayroll = async () => {
   const payrollData = {employee_id,batch,early,late,leaves, hourly_rate,worked_hours,monthly_hours,bonus1,bonus2,basic_salary };
 
   await createPayroll(payrollData);
-  showAdd.value = false;
+  AddPayrollDialog.value = false;
   form.employee_id = '';
   form.batch = '';
   form.early = '';

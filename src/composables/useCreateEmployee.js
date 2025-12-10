@@ -29,7 +29,7 @@ export function useCreateEmployee() {
 
     } catch (error) {
       console.log(error);
-      return { success: false, error: error.error };
+      return { success: false, error: error };
     } finally {
       loading.value = false;
     }

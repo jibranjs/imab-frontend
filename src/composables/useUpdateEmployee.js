@@ -23,19 +23,16 @@ export function useUpdateEmployee() {
       await response.json();
 
       if (!response.ok) {
-        error.value = "Failed to update employee.";
-        loading.value = false;
-        return;
+        return { success: false, error: response.error.message };
+      } else {
+        return { success: true, error: null };
       }
 
     } catch (error) {
-      console.log(error);
-      error.value = error.message;
+      return { success: false, error: error };
+    } finally {
       loading.value = false;
-      return error.value;
     }
-
-    loading.value = false;
   };
 
   return { loading, error, updateEmployee };

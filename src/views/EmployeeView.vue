@@ -7,7 +7,7 @@
     </div>
     <Button label="Refresh" @click="fetchemployees"
       class="!m-5 !border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
-    <Button label="Add Employee" @click="showAdd = true"
+    <Button label="Add Employee" @click="showAddEmployee = true"
       class="!border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
 
   </div>
@@ -60,11 +60,14 @@
           <label>Email</label>
           <InputText label="Email" v-model="form.email" class="!w-full" />
         </div>
+        <div v-if="updateEmployeeError" class="bg-red-500 text-white p-2 rounded-md">
+        <p class="text-red-300 text-center">{{ updateEmployeeError }}</p>
+      </div>
       </div>
     </div>
     <div class="flex gap-2 justify-between mt-4">
       <Button label="Close" @click="showUpdateDialog = false" class="!bg-gray-600 !border-none !text-white" />
-      <Button label="Update" @click="updateEmployeeForm()" class="!bg-gray-600 !border-none !text-white" />
+      <Button label="Update" :loading="updateEmployeeLoading" @click="updateEmployeeForm()" class="!bg-gray-600 !border-none !text-white" />
     </div>
   </Dialog>
 
@@ -129,13 +132,12 @@
           <InputText v-model="form.email" class="!w-full" placeholder="email" autocomplete="off" />
         </div>
       </div>
-
       <div v-if="createEmployeeError" class="bg-red-500 text-white p-2 rounded-md">
         <p class="text-red-300 text-center">{{ createEmployeeError }}</p>
       </div>
     </div>
     <div class="flex gap-2 justify-between mt-4">
-      <Button label="Cancel" @click="showAdd = false" :disabled="createEmployeeLoading"  class="!bg-gray-600 !border-none !text-white" />
+      <Button label="Cancel" @click="showAddEmployee = false" :disabled="createEmployeeLoading"  class="!bg-gray-600 !border-none !text-white" />
       <Button label="Save" :loading="createEmployeeLoading" @click="addEmployee" class="!bg-white !text-[#0A0E17] !border-none" />
     </div>
   </Dialog>
@@ -158,7 +160,7 @@ import Dialog from 'primevue/dialog'
 const { employee, loading: employeeLoading, error: employeeError, fetchemployees } = useEmployee()
 const { createEmployee, loading: createEmployeeLoading, error: createEmployeeError } = useCreateEmployee()
 const { deleteEmployee, loading: deleteEmployeeLoading, error: deleteEmployeeError } = useDeleteEmployee()
-const { updateEmployee } = useUpdateEmployee()
+const { updateEmployee, loading: updateEmployeeLoading, error: updateEmployeeError } = useUpdateEmployee()
 
 // Variable Defined
 const selected = ref({})
@@ -192,9 +194,7 @@ const addEmployee = async () => {
     role,
     email
   };
-
   const response = await createEmployee(employeeData);
-
   if (response && response.success){
     showAddEmployee.value = false;
     form.value.name = '';
@@ -234,7 +234,6 @@ const deleteEmployeeForm = async () => {
 
 // Update employee
 const updateEmployeeForm = async () => {
-console.log(form.value);
 
   if (!form.value) return;
 
@@ -243,7 +242,6 @@ console.log(form.value);
   const password = form.value.password;
   const role = form.value.role;
   const email = form.value.email;
-
   const employeeData = {
     name,
     username,
@@ -251,12 +249,14 @@ console.log(form.value);
     role,
     email
   };
-
-  await updateEmployee(employeeData);
-  showUpdateDialog.value = false;
-  fetchemployees();
+  const response = await updateEmployee(employeeData);
+  if (response && response.success){
+    showUpdateDialog.value = false;
+    fetchemployees();
+  } else {
+    updateEmployeeError.value = response.error;
+    }
 }
-
 
 // Row highlight
 const rowClass = row =>
