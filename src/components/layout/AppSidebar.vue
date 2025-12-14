@@ -21,7 +21,7 @@ const menuItems = ref([
 
 const logout = () => {
   sessionStorage.clear()     // remove token + user data
-  router.push('/employees')
+  router.push('/login')
 }
 
 // Time

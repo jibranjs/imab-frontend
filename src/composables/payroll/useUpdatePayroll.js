@@ -9,7 +9,7 @@ export const useUpdatePayroll = () => {
     error.value = null;
 
     try {
-      const response = await fetch('https://my-flask-9.vercel.app/payroll/update', {
+      const response = await fetch('https://panlogical-presemilunar-beulah.ngrok-free.dev/payroll/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -17,23 +17,18 @@ export const useUpdatePayroll = () => {
         body: JSON.stringify(data),
       });
 
-      // Read response body
-      const text = await response.text();
+      await response.json();
 
       if (!response.ok) {
-        const message = `HTTP ${response.status} - ${text}`;
-        error.value = message;
-        throw new Error(message);
+        return { success: false, error: response.error?.message || 'Failed to update payroll' };
+      } else {
+        return { success: true, error: null };
       }
-
-      return text ? JSON.parse(text) : null;
     } catch (err) {
-      error.value = err.message || String(err);
-      throw err;
+      return { success: false, error: err.message || 'Network error' };
     } finally {
       loading.value = false;
     }
   };
-
   return { updatePayroll, loading, error };
 };

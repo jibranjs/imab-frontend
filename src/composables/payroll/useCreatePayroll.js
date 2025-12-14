@@ -23,20 +23,18 @@ export function useCreatePayroll() {
       await response.json();
 
       if (!response.ok) {
-        error.value = "Failed to create Payroll.";
-        loading.value = false;
-        return;
+        return { success: false, error: response.message };
+      } else {
+        return { success: true, error: null };
       }
 
     } catch (error) {
       console.log(error);
-      error.value = error.message;
+      return { success: false, error: error.message };
+    } finally {
       loading.value = false;
-      return error.value;
     }
-
-    loading.value = false;
-  };
+  }
 
   return { loading, error, createPayroll };
 }

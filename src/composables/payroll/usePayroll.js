@@ -14,29 +14,30 @@ export function usePayroll() {
         "https://my-flask-9.vercel.app/payroll/all",
         {
           method: "GET",
-          type: "application/json"
-        }
-      );
+          headers: {
+            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6Imxpb25lbG1lc3NpIiwiZXhwIjoxNzY1NTcxNzAxfQ.-XDWaKqaoh4WFjsS45tWmwpN57kSpPJOpd7wiKTjerg`,
+            'Content-Type': 'application/json'
+          }
+        });
 
       const data = await response.json();
 
       if (!response.ok) {
-        error.value = "Failed to load employees.";
+        error.value = "Failed to fetch payroll";
         loading.value = false;
         return;
       }
 
-      // Ensure payroll.value is always an array
-      payroll.value = Array.isArray(data) ? data : [];
+      payroll.value = data;
 
-    } catch (error) {
-      console.log(error);
-      error.value = error.message;
+    } catch (err) {
+      console.log(err);
+      error.value = err.message;
       loading.value = false;
       return error.value;
+    } finally {
+      loading.value = false;
     }
-
-    loading.value = false;
   };
 
   return { payroll, loading, error, fetchPayroll };

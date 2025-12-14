@@ -62,142 +62,83 @@
         <label>Basic Salary</label>
         <InputText v-model="form.basic_salary" class="!w-full" placeholder="Enter basic salary" />
       </div>
-  </div>
+      <!-- Create Error -->
+      <div v-if="createError">
+        <div class="bg-red-500 text-white p-2 rounded-md">
+          <p class="text-red-300 text-center">{{ createError }}</p>
+        </div>
+      </div>
+      </div>
   <div class="flex gap-2 justify-between mt-4">
     <Button label="Cancel" @click="showAdd = false" class="!bg-gray-600 !border-none !text-white" />
-    <Button label="Save" @click="addPayroll" class="!bg-white !text-[#0A0E17] !border-none" />
+    <Button label="Save" :loading="createLoading" @click="addPayroll" class="!bg-white !text-[#0A0E17] !border-none" />
   </div>
 </Dialog>
 
 
-<!-- Detail Dialog -->
-<Dialog
-  v-model:visible="showDetail"
-  modal
-  header="Payroll Details"
-  :style="{ width: '400px' }"
->
-  <div v-if="selected" class="text-white space-y-2">
-    <div class="flex flex-col justify-center gap-3">
-      <div class="flex items-center gap-2">
-        <label class="text-xl font-semibold">Employee ID :</label>
-        <p class="text-gray-300 text-lg">{{ selected.employee_id }}</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <label class="text-xl font-semibold">Batch :</label>
-        <p class="text-gray-300 text-lg">{{ selected.batch }}</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <label class="text-xl font-semibold">Early :</label>
-        <p class="text-gray-300 text-lg">{{ selected.early }}</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <label class="text-xl font-semibold">Late :</label>
-        <p class="text-gray-300 text-lg">{{ selected.late }}</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <label class="text-xl font-semibold">Leaves :</label>
-        <p class="text-gray-300 text-lg">{{ selected.leaves }}</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <label class="text-xl font-semibold">Hourly Rate :</label>
-        <p class="text-gray-300 text-lg">{{ selected.hourly_rate }}</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <label class="text-xl font-semibold">Worked Hours :</label>
-        <p class="text-gray-300 text-lg">{{ selected.worked_hours }}</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <label class="text-xl font-semibold">Monthly Hours :</label>
-        <p class="text-gray-300 text-lg">{{ selected.monthly_hours }}</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <label class="text-xl font-semibold">Bonus 1 :</label>
-        <p class="text-gray-300 text-lg">{{ selected.bonus1 }}</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <label class="text-xl font-semibold">Bonus 2 :</label>
-        <p class="text-gray-300 text-lg">{{ selected.bonus2 }}</p>
-      </div>
-      <div class="flex items-center gap-2">
-        <label class="text-xl font-semibold">Basic Salary :</label>
-        <p class="text-gray-300 text-lg">{{ selected.basic_salary }}</p>
-      </div>
-    </div>
-  </div>
-  <div class="flex gap-2 justify-end mt-6">
-    <Button
-      label="Edit"
-      @click="openEdit"
-      class="!bg-gray-600 hover:!bg-blue-700 !border-none !text-white"
-    />
-  </div>
-</Dialog>
-
-<!-- Edit Dialog -->
-<Dialog
-  v-model:visible="showEdit"
-  modal
-  header="Edit Payroll"
-  :style="{ width: '400px' }"
->
-  <div v-if="editPayroll" class="text-white space-y-2 mb-6">
-    <div class="grid grid-cols-2 gap-3">
+<!-- Update Dialog -->
+<Dialog v-model:visible="showUpdateDialog" modal header="Update Payroll" :style="{ width: '400px' }">
+    <div class="grid grid-cols-2 gap-3 text-white">
       <div>
         <label>Employee ID</label>
-        <InputText v-model="editPayroll.employee_id" :disabled="true" class="!w-full" placeholder="Enter employee ID" />
+        <InputText v-model="form.employee_id" :disabled="true" class="!w-full" placeholder="Enter employee ID" />
       </div>
       <div>
         <label>Batch</label>
-        <InputText v-model="editPayroll.batch" :disabled="true" class="!w-full" placeholder="Enter batch" />
+        <InputText v-model="form.batch" :disabled="true" class="!w-full" placeholder="Enter batch" />
       </div>
       <div>
         <label>Early</label>
-        <InputText v-model="editPayroll.early" class="!w-full" placeholder="Enter early count" />
+        <InputText v-model="form.early" class="!w-full" placeholder="Enter early count" />
       </div>
       <div>
         <label>Late</label>
-        <InputText v-model="editPayroll.late" class="!w-full" placeholder="Enter late count" />
+        <InputText v-model="form.late" class="!w-full" placeholder="Enter late count" />
       </div>
       <div>
         <label>Leaves</label>
-        <InputText v-model="editPayroll.leaves" class="!w-full" placeholder="Enter leaves" />
+        <InputText v-model="form.leaves" class="!w-full" placeholder="Enter leaves" />
       </div>
       <div>
         <label>Hourly Rate</label>
-        <InputText v-model="editPayroll.hourly_rate" class="!w-full" placeholder="Enter hourly rate" />
+        <InputText v-model="form.hourly_rate" class="!w-full" placeholder="Enter hourly rate" />
       </div>
       <div>
         <label>Worked Hours</label>
-        <InputText v-model="editPayroll.worked_hours" class="!w-full" placeholder="Enter worked hours" />
+        <InputText v-model="form.worked_hours" class="!w-full" placeholder="Enter worked hours" />
       </div>
       <div>
         <label>Monthly Hours</label>
-        <InputText v-model="editPayroll.monthly_hours" class="!w-full" placeholder="Enter monthly hours" />
+        <InputText v-model="form.monthly_hours" class="!w-full" placeholder="Enter monthly hours" />
       </div>
       <div>
         <label>Bonus 1</label>
-        <InputText v-model="editPayroll.bonus1" class="!w-full" placeholder="Enter bonus 1" />
+        <InputText v-model="form.bonus1" class="!w-full" placeholder="Enter bonus 1" />
       </div>
       <div>
         <label>Bonus 2</label>
-        <InputText v-model="editPayroll.bonus2" class="!w-full" placeholder="Enter bonus 2" />
+        <InputText v-model="form.bonus2" class="!w-full" placeholder="Enter bonus 2" />
       </div>
     </div>
-    <div>
+    <div class="text-white">
       <label>Basic Salary</label>
-      <InputText v-model="editPayroll.basic_salary" class="!w-full" placeholder="Enter basic salary" />
+      <InputText v-model="form.basic_salary" class="!w-full" placeholder="Enter basic salary" />
     </div>
-  </div>
-  <div class="flex gap-2 justify-between mt-4">
+     <!-- Update Error -->
+      <div v-if="updatePayrollError">
+        <div class="bg-red-500 text-white p-2 rounded-md">
+          <p class="text-red-300 text-center">{{ updatePayrollError }}</p>
+        </div>
+      </div>
+  <div class="flex gap-2 justify-between mt-4 ">
     <Button
-      label="Cancel"
-      @click="showEdit = false"
+      label="Close"
+      @click="showUpdateDialog = false"
       class="!bg-gray-600 !border-none !text-white"
     />
-    <Button
-      label="Save"
-      @click="updatePayrollForm(editPayroll)"
+    <Button :loading="updatePayrollLoading"
+      label="Update"
+      @click="updatePayrollForm()"
       class="!bg-white !text-[#0A0E17] !border-none"
     />
   </div>
@@ -214,23 +155,28 @@
         <label class="font-semibold text-white">Employee ID</label>
         <InputText v-model="deleteForm.employee_id" placeholder="Employee ID" />
       </div>
+      <div v-if="deleteLoading">
+        <div class="text-white text-center">Deleting...</div>
+      </div>
+      <div v-if="deleteError">
+        <div class="bg-red-500 text-white p-2 rounded-md">
+          <p class="text-red-300 text-center">{{ deleteError }}</p>
+        </div>
+      </div>
     </div>
     <div class="flex justify-end gap-2">
       <Button label="Cancel" @click="showDelete = false"
         class="!bg-gray-600 hover:!bg-red-300 !border-none !text-white" />
-      <Button label="Delete" @click="confirmDelete"
+      <Button label="Delete" @click="DeletePayrollForm()"
         class="!bg-red-600 hover:!bg-red-700 !border-none !text-white" />
     </div>
   </Dialog>
 
-
-
-  <!-- Loading & Error Messages -->
+  <!-- Data Table -->
   <p v-if="loading" class="text-white text-center text-xl mb-2">Loading...</p>
   <p v-if="error" class="text-red-300 text-center">{{ error }}</p>
 
-  <!-- Data Table -->
-  <DataTable :value="payroll" v-model:selection="selected" selectionMode="single" @rowSelect="showDetail = true" rowHover :rowClass="rowClass" tableStyle="min-width: 50rem">
+  <DataTable :value="payroll" rowHover :rowClass="rowClass" tableStyle="min-width: 50rem">
     <Column field="employee_id" header="ID"></Column>
     <Column field="batch" header="Batch"></Column>
     <Column field="early" header="Early"></Column>
@@ -242,6 +188,20 @@
     <Column field="bonus1" header="Bonus 1"></Column>
     <Column field="bonus2" header="Bonus 2"></Column>
     <Column field="basic_salary" header="Basic Salary"></Column>
+    <Column field="actions" header="Actions">
+      <template #body="slotProps">
+        <div class="flex gap-2">
+          <Button @click="ShowDetails(slotProps.data)"
+            class="!bg-gray-600 !border-none !text-white hover:!bg-white hover:!text-gray-600">
+            <span class="pi pi-pencil w-[20px]"></span>
+          </Button>
+          <Button @click="ShowDelete(slotProps.data)"
+            class="!bg-gray-600 !border-none !text-white hover:!bg-white hover:!text-gray-600">
+            <span class="pi pi-trash w-[20px]"></span>
+          </Button>
+        </div>
+      </template>
+    </Column>
   </DataTable>
 </template>
 
@@ -259,14 +219,13 @@ import { onMounted, ref, reactive } from 'vue';
 
 // Composables
 const { payroll, loading, error, fetchPayroll } = usePayroll();
-const { createPayroll } = useCreatePayroll();
-const { deletePayroll } = useDeletePayroll();
-const { updatePayroll } = useUpdatePayroll();
+const { createPayroll, loading: createLoading, error: createError } = useCreatePayroll();
+const { deletePayroll, loading: deleteLoading, error: deleteError } = useDeletePayroll();
+const { updatePayroll, loading: updatePayrollLoading, error: updatePayrollError } = useUpdatePayroll();
 
 // Dialog visibility
 const AddPayrollDialog = ref(false);
-const showDetail = ref(false);
-const showEdit = ref(false);
+const showUpdateDialog = ref(false);
 const showDelete = ref(false);
 // Selected row
 const selected = ref(null);
@@ -279,20 +238,23 @@ const form = reactive({
 });
 
 // Edit form
-const editPayroll = ref(null);
+
 // Open edit dialog
-function openEdit() {
-  if (!selected.value) return;
-  editPayroll.value = { ...selected.value };
-  showDetail.value = false;
-  showEdit.value = true;
+const ShowDetails = (data) => {
+  form.employee_id = data.employee_id;
+  form.batch = data.batch;
+  form.early = data.early;
+  form.late = data.late;
+  form.leaves = data.leaves;
+  form.hourly_rate = data.hourly_rate;
+  form.worked_hours = data.worked_hours;
+  form.monthly_hours = data.monthly_hours;
+  form.bonus1 = data.bonus1;
+  form.bonus2 = data.bonus2;
+  form.basic_salary = data.basic_salary;
+  showUpdateDialog.value = true;
 }
 
-// Delete form
-const deleteForm = reactive({
-  batch: '',
-  employee_id: ''
-});
 
 // Row styling
 const rowClass = row =>
@@ -316,68 +278,73 @@ const addPayroll = async () => {
 
   const payrollData = {employee_id,batch,early,late,leaves, hourly_rate,worked_hours,monthly_hours,bonus1,bonus2,basic_salary };
 
-  await createPayroll(payrollData);
-  AddPayrollDialog.value = false;
-  form.employee_id = '';
-  form.batch = '';
-  form.early = '';
-  form.late = '';
-  form.leaves = '';
-  form.hourly_rate = '';
-  form.worked_hours = '';
-  form.monthly_hours = '';
-  form.bonus1 = '';
-  form.bonus2 = '';
-  form.basic_salary = '';
-  fetchPayroll();
+ const response = await createPayroll(payrollData);
+ if(response && response.success){
+    AddPayrollDialog.value = false;
+    fetchPayroll();
+ } else {
+  createError.value = response.message
+ }
 }
 
-// Confirm delete
-function confirmDelete() {
-  if (!deleteForm.batch || !deleteForm.employee_id) {
-    alert('fill in all fields');
-    return;
+// Delete payroll
+const deleteForm = reactive({
+  batch: '',
+  employee_id: ''
+});
+
+const ShowDelete = (data) =>{
+  deleteForm.batch = data.batch;
+  deleteForm.employee_id = data.employee_id;
+  showDelete.value = true;
+}
+const DeletePayrollForm = async () => {
+  if (!deleteForm) return;
+
+  const batch = deleteForm.batch;
+  const employee_id = deleteForm.employee_id;
+  const deletepayrollData = {
+    batch,
+    employee_id
+  };
+  const response = await deletePayroll(deletepayrollData);
+  if (response && response.success){
+    showDelete.value = false;
+    fetchPayroll();
+  } else {
+    deleteError.value = response.message;
   }
 
-  deletePayroll(deleteForm)
-    .then(() => {
-      fetchPayroll();
-      showDelete.value = false;
-      selected.value = null;
-      deleteForm.batch = '';
-      deleteForm.employee_id = '';
-    })
-    .catch(err => {
-      console.error('Error deleting payroll:', err);
-      alert('Error deleting payroll');
-    });
 }
 
 // Update payroll
-const updatePayrollForm = async (fields) => {
-  if (!fields) return;
-
-  const batch = fields.batch;
-  const employee_id = fields.employee_id;
-  const early = fields.early;
-  const late = fields.late;
-  const leaves = fields.leaves;
-  const hourly_rate = fields.hourly_rate;
-  const worked_hours = fields.worked_hours;
-  const monthly_hours = fields.monthly_hours;
-  const bonus1 = fields.bonus1;
-  const bonus2 = fields.bonus2;
-  const basic_salary = fields.basic_salary;
+const updatePayrollForm = async () => {
+  const batch = form.batch;
+  const employee_id = form.employee_id;
+  const early = form.early;
+  const late = form.late;
+  const leaves = form.leaves;
+  const hourly_rate = form.hourly_rate;
+  const worked_hours = form.worked_hours;
+  const monthly_hours = form.monthly_hours;
+  const bonus1 = form.bonus1;
+  const bonus2 = form.bonus2;
+  const basic_salary = form.basic_salary;
 
   const payrollData = { batch, employee_id, early, late, leaves, hourly_rate, worked_hours, monthly_hours, bonus1, bonus2, basic_salary };
 
-  await updatePayroll(payrollData);
-  showEdit.value = false;
-  fetchPayroll();
+  const response = await updatePayroll(payrollData);
+
+  if (response && response.success){
+    showUpdateDialog.value = false;
+    fetchPayroll();
+  } else {
+    updatePayrollError.value = response.error || response.message;
+  }
 }
 
 // Load data on mount
-onMounted(() => {
-  fetchPayroll();
+onMounted(async () => {
+  await fetchPayroll();
 });
 </script>
