@@ -13,8 +13,8 @@
           <label class="text-white mb-2 block">Password</label>
           <InputText type="password" class="!w-full !py-2" v-model="password" placeholder="Enter your password" />
         </div>
-        <div v-if="error" class="bg-red-300 text-red-500">
-          <p class="text-red-400 text-center">{{ error }}</p>
+        <div v-if="authError" class="bg-red-800 text-red-500 p-2">
+          <p class="text-white text-center">{{ authError }}</p>
         </div>
         <Button label="Login" :loading="loading" @click="handleLogin" class="!w-full mt-4 !bg-[#60A5FA] !text-gray-600 !font-bold !border-none hover:!bg-[#93C5FD]" />
       </div>
@@ -27,12 +27,22 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import { ref } from 'vue';
 import { useAuth } from '@/composables/useAuth';
+import { useRouter } from 'vue-router';
 
-const { loading, error, login } = useAuth();
+const router = useRouter();
+
+const { loading, login } = useAuth();
 
 const username = ref('');
 const password = ref('');
+const authError = ref('');
+
 const handleLogin = async () => {
-  await login(username.value, password.value);
+  const response = await login(username.value, password.value);
+  if(response.success){
+    router.push('/employees');
+  }else{
+    authError.value = response.error;
+  }
 };
 </script>

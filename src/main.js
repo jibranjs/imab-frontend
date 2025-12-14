@@ -22,7 +22,21 @@ app.use(PrimeVue, {
 })
 
 app.use(createPinia())
+
 app.use(router)
 
+// navigation guard
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    const token = localStorage.getItem('token')
+    if (token) {
+      next()
+    } else {
+      next('/login')
+    }
+  } else {
+    next()
+  }
+})
 
 app.mount('#app')

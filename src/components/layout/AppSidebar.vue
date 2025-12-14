@@ -20,7 +20,7 @@ const menuItems = ref([
 ])
 
 const logout = () => {
-  sessionStorage.clear()     // remove token + user data
+  localStorage.clear()     // remove token + user data
   router.push('/login')
 }
 

@@ -157,7 +157,7 @@ import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 
 // State and composables
-const { employee, loading: employeeLoading, error: employeeError, fetchemployees } = useEmployee()
+const { employee, loading: employeeLoading, fetchemployees } = useEmployee()
 const { createEmployee, loading: createEmployeeLoading, error: createEmployeeError } = useCreateEmployee()
 const { deleteEmployee, loading: deleteEmployeeLoading, error: deleteEmployeeError } = useDeleteEmployee()
 const { updateEmployee, loading: updateEmployeeLoading, error: updateEmployeeError } = useUpdateEmployee()
@@ -168,6 +168,7 @@ const showDeleteDialog = ref(false)
 const searchField = ref('')
 const showAddEmployee = ref(false)
 const showUpdateDialog = ref(false)
+const employeeError = ref(null);
 const form = ref({ username: '', email: '', name: '', role: '', password: '' })
 
 // Show employee details in Update dialog
@@ -266,6 +267,9 @@ const rowClass = row =>
 
 // Fetch employees on mtoun
 onMounted(async () => {
-  await fetchemployees();
+  const getResponse = await fetchemployees();
+  if (getResponse && !getResponse.success){
+    employeeError.value = getResponse.error;
+  }
 })
 </script>

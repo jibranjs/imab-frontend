@@ -3,40 +3,41 @@ import { ref } from "vue";
 export function useEmployee() {
   const employee = ref([]);
   const loading = ref(false);
-  const error = ref("");
+
+  const token = localStorage.getItem('token');
 
   const fetchemployees = async () => {
     loading.value = true;
-    error.value = "";
+    employee.value = [];
 
     try {
       const response = await fetch(
         "https://my-flask-9.vercel.app/employee/all",
         {
           method: "GET",
-          type: "application/json"
+          type: "application/json",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
       );
 
-      const data = await response.json();
+      employee.value = await response.json();
 
       if (!response.ok) {
-        error.value = "Failed to load employees.";
         loading.value = false;
-        return;
+        return { success: false, error: employee.value.message || "Failed to load employees." };
+      }else{
+        return { success: true, error: null };
       }
-
-      employee.value = data;
 
     } catch (error) {
       console.log(error);
-      error.value = error.message;
+      return { success: false, error: error.message || "Unknown error." };
+    } finally {
       loading.value = false;
-      return error.value;
     }
-
-    loading.value = false;
   };
 
-  return { employee, loading, error, fetchemployees };
+  return { employee, loading, fetchemployees };
 }

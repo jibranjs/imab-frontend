@@ -18,7 +18,7 @@ const router = createRouter({
       component: PayrollView,
       meta: { requiresAuth: true }
     },
-      {
+    {
       path: '/login',
       name: 'Login',
       component: LoginView,

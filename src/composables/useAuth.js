@@ -1,13 +1,12 @@
-import router from "@/router";
 import { ref } from "vue";
 
 export function useAuth() {
   const loading = ref(false);
-  const error = ref("");
+  const auth = ref("");
 
   const login = async (username, password) => {
     loading.value = true;
-    error.value = "";
+    auth.value = "";
 
     try {
       const response = await fetch(
@@ -21,14 +20,13 @@ export function useAuth() {
         }
       );
 
-      const data = await response.json();
+      auth.value = await response.json();
 
       if (!response.ok) {
-        return { success: false, error: data.message || "Login failed" };
+        return { success: false, error: auth.value.message || "Login failed" };
       } else {
-        localStorage.setItem("token", data.token);
-        router.push("/employees");
-        return { success: true, token: data.token };
+        localStorage.setItem("token", auth.value.data.token);
+        return { success: true, error: null };
       }
 
     } catch (error) {
@@ -38,6 +36,6 @@ export function useAuth() {
       loading.value = false;
     }
   };
-  return { loading, error, login };
+  return { auth, loading, login};
 }
 
