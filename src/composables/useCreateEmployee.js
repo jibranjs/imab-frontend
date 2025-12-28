@@ -3,6 +3,8 @@ import { ref } from "vue";
 export function useCreateEmployee() {
   const loading = ref(false);
   const error = ref("");
+  const token = localStorage.getItem('token');
+
   const createEmployee = async (employeeData) => {
     loading.value = true;
     error.value = "";
@@ -13,7 +15,8 @@ export function useCreateEmployee() {
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
           },
           body: JSON.stringify(employeeData)
         }

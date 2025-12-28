@@ -11,7 +11,7 @@
         </div>
         <div>
           <label class="text-white mb-2 block">Password</label>
-          <InputText type="password" class="!w-full !py-2" v-model="password" placeholder="Enter your password" />
+          <Password type="password" toggleMask class="!w-full !py-2" v-model="password" :feedback="false" placeholder="Enter your password" />
         </div>
         <div v-if="authError" class="bg-red-800 text-red-500 p-2">
           <p class="text-white text-center">{{ authError }}</p>
@@ -25,6 +25,7 @@
 <script setup>
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import Password from 'primevue/password';
 import { ref } from 'vue';
 import { useAuth } from '@/composables/useAuth';
 import { useRouter } from 'vue-router';

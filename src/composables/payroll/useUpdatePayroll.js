@@ -3,6 +3,7 @@ import { ref } from 'vue';
 export const useUpdatePayroll = () => {
   const loading = ref(false);
   const error = ref(null);
+  const token = localStorage.getItem('token');
 
   const updatePayroll = async (data) => {
     loading.value = true;
@@ -13,6 +14,7 @@ export const useUpdatePayroll = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(data),
       });

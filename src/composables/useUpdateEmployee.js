@@ -3,6 +3,7 @@ import { ref } from "vue";
 export function useUpdateEmployee() {
   const loading = ref(false);
   const error = ref("");
+  const token = localStorage.getItem('token');
 
   const updateEmployee = async (employeeData) => {
     loading.value = true;
@@ -14,7 +15,8 @@ export function useUpdateEmployee() {
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
           },
           body: JSON.stringify(employeeData)
         }

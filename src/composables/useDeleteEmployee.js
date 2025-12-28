@@ -3,6 +3,7 @@ import { ref } from 'vue'
 export function useDeleteEmployee() {
   const loading = ref(false)
   const error = ref('')
+  const token = localStorage.getItem('token');
 
   const deleteEmployee = async (username) => {
     loading.value = true
@@ -11,7 +12,10 @@ export function useDeleteEmployee() {
     try {
       const response = await fetch('https://my-flask-9.vercel.app/employee/delete', {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        headers:
+        { 'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+         },
         body: JSON.stringify({ username })
       });
 

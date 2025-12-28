@@ -3,6 +3,7 @@ import { ref } from 'vue';
 export const useDeletePayroll = () => {
   const loading = ref(false);
   const error = ref(null);
+  const token = localStorage.getItem('token');
 
   const deletePayroll = async (data) => {
     loading.value = true;
@@ -13,6 +14,7 @@ export const useDeletePayroll = () => {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
           batch: data.batch,

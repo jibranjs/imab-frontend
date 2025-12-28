@@ -4,6 +4,7 @@ export function usePayroll() {
   const payroll = ref([]);
   const loading = ref(false);
   const error = ref("");
+  const token = localStorage.getItem('token');
 
   const fetchPayroll = async () => {
     loading.value = true;
@@ -15,7 +16,7 @@ export function usePayroll() {
         {
           method: "GET",
           headers: {
-            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6Imxpb25lbG1lc3NpIiwiZXhwIjoxNzY1NTcxNzAxfQ.-XDWaKqaoh4WFjsS45tWmwpN57kSpPJOpd7wiKTjerg`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
         });

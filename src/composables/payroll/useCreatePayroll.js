@@ -3,6 +3,7 @@ import { ref } from "vue";
 export function useCreatePayroll() {
   const loading = ref(false);
   const error = ref("");
+  const token = localStorage.getItem('token');
 
   const createPayroll = async (payrollData ) => {
     loading.value = true;
@@ -14,7 +15,9 @@ export function useCreatePayroll() {
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+
           },
           body: JSON.stringify(payrollData)
         }
