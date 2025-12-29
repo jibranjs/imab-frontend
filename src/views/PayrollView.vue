@@ -1,11 +1,6 @@
 <template>
   <!-- Top Bar -->
   <div class="flex justify-end items-center px-6">
-    <div class="relative !m-5">
-      <InputText placeholder="Search..." class="pr-10" />
-      <Button icon="pi pi-search"
-        class="!absolute right-1 top-1/2 -translate-y-1/2 !p-2 !border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
-    </div>
      <Button label="Refresh" @click="fetchPayroll"
       class="!m-5 !border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
      <Button label="Add Payroll" @click="AddPayrollDialog = true"
@@ -18,8 +13,8 @@
   <div class="text-white space-y-2 mb-6">
     <div class="grid grid-cols-2 gap-3">
       <div>
-        <label>Employee ID</label>
-        <InputText v-model="form.employee_id" class="!w-full" placeholder="Enter employee ID" />
+        <label>Employee</label>
+        <Select v-model="form.employee_id" :options="employeeShort" optionLabel="name" optionValue="id" class="!w-full" placeholder="Select employee" />
       </div>
       <div>
         <label>Batch</label>
@@ -211,17 +206,20 @@ import Button from 'primevue/button';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Dialog from 'primevue/dialog';
+import Select from 'primevue/select';
 import { usePayroll } from '@/composables/payroll/usePayroll.js';
 import { useCreatePayroll } from '@/composables/payroll/useCreatePayroll.js';
 import { useDeletePayroll } from '@/composables/payroll/useDeletePayroll.js';
 import { useUpdatePayroll } from '@/composables/payroll/useUpdatePayroll.js';
 import { onMounted, ref, reactive } from 'vue';
+import { useEmployeeShort } from '@/composables/useEmployeesShort';
 
 // Composables
 const { payroll, loading, error, fetchPayroll } = usePayroll();
 const { createPayroll, loading: createLoading, error: createError } = useCreatePayroll();
 const { deletePayroll, loading: deleteLoading, error: deleteError } = useDeletePayroll();
 const { updatePayroll, loading: updatePayrollLoading, error: updatePayrollError } = useUpdatePayroll();
+const { employeeShort, fetchEmployeesShort } = useEmployeeShort();
 
 // Dialog visibility
 const AddPayrollDialog = ref(false);
@@ -346,5 +344,6 @@ const updatePayrollForm = async () => {
 // Load data on mount
 onMounted(async () => {
   await fetchPayroll();
+  await fetchEmployeesShort();
 });
 </script>
