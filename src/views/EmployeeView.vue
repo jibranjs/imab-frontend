@@ -13,8 +13,7 @@
   </div>
   <p v-if="employeeLoading" class="text-white text-center text-xl mb-2">Loading...</p>
   <p v-if="employeeError" class="text-red-300 text-center">{{ employeeError }}</p>
-  <DataTable :value="employee"
-    tableStyle="min-width: 50rem" rowHover :rowClass="rowClass">
+  <DataTable :value="employee" tableStyle="min-width: 50rem" rowHover :rowClass="rowClass">
     <Column field="id" header="ID" />
     <Column field="name" header="Name" />
     <Column field="username" header="Username" />
@@ -61,13 +60,14 @@
           <InputText label="Email" v-model="form.email" class="!w-full" />
         </div>
         <div v-if="updateEmployeeError" class="bg-red-500 text-white p-2 rounded-md">
-        <p class="text-red-300 text-center">{{ updateEmployeeError }}</p>
-      </div>
+          <p class="text-red-300 text-center">{{ updateEmployeeError }}</p>
+        </div>
       </div>
     </div>
     <div class="flex gap-2 justify-between mt-4">
       <Button label="Close" @click="showUpdateDialog = false" class="!bg-gray-600 !border-none !text-white" />
-      <Button label="Update" :loading="updateEmployeeLoading" @click="updateEmployeeForm()" class="!bg-gray-600 !border-none !text-white" />
+      <Button label="Update" :loading="updateEmployeeLoading" @click="updateEmployeeForm()"
+        class="!bg-gray-600 !border-none !text-white" />
     </div>
   </Dialog>
 
@@ -96,49 +96,57 @@
           <label class="test-xl font-semibold">Email :</label>
           <p>{{ form.email }}</p>
         </div>
-         <div v-if="deleteEmployeeError" class="bg-red-500 text-white p-2 rounded-md">
-        <p class="text-red-300 text-center">{{ deleteEmployeeError }}</p>
-      </div>
+        <div v-if="deleteEmployeeError" class="bg-red-500 text-white p-2 rounded-md">
+          <p class="text-red-300 text-center">{{ deleteEmployeeError }}</p>
+        </div>
       </div>
     </div>
     <div class="flex gap-2 justify-between mt-4">
       <Button label="Close" @click="showDeleteDialog = false" class="!bg-gray-600 !border-none !text-white" />
-      <Button label="Delete" :loading="deleteEmployeeLoading" @click="deleteEmployeeForm()" class="!bg-red-600 !border-none !text-white" />
+      <Button label="Delete" :loading="deleteEmployeeLoading" @click="deleteEmployeeForm()"
+        class="!bg-red-600 !border-none !text-white" />
     </div>
   </Dialog>
 
   <!-- Add employee -->
-  <Dialog v-model:visible="showAddEmployee" modal header="Create Employee" :style="{ width: '400px' }">
+  <Dialog v-model:visible="showAddEmployee" modal header="Create Employee" :style="{ width: '500px' }">
     <div class="text-white space-y-2 mb-6">
-      <div class="flex flex-col gap-3">
+      <div class="flex flex-col items-center justify-center gap-6">
+        <!-- Col 1 -->
         <div>
-          <label>Name</label>
-          <InputText v-model="form.name" class="!w-full" placeholder="name" autocomplete="off" />
+          <div>
+            <label>Name</label>
+            <InputText v-model="form.name" class="!w-full !mb-3" placeholder="name" autocomplete="off" />
+          </div>
+          <div>
+            <label>Username</label>
+            <InputText v-model="form.username" class="!w-full !mb-3" placeholder="username" autocomplete="off" />
+          </div>
+          <div>
+            <label>Password</label>
+            <InputText v-model="form.password" class="!w-full !mb-3" placeholder="password" autocomplete="off" />
+          </div>
+          <div>
+            <label>Role</label>
+            <InputText v-model="form.role" class="!w-full !mb-3" placeholder="role" autocomplete="off" />
+          </div>
+          <div>
+            <label>Email</label>
+            <InputText v-model="form.email" class="!w-full !mb-3" placeholder="email" autocomplete="off" />
+          </div>
         </div>
-        <div>
-          <label>Username</label>
-          <InputText v-model="form.username" class="!w-full" placeholder="username" autocomplete="off" />
-        </div>
-        <div>
-          <label>Password</label>
-          <InputText v-model="form.password" class="!w-full" placeholder="password" autocomplete="off" />
-        </div>
-        <div>
-          <label>Role</label>
-          <InputText v-model="form.role" class="!w-full" placeholder="role" autocomplete="off" />
-        </div>
-        <div>
-          <label>Email</label>
-          <InputText v-model="form.email" class="!w-full" placeholder="email" autocomplete="off" />
-        </div>
+
+
       </div>
       <div v-if="createEmployeeError" class="bg-red-500 text-white p-2 rounded-md">
         <p class="text-red-300 text-center">{{ createEmployeeError }}</p>
       </div>
     </div>
     <div class="flex gap-2 justify-between mt-4">
-      <Button label="Cancel" @click="showAddEmployee = false" :disabled="createEmployeeLoading"  class="!bg-gray-600 !border-none !text-white" />
-      <Button label="Save" :loading="createEmployeeLoading" @click="addEmployee" class="!bg-white !text-[#0A0E17] !border-none" />
+      <Button label="Cancel" @click="showAddEmployee = false" :disabled="createEmployeeLoading"
+        class="!bg-gray-600 !border-none !text-white" />
+      <Button label="Save" :loading="createEmployeeLoading" @click="addEmployee"
+        class="!bg-white !text-[#0A0E17] !border-none" />
     </div>
   </Dialog>
 </template>
@@ -196,7 +204,7 @@ const addEmployee = async () => {
     email
   };
   const response = await createEmployee(employeeData);
-  if (response && response.success){
+  if (response && response.success) {
     showAddEmployee.value = false;
     form.value.name = '';
     form.value.username = '';
@@ -210,7 +218,7 @@ const addEmployee = async () => {
 }
 
 // Delete employee
-const showDelete = (data) =>{
+const showDelete = (data) => {
   form.value.name = data.name;
   form.value.username = data.username;
   form.value.password = data.password;
@@ -224,7 +232,7 @@ const deleteEmployeeForm = async () => {
   const username = form.value.username;
   const response = await deleteEmployee(username);
 
-  if (response && response.success){
+  if (response && response.success) {
     showDeleteDialog.value = false;
     fetchemployees();
   } else {
@@ -251,12 +259,12 @@ const updateEmployeeForm = async () => {
     email
   };
   const response = await updateEmployee(employeeData);
-  if (response && response.success){
+  if (response && response.success) {
     showUpdateDialog.value = false;
     fetchemployees();
   } else {
     updateEmployeeError.value = response.error;
-    }
+  }
 }
 
 // Row highlight
@@ -268,7 +276,7 @@ const rowClass = row =>
 // Fetch employees on mtoun
 onMounted(async () => {
   const getResponse = await fetchemployees();
-  if (getResponse && !getResponse.success){
+  if (getResponse && !getResponse.success) {
     employeeError.value = getResponse.error;
   }
 })
