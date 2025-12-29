@@ -10,7 +10,7 @@ export function useUpdateEmployee() {
     error.value = "";
 
     try {
-      const response = await fetch(
+      const request = await fetch(
         "https://my-flask-9.vercel.app/employee/update",
         {
           method: "PUT",
@@ -22,10 +22,10 @@ export function useUpdateEmployee() {
         }
       );
 
-      await response.json();
+      const response = await request.json();
 
-      if (!response.ok) {
-        return { success: false, error: response.error.message };
+      if (!request.ok) {
+        return { success: false, error: response.error };
       } else {
         return { success: true, error: null };
       }

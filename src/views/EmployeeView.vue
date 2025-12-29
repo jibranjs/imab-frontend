@@ -36,7 +36,7 @@
   </DataTable>
 
   <!-- Update Dialog -->
-  <Dialog v-model:visible="showUpdateDialog" modal header="Employee Details" :style="{ width: '400px' }">
+  <Dialog v-model:visible="showUpdateDialog" @hide="resetForm" modal header="Employee Details" :style="{ width: '400px' }">
     <div class="text-white space-y-2 mb-6">
       <div class="flex flex-col gap-3">
         <div>
@@ -59,8 +59,8 @@
           <label>Email</label>
           <InputText label="Email" v-model="form.email" class="!w-full" />
         </div>
-        <div v-if="updateEmployeeError" class="bg-red-500 text-white p-2 rounded-md">
-          <p class="text-red-300 text-center">{{ updateEmployeeError }}</p>
+        <div v-if="updateEmployeeError" class="bg-red-800 text-white p-2 rounded-md">
+          <p class="text-left">{{ updateEmployeeError }}</p>
         </div>
       </div>
     </div>
@@ -96,8 +96,8 @@
           <label class="test-xl font-semibold">Email :</label>
           <p>{{ form.email }}</p>
         </div>
-        <div v-if="deleteEmployeeError" class="bg-red-500 text-white p-2 rounded-md">
-          <p class="text-red-300 text-center">{{ deleteEmployeeError }}</p>
+        <div v-if="deleteEmployeeError" class="bg-red-800 text-white p-2 rounded-md">
+          <p class="text-left">{{ deleteEmployeeError }}</p>
         </div>
       </div>
     </div>
@@ -109,9 +109,9 @@
   </Dialog>
 
   <!-- Add employee -->
-  <Dialog v-model:visible="showAddEmployee" modal header="Create Employee" :style="{ width: '500px' }">
+  <Dialog v-model:visible="showAddEmployee" modal header="Create Employee" :style="{ width: '400px' }">
     <div class="text-white space-y-2 mb-6">
-      <div class="flex flex-col items-center justify-center gap-6">
+      <div class="flex flex-col items-center justify-center gap-3">
         <!-- Col 1 -->
         <div>
           <div>
@@ -135,8 +135,6 @@
             <InputText v-model="form.email" class="!w-full !mb-3" placeholder="email" autocomplete="off" />
           </div>
         </div>
-
-
       </div>
       <div v-if="createEmployeeError" class="bg-red-500 text-white p-2 rounded-md">
         <p class="text-red-300 text-center">{{ createEmployeeError }}</p>
@@ -203,6 +201,7 @@ const addEmployee = async () => {
     role,
     email
   };
+  openAddEmployee()
   const response = await createEmployee(employeeData);
   if (response && response.success) {
     showAddEmployee.value = false;
@@ -215,6 +214,11 @@ const addEmployee = async () => {
   } else {
     createEmployeeError.value = response.error;
   }
+}
+
+const openAddEmployee = ()=>{
+  showAddEmployee.value = true;
+  resetForm();
 }
 
 // Delete employee
@@ -236,16 +240,14 @@ const deleteEmployeeForm = async () => {
     showDeleteDialog.value = false;
     fetchemployees();
   } else {
+    console.log(response.error);
     deleteEmployeeError.value = response.error;
   }
-
 }
 
 // Update employee
 const updateEmployeeForm = async () => {
-
   if (!form.value) return;
-
   const name = form.value.name;
   const username = form.value.username;
   const password = form.value.password;
@@ -261,10 +263,21 @@ const updateEmployeeForm = async () => {
   const response = await updateEmployee(employeeData);
   if (response && response.success) {
     showUpdateDialog.value = false;
+    resetForm();
     fetchemployees();
   } else {
     updateEmployeeError.value = response.error;
   }
+}
+const resetForm = () => {
+  if (form.value) {
+    form.value.name = '';
+    form.value.username = '';
+    form.value.password = '';
+    form.value.role = '';
+    form.value.email = '';
+  }
+  updateEmployeeError.value = '';
 }
 
 // Row highlight

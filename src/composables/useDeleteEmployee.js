@@ -10,7 +10,7 @@ export function useDeleteEmployee() {
     error.value = ''
 
     try {
-      const response = await fetch('https://my-flask-9.vercel.app/employee/delete', {
+      const request = await fetch('https://my-flask-9.vercel.app/employee/delete', {
         method: 'DELETE',
         headers:
         { 'Content-Type': 'application/json',
@@ -19,15 +19,15 @@ export function useDeleteEmployee() {
         body: JSON.stringify({ username })
       });
 
-       await response.json()
+      const response = await request.json()
 
-      if (!response.ok) {
-       return { success:false, error: response.error };
+      if (!request.ok) {
+       return { success:false, error: response.message };
       } else {
         return { success: true, error: null };
       }
     } catch (error) {
-      return { success:false, error: error.error };
+      return { success:false, error: error };
     } finally {
       loading.value = false
     }

@@ -76,7 +76,7 @@
     <div class="grid grid-cols-2 gap-3 text-white">
       <div>
         <label>Employee ID</label>
-        <InputText v-model="form.employee_id" :disabled="true" class="!w-full" placeholder="Enter employee ID" />
+        <Select v-model="form.employee_id" :options="employeeShort" optionLabel="name" optionValue="id" class="!w-full" disabled placeholder="Select employee" />
       </div>
       <div>
         <label>Batch</label>
