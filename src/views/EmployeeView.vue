@@ -59,7 +59,7 @@
           <label>Email</label>
           <InputText label="Email" v-model="form.email" class="!w-full" />
         </div>
-        <div v-if="updateEmployeeError" class="bg-red-800 text-white p-2 rounded-md">
+        <div v-if="updateEmployeeError" class="bg-red-800 w-[300px] mx-auto  text-white p-2 rounded-md">
           <p class="text-left">{{ updateEmployeeError }}</p>
         </div>
       </div>
@@ -96,7 +96,7 @@
           <label class="test-xl font-semibold">Email :</label>
           <p>{{ form.email }}</p>
         </div>
-        <div v-if="deleteEmployeeError" class="bg-red-800 text-white p-2 rounded-md">
+        <div v-if="deleteEmployeeError" class="bg-red-800 w-[300px] mx-auto  text-white p-2 rounded-md">
           <p class="text-left">{{ deleteEmployeeError }}</p>
         </div>
       </div>
@@ -109,7 +109,7 @@
   </Dialog>
 
   <!-- Add employee -->
-  <Dialog v-model:visible="showAddEmployee" modal header="Create Employee" :style="{ width: '400px' }">
+  <Dialog v-model:visible="showAddEmployee" @hide="resetForm" modal header="Create Employee" :style="{ width: '400px' }">
     <div class="text-white space-y-2 mb-6">
       <div class="flex flex-col items-center justify-center gap-3">
         <!-- Col 1 -->
@@ -136,8 +136,8 @@
           </div>
         </div>
       </div>
-      <div v-if="createEmployeeError" class="bg-red-500 text-white p-2 rounded-md">
-        <p class="text-red-300 text-center">{{ createEmployeeError }}</p>
+      <div v-if="createEmployeeError" class="bg-red-800 w-[300px] mx-auto text-white p-2 rounded-md">
+        <p class="text-left">{{ createEmployeeError }}</p>
       </div>
     </div>
     <div class="flex gap-2 justify-between mt-4">
@@ -201,7 +201,6 @@ const addEmployee = async () => {
     role,
     email
   };
-  openAddEmployee()
   const response = await createEmployee(employeeData);
   if (response && response.success) {
     showAddEmployee.value = false;
@@ -211,15 +210,12 @@ const addEmployee = async () => {
     form.value.role = '';
     form.value.email = '';
     fetchemployees();
+    resetForm();
   } else {
     createEmployeeError.value = response.error;
   }
 }
 
-const openAddEmployee = ()=>{
-  showAddEmployee.value = true;
-  resetForm();
-}
 
 // Delete employee
 const showDelete = (data) => {
@@ -239,6 +235,7 @@ const deleteEmployeeForm = async () => {
   if (response && response.success) {
     showDeleteDialog.value = false;
     fetchemployees();
+    resetForm();
   } else {
     console.log(response.error);
     deleteEmployeeError.value = response.error;
@@ -278,6 +275,8 @@ const resetForm = () => {
     form.value.email = '';
   }
   updateEmployeeError.value = '';
+  deleteEmployeeError.value = '';
+  createEmployeeError.value = '';
 }
 
 // Row highlight

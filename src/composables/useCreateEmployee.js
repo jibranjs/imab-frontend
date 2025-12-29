@@ -25,7 +25,7 @@ export function useCreateEmployee() {
      const response = await request.json();
 
       if (!request.ok) {
-        return { success: false, error: response.error };
+        return { success: false, error: response.message };
       } else {
         return { success: true, error: null };
       }
