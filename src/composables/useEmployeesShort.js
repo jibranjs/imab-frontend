@@ -22,12 +22,13 @@ export function useEmployeeShort() {
         }
       );
 
-      employeeShort.value = await response.json();
+      const data = await response.json();
 
       if (!response.ok) {
         loading.value = false;
-        return { success: false, error: employeeShort.value.message || "Failed to load employees short." };
+        return { success: false, error: data.message || "Failed to load employees short." };
       }else{
+        employeeShort.value = data;
         return { success: true, error: null };
       }
 

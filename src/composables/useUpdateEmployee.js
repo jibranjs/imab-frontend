@@ -31,7 +31,7 @@ export function useUpdateEmployee() {
       }
 
     } catch (error) {
-      return { success: false, error: error };
+      return { success: false, error: error.message || "Failed to update employee" };
     } finally {
       loading.value = false;
     }

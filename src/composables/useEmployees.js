@@ -3,15 +3,13 @@ import { ref } from "vue";
 export function useEmployee() {
   const employee = ref([]);
   const loading = ref(false);
-
   const token = localStorage.getItem('token');
 
   const fetchemployees = async () => {
     loading.value = true;
-    employee.value = [];
 
     try {
-      const response = await fetch(
+      const request = await fetch(
         "https://my-flask-9.vercel.app/employee/all",
         {
           method: "GET",
@@ -22,17 +20,16 @@ export function useEmployee() {
         }
       );
 
-      employee.value = await response.json();
+     const response =  await response.json();
 
-      if (!response.ok) {
+      if (!request.ok) {
         loading.value = false;
-        return { success: false, error: employee.value.message || "Failed to load employees." };
+        return { success: false, error: response.message || "Failed to load employees." };
       }else{
         return { success: true, error: null };
       }
 
     } catch (error) {
-      console.log(error);
       return { success: false, error: error.message || "Unknown error." };
     } finally {
       loading.value = false;

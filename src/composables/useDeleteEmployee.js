@@ -27,7 +27,7 @@ export function useDeleteEmployee() {
         return { success: true, error: null };
       }
     } catch (error) {
-      return { success:false, error: error };
+      return { success:false, error: error.message || "Failed to delete employee" };
     } finally {
       loading.value = false
     }

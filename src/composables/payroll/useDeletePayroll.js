@@ -21,16 +21,16 @@ export const useDeletePayroll = () => {
           employee_id: data.employee_id
         })
       });
-      await response.json();
+      const data = await response.json();
 
       if (!response.ok) {
-        return { success: false, error: response.error };
+        return { success: false, error: data.error || data.message || "Failed to delete payroll" };
       } else {
         return { success: true, error: null };
       }
     } catch (err) {
       console.log(err);
-      return { success: false, error: err };
+      return { success: false, error: err.message || "Unknown error" };
     } finally {
       loading.value = false;
     }

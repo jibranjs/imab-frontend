@@ -13,7 +13,7 @@
           <label class="text-white mb-2 block">Password</label>
           <Password type="password" toggleMask class="!w-full !py-2" v-model="password" :feedback="false" placeholder="Enter your password" />
         </div>
-        <div v-if="authError" class="bg-red-800 text-red-500 p-2">
+        <div v-if="authError" class="bg-red-800 w-[315px] mx-auto rounded text-red-500 p-2">
           <p class="text-white text-center">{{ authError }}</p>
         </div>
         <Button label="Login" :loading="loading" @click="handleLogin" class="!w-full mt-4 !bg-[#60A5FA] !text-gray-600 !font-bold !border-none hover:!bg-[#93C5FD]" />

@@ -25,14 +25,13 @@ export function useCreateEmployee() {
      const response = await request.json();
 
       if (!request.ok) {
-        return { success: false, error: response.message };
+        return { success: false, error: response.message || "Failed to create employee"};
       } else {
         return { success: true, error: null };
       }
 
     } catch (error) {
-      console.log(error);
-      return { success: false, error: error };
+      return { success: false, error: error.message || "Unknown error" };
     } finally {
       loading.value = false;
     }

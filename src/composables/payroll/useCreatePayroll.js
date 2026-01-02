@@ -23,10 +23,10 @@ export function useCreatePayroll() {
         }
       );
 
-      await response.json();
+      const data = await response.json();
 
       if (!response.ok) {
-        return { success: false, error: response.message };
+        return { success: false, error: data.message || "Failed to create payroll" };
       } else {
         return { success: true, error: null };
       }
