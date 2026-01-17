@@ -15,10 +15,15 @@
   <p v-if="employeeError" class="text-red-300 text-center">{{ employeeError }}</p>
   <DataTable :value="employee" tableStyle="min-width: 50rem" rowHover :rowClass="rowClass">
     <Column field="id" header="ID" />
-    <Column field="name" header="Name" />
-    <Column field="username" header="Username" />
-    <Column field="role" header="Role" />
-    <Column field="email" header="Email" />
+    <Column field="employee_company_id" header="Company ID" />
+    <Column field="employee_name" header="Name" />
+    <Column field="employee_status" header="Status" />
+    <Column field="employee_email" header="Email" />
+    <Column field="employee_dob" header="Date of Birth" />
+    <Column field="employee_cnic" header="Cnic" />
+    <Column field="employee_phone_number_main" header="Phone Number" />
+    <Column field="employee_phone_number_secondary" header="Phone Number (Secondary)" />
+    <Column field="employee_address_permanent" header="Address" />
     <Column field="id" header="Actions">
       <template #body="slotProps">
         <div class="flex gap-2">
@@ -35,8 +40,9 @@
     </Column>
   </DataTable>
 
+
   <!-- Update Dialog -->
-  <Dialog v-model:visible="showUpdateDialog" @hide="resetForm" modal header="Employee Details" :style="{ width: '400px' }">
+  <Dialog v-model:visible="showUpdateDialog" @hide="resetForm" modal header="Update Employee" :style="{ width: '400px' }">
     <div class="text-white space-y-2 mb-6">
       <div class="flex flex-col gap-3">
         <div>
@@ -109,30 +115,52 @@
   </Dialog>
 
   <!-- Add employee -->
-  <Dialog v-model:visible="showAddEmployee" @hide="resetForm" modal header="Create Employee" :style="{ width: '400px' }">
+  <Dialog v-model:visible="showAddEmployee" @hide="resetForm" modal header="Create Employee" :style="{ width: '800px' }">
     <div class="text-white space-y-2 mb-6">
-      <div class="flex flex-col items-center justify-center gap-3">
+      <div class="grid grid-cols-2 items-center justify-center gap-3">
         <!-- Col 1 -->
         <div>
           <div>
             <label>Name</label>
-            <InputText v-model="form.name" class="!w-full !mb-3" placeholder="name" autocomplete="off" />
+            <InputText v-model="form.name" class="!w-full !mb-3" placeholder="Name" autocomplete="off" />
           </div>
           <div>
             <label>Username</label>
-            <InputText v-model="form.username" class="!w-full !mb-3" placeholder="username" autocomplete="off" />
+            <InputText v-model="form.username" class="!w-full !mb-3" placeholder="Username" autocomplete="off" />
           </div>
           <div>
             <label>Password</label>
-            <InputText v-model="form.password" class="!w-full !mb-3" placeholder="password" autocomplete="off" />
+            <InputText v-model="form.password" class="!w-full !mb-3" placeholder="Password" autocomplete="off" />
           </div>
           <div>
             <label>Role</label>
-            <InputText v-model="form.role" class="!w-full !mb-3" placeholder="role" autocomplete="off" />
+            <InputText v-model="form.role" class="!w-full !mb-3" placeholder="Role" autocomplete="off" />
           </div>
           <div>
             <label>Email</label>
-            <InputText v-model="form.email" class="!w-full !mb-3" placeholder="email" autocomplete="off" />
+            <InputText v-model="form.email" class="!w-full !mb-3" placeholder="Email" autocomplete="off" />
+          </div>
+        </div>
+       <div>
+          <div>
+            <label>Company</label>
+            <InputText v-model="form.company" class="!w-full !mb-3" placeholder="Company" autocomplete="off" />
+          </div>
+          <div>
+            <label>Department</label>
+            <InputText v-model="form.department" class="!w-full !mb-3" placeholder="Department" autocomplete="off" />
+          </div>
+          <div>
+            <label>Contract</label>
+            <InputText v-model="form.contract" class="!w-full !mb-3" placeholder="Contract" autocomplete="off" />
+          </div>
+          <div>
+            <label>Joint Date</label>
+            <DatePicker v-model="form.joint_date" class="!w-full !mb-3" placeholder="Joint date" autocomplete="off" />
+          </div>
+          <div>
+            <label>Address</label>
+            <InputText v-model="form.address" class="!w-full !mb-3" placeholder="Address" autocomplete="off" />
           </div>
         </div>
       </div>
@@ -152,11 +180,12 @@
 <script setup>
 // Import Vue and needed components
 import { ref, onMounted } from 'vue'
-import { useEmployee } from '@/composables/useEmployees'
-import { useCreateEmployee } from '@/composables/useCreateEmployee'
-import { useDeleteEmployee } from '@/composables/useDeleteEmployee'
-import { useUpdateEmployee } from '@/composables/useUpdateEmployee'
+import { useEmployee } from '@/composables/Employee/useEmployees'
+import { useCreateEmployee } from '@/composables/Employee/useCreateEmployee'
+import { useDeleteEmployee } from '@/composables/Employee/useDeleteEmployee'
+import { useUpdateEmployee } from '@/composables/Employee/useUpdateEmployee'
 import DataTable from 'primevue/datatable'
+import DatePicker from 'primevue/datepicker'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
@@ -184,8 +213,14 @@ const showDetail = (data) => {
   form.value.password = data.password;
   form.value.role = data.role;
   form.value.email = data.email;
+  form.value.company = data.company;
+  form.value.company = data.department;
+  form.value.company = data.contract;
+  form.value.company = data.joint_date;
+  form.value.company = data.address;
   showUpdateDialog.value = true;
 }
+
 // Add employee
 const addEmployee = async () => {
   const name = form.value.name;

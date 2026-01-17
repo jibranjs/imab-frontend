@@ -5,12 +5,12 @@ export const useDeletePayroll = () => {
   const error = ref(null);
   const token = localStorage.getItem('token');
 
-  const deletePayroll = async (data) => {
+  const deletePayroll = async () => {
     loading.value = true;
     error.value = null;
 
     try {
-      const response = await fetch('https://my-flask-9.vercel.app/payroll/delete', {
+      const response = await fetch('https://myimab-2dccmz7le-siyabdevs-projects.vercel.app/payroll/delete', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

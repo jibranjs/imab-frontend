@@ -1,18 +1,16 @@
 import { ref } from "vue";
 
-export function useEmployeeShort() {
-  const employeeShort = ref([]);
+export function useEmployee() {
+  const employee = ref([]);
   const loading = ref(false);
-
   const token = localStorage.getItem('token');
 
-  const fetchEmployeesShort = async () => {
+  const fetchemployees = async () => {
     loading.value = true;
-    employeeShort.value = [];
 
     try {
-      const response = await fetch(
-        "https://my-flask-9.vercel.app/employee/short",
+      const request = await fetch(
+        "https://myimab-2dccmz7le-siyabdevs-projects.vercel.app/employee/all",
         {
           method: "GET",
           type: "application/json",
@@ -22,23 +20,22 @@ export function useEmployeeShort() {
         }
       );
 
-      const data = await response.json();
+     const response =  await request.json();
 
-      if (!response.ok) {
+      if (!request.ok) {
         loading.value = false;
-        return { success: false, error: data.message || "Failed to load employees short." };
+        return { success: false, error: response.message || "Failed to load employees." };
       }else{
-        employeeShort.value = data;
+        employee.value = response
         return { success: true, error: null };
       }
 
     } catch (error) {
-      console.log(error);
       return { success: false, error: error.message || "Unknown error." };
     } finally {
       loading.value = false;
     }
   };
 
-  return { employeeShort, loading, fetchEmployeesShort };
+  return { employee, loading, fetchemployees };
 }

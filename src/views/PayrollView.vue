@@ -173,16 +173,20 @@
 
   <DataTable :value="payroll" rowHover :rowClass="rowClass" tableStyle="min-width: 50rem">
     <Column field="employee_id" header="ID"></Column>
-    <Column field="batch" header="Batch"></Column>
-    <Column field="early" header="Early"></Column>
-    <Column field="late" header="Late"></Column>
-    <Column field="leaves" header="Leaves"></Column>
-    <Column field="hourly_rate" header="Hourly Rate"></Column>
-    <Column field="worked_hours" header="Worked Hours"></Column>
-    <Column field="monthly_hours" header="Monthly Hours"></Column>
-    <Column field="bonus1" header="Bonus 1"></Column>
-    <Column field="bonus2" header="Bonus 2"></Column>
-    <Column field="basic_salary" header="Basic Salary"></Column>
+    <Column field="company_id" header="Company ID"></Column>
+    <Column field="batch_name" header="Batch Name"></Column>
+    <Column field="batch_status" header="Batch Status"></Column>
+    <Column field="employee_lates" header="Lates"></Column>
+    <Column field="employee_early" header="Early"></Column>
+    <Column field="employee_leaves" header="Leaves"></Column>
+    <Column field="employee_score" header="Score"></Column>
+    <Column field="employee_basic_salary" header="Basic Salary"></Column>
+    <Column field="employee_hourly_rate" header="Hourly Rate"></Column>
+    <Column field="employee_contract_hours" header="Contract Hours"></Column>
+    <Column field="employee_rota_hours" header="Rota Hours"></Column>
+    <Column field="employee_worked_hours" header="Bonus 1"></Column>
+    <Column field="employee_net_hours" header="Bonus 2"></Column>
+    <Column field="employee_over_below" header="Basic Salary"></Column>
     <Column field="actions" header="Actions">
       <template #body="slotProps">
         <div class="flex gap-2">
@@ -212,7 +216,7 @@ import { useCreatePayroll } from '@/composables/payroll/useCreatePayroll.js';
 import { useDeletePayroll } from '@/composables/payroll/useDeletePayroll.js';
 import { useUpdatePayroll } from '@/composables/payroll/useUpdatePayroll.js';
 import { onMounted, ref, reactive } from 'vue';
-import { useEmployeeShort } from '@/composables/useEmployeesShort';
+import { useEmployeeShort } from '@/composables/Employee/useEmployeesShort';
 
 // Composables
 const { payroll, loading, error, fetchPayroll } = usePayroll();

@@ -11,7 +11,7 @@ export function useUpdateEmployee() {
 
     try {
       const request = await fetch(
-        "https://my-flask-9.vercel.app/employee/update",
+        "https://myimab-2dccmz7le-siyabdevs-projects.vercel.app/employee/update",
         {
           method: "PUT",
           headers: {

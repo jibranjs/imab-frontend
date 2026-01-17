@@ -12,7 +12,7 @@ export function usePayroll() {
 
     try {
       const response = await fetch(
-        "https://my-flask-9.vercel.app/payroll/all",
+        "https://myimab-2dccmz7le-siyabdevs-projects.vercel.app/payroll/all",
         {
           method: "GET",
           headers: {
