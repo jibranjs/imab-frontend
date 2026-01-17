@@ -5,18 +5,18 @@ export function useDeleteEmployee() {
   const error = ref('')
   const token = localStorage.getItem('token');
 
-  const deleteEmployee = async (username) => {
+  const deleteEmployee = async (id) => {
     loading.value = true
     error.value = ''
 
     try {
-      const request = await fetch('https://my-flask-9.vercel.app/employee/delete', {
+      const request = await fetch('https://myimab-2dccmz7le-siyabdevs-projects.vercel.app/employee/delete', {
         method: 'DELETE',
         headers:
         { 'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
          },
-        body: JSON.stringify({ username })
+        body: JSON.stringify({ id })
       });
 
       const response = await request.json()

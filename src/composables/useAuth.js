@@ -30,7 +30,7 @@ export function useAuth() {
       } else {
         token.value = getAuth.data.token;
         localStorage.setItem("token", token.value);
-        router.push("/employees");
+        router.push("/");
         return { success: true, error: false };
       }
 

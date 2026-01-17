@@ -2,19 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import AtendanceView from '@/views/EmployeeView.vue'
 import PayrollView from '@/views/PayrollView.vue'
 import LoginView from '@/views/LoginView.vue'
-import HomeView from '@/views/HomeView.vue'
+import CompanyView from '@/views/CompanyView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: HomeView,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/employees',
       name: 'Employees',
       component: AtendanceView,
       meta: { requiresAuth: true }
@@ -24,6 +18,12 @@ const router = createRouter({
       name: 'Payroll',
       component: PayrollView,
        meta: { requiresAuth: true }
+    },
+    {
+      path: '/company',
+      name: 'Company',
+      component: CompanyView,
+      meta: { requiresAuth: true }
     },
     {
       path: '/login',

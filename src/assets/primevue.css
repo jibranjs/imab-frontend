@@ -12,4 +12,8 @@
   --p-datatable-row-color:#fff !important;
   --p-dialog-background:#1F2937 !important;
   --p-dialog-border-color:#6A7282 !important;
+  --p-textarea-background:#111827 !important;
+  --p-textarea-border-color:#6A7282 !important;
+  --p-textarea-focus-border-color:none !important;
+  --p-textarea-color:#FFFFFF !important;
 }

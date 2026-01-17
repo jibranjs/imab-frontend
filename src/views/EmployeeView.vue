@@ -15,15 +15,42 @@
   <p v-if="employeeError" class="text-red-300 text-center">{{ employeeError }}</p>
   <DataTable :value="employee" tableStyle="min-width: 50rem" rowHover :rowClass="rowClass">
     <Column field="id" header="ID" />
-    <Column field="employee_company_id" header="Company ID" />
-    <Column field="employee_name" header="Name" />
-    <Column field="employee_status" header="Status" />
+    <Column field="employee_name" header="Name">
+      <template #body="slotProps">
+        <div class="flex flex-col">
+          <p>{{ slotProps.data.employee_name }}</p>
+          <p class="text-xs text-gray-400 font-semibold">Gender: {{ slotProps.data.employee_gender }}</p>
+          <p class="text-xs text-gray-400">@{{ slotProps.data.employee_company_id }}</p>
+        </div>
+      </template>
+    </Column>
+    <Column field="employee_department" header="Department">
+      <template #body="slotProps">
+        <div class="flex flex-col">
+          <p>{{ slotProps.data.employee_department }}</p>
+          <p class="text-xs text-gray-400">{{ slotProps.data.employee_status }}</p>
+        </div>
+      </template>
+    </Column>
     <Column field="employee_email" header="Email" />
     <Column field="employee_dob" header="Date of Birth" />
     <Column field="employee_cnic" header="Cnic" />
-    <Column field="employee_phone_number_main" header="Phone Number" />
-    <Column field="employee_phone_number_secondary" header="Phone Number (Secondary)" />
-    <Column field="employee_address_permanent" header="Address" />
+    <Column field="employee_phone_number_main" header="Phone Number">
+      <template #body="slotProps">
+        <div class="flex flex-col">
+          <p>{{ slotProps.data.employee_phone_number_main }}</p>
+          <p class="text-xs text-gray-400 ">Secondary ( {{ slotProps.data.employee_phone_number_secondary }} )</p>
+        </div>
+      </template>
+    </Column>
+    <Column field="employee_address_permanent" header="Address">
+      <template #body="slotProps">
+        <div class="flex flex-col">
+          <p>{{ slotProps.data.employee_address_current }}</p>
+          <p class="text-xs text-gray-400 ">Current ( {{ slotProps.data.employee_address_permanent }} )</p>
+        </div>
+      </template>
+    </Column>
     <Column field="id" header="Actions">
       <template #body="slotProps">
         <div class="flex gap-2">
@@ -42,32 +69,70 @@
 
 
   <!-- Update Dialog -->
-  <Dialog v-model:visible="showUpdateDialog" @hide="resetForm" modal header="Update Employee" :style="{ width: '400px' }">
+  <Dialog v-model:visible="showUpdateDialog" @hide="resetForm" modal header="Update Employee"
+    :style="{ width: '1000px' }">
     <div class="text-white space-y-2 mb-6">
-      <div class="flex flex-col gap-3">
+      <div class="grid grid-cols-3 gap-3">
+        <!-- Col 1 -->
         <div>
-          <label>Name</label>
-          <InputText label="Name" v-model="form.name" class="!w-full" />
+          <div>
+            <label>Name</label>
+            <InputText v-model="form.name" class="!w-full !mb-3" placeholder="Name" autocomplete="off" />
+          </div>
+          <div>
+            <label>Company ID</label>
+            <InputText v-model="form.companyId" class="!w-full !mb-3" placeholder="Company ID" autocomplete="off" />
+          </div>
+          <div>
+            <label>Department</label>
+            <InputText v-model="form.department" class="!w-full !mb-3" placeholder="Department" autocomplete="off" />
+          </div>
+          <div>
+            <label>Gender</label>
+            <InputText v-model="form.gender" class="!w-full !mb-3" placeholder="Male/Female" autocomplete="off" />
+          </div>
+          <div>
+            <label>Email</label>
+            <InputText v-model="form.email" class="!w-full !mb-3" placeholder="Email" autocomplete="off" type="email" />
+          </div>
         </div>
+        <!-- Col 2 -->
         <div>
-          <label>Username</label>
-          <InputText label="Username" v-model="form.username" class="!w-full" />
+          <div>
+            <label>Employee Status</label>
+            <InputText v-model="form.employeeStatus" class="!w-full !mb-3" placeholder="Active/Inactive" autocomplete="off" />
+          </div>
+          <div>
+            <label>CNIC</label>
+            <InputText v-model="form.cnic" class="!w-full !mb-3" placeholder="CNIC" autocomplete="off" />
+          </div>
+          <div>
+            <label>Date of Birth</label>
+            <DatePicker v-model="form.dateOfBirth" class="!w-full !mb-3" placeholder="Date of Birth" />
+          </div>
+          <div>
+            <label>Main Phone Number</label>
+            <InputText v-model="form.mainPhoneNumber" class="!w-full !mb-3" placeholder="Main Phone" autocomplete="off" />
+          </div>
+          <div>
+            <label>Secondary Phone Number</label>
+            <InputText v-model="form.secondaryPhoneNumber" class="!w-full !mb-3" placeholder="Secondary Phone" autocomplete="off" />
+          </div>
         </div>
+        <!-- Col 3 -->
         <div>
-          <label>Password</label>
-          <InputText label="Password" v-model="form.password" class="!w-full" />
+          <div>
+            <label>Current Address</label>
+            <Textarea v-model="form.currentAddress" class="!w-full !mb-3" placeholder="Current Address" rows="3" />
+          </div>
+          <div>
+            <label>Permanent Address</label>
+            <Textarea v-model="form.permanentAddress" class="!w-full !mb-3" placeholder="Permanent Address" rows="3" />
+          </div>
         </div>
-        <div>
-          <label>Role</label>
-          <InputText label="Role" v-model="form.role" class="!w-full" />
-        </div>
-        <div>
-          <label>Email</label>
-          <InputText label="Email" v-model="form.email" class="!w-full" />
-        </div>
-        <div v-if="updateEmployeeError" class="bg-red-800 w-[300px] mx-auto  text-white p-2 rounded-md">
-          <p class="text-left">{{ updateEmployeeError }}</p>
-        </div>
+      </div>
+      <div v-if="updateEmployeeError" class="bg-red-800 w-[300px] mx-auto  text-white p-2 rounded-md">
+        <p class="text-left">{{ updateEmployeeError }}</p>
       </div>
     </div>
     <div class="flex gap-2 justify-between mt-4">
@@ -79,30 +144,58 @@
 
 
   <!-- Delete Dialog -->
-  <Dialog v-model:visible="showDeleteDialog" modal header="Delete Employee" :style="{ width: '400px' }">
+  <Dialog v-model:visible="showDeleteDialog" modal header="Delete Employee" :style="{ width: '600px' }">
     <div v-if="selected" class="text-white space-y-2">
-      <div class="flex flex-col gap-3">
+      <div class="grid grid-cols-2 gap-3">
         <div>
           <label class="test-xl font-semibold">Name :</label>
           <p>{{ form.name }}</p>
         </div>
         <div>
-          <label class="test-xl font-semibold">Username :</label>
-          <p>{{ form.username }}</p>
+          <label class="test-xl font-semibold">Company ID :</label>
+          <p>{{ form.companyId }}</p>
         </div>
         <div>
-          <label class="test-xl font-semibold">Password :</label>
-          <p>{{ form.password }}</p>
+          <label class="test-xl font-semibold">Gender :</label>
+          <p>{{ form.gender }}</p>
         </div>
         <div>
-          <label class="test-xl font-semibold">Role :</label>
-          <p>{{ form.role }}</p>
+          <label class="test-xl font-semibold">Main Phone :</label>
+          <p>{{ form.mainPhoneNumber }}</p>
+        </div>
+        <div>
+          <label class="test-xl font-semibold">Secondary Phone :</label>
+          <p>{{ form.secondaryPhoneNumber }}</p>
+        </div>
+        <div>
+          <label class="test-xl font-semibold">Employee Status :</label>
+          <p>{{ form.employeeStatus }}</p>
+        </div>
+        <div>
+          <label class="test-xl font-semibold">CNIC :</label>
+          <p>{{ form.cnic }}</p>
+        </div>
+        <div>
+          <label class="test-xl font-semibold">Current Address :</label>
+          <p>{{ form.currentAddress }}</p>
+        </div>
+        <div>
+          <label class="test-xl font-semibold">Permanent Address :</label>
+          <p>{{ form.permanentAddress }}</p>
         </div>
         <div>
           <label class="test-xl font-semibold">Email :</label>
           <p>{{ form.email }}</p>
         </div>
-        <div v-if="deleteEmployeeError" class="bg-red-800 w-[300px] mx-auto  text-white p-2 rounded-md">
+        <div>
+          <label class="test-xl font-semibold">Date of Birth :</label>
+          <p>{{ form.dateOfBirth }}</p>
+        </div>
+        <div>
+          <label class="test-xl font-semibold">Department :</label>
+          <p>{{ form.department }}</p>
+        </div>
+        <div v-if="deleteEmployeeError" class="bg-red-800 w-[300px] mx-auto  text-white p-2 rounded-md col-span-2">
           <p class="text-left">{{ deleteEmployeeError }}</p>
         </div>
       </div>
@@ -115,9 +208,10 @@
   </Dialog>
 
   <!-- Add employee -->
-  <Dialog v-model:visible="showAddEmployee" @hide="resetForm" modal header="Create Employee" :style="{ width: '800px' }">
+  <Dialog v-model:visible="showAddEmployee" @hide="resetForm" modal header="Create Employee"
+    :style="{ width: '1000px' }">
     <div class="text-white space-y-2 mb-6">
-      <div class="grid grid-cols-2 items-center justify-center gap-3">
+      <div class="grid grid-cols-3  justify-center gap-3">
         <!-- Col 1 -->
         <div>
           <div>
@@ -125,42 +219,56 @@
             <InputText v-model="form.name" class="!w-full !mb-3" placeholder="Name" autocomplete="off" />
           </div>
           <div>
-            <label>Username</label>
-            <InputText v-model="form.username" class="!w-full !mb-3" placeholder="Username" autocomplete="off" />
+            <label>Company ID</label>
+            <InputText v-model="form.companyId" class="!w-full !mb-3" placeholder="Company ID" autocomplete="off" />
           </div>
-          <div>
-            <label>Password</label>
-            <InputText v-model="form.password" class="!w-full !mb-3" placeholder="Password" autocomplete="off" />
-          </div>
-          <div>
-            <label>Role</label>
-            <InputText v-model="form.role" class="!w-full !mb-3" placeholder="Role" autocomplete="off" />
-          </div>
-          <div>
-            <label>Email</label>
-            <InputText v-model="form.email" class="!w-full !mb-3" placeholder="Email" autocomplete="off" />
-          </div>
-        </div>
-       <div>
-          <div>
-            <label>Company</label>
-            <InputText v-model="form.company" class="!w-full !mb-3" placeholder="Company" autocomplete="off" />
-          </div>
-          <div>
+             <div>
             <label>Department</label>
             <InputText v-model="form.department" class="!w-full !mb-3" placeholder="Department" autocomplete="off" />
           </div>
           <div>
-            <label>Contract</label>
-            <InputText v-model="form.contract" class="!w-full !mb-3" placeholder="Contract" autocomplete="off" />
+            <label>Gender</label>
+            <InputText v-model="form.gender" class="!w-full !mb-3" placeholder="Male/Female" autocomplete="off" />
+          </div>
+           <div>
+            <label>Email</label>
+            <InputText v-model="form.email" class="!w-full !mb-3" placeholder="Email" autocomplete="off" type="email" />
+          </div>
+        </div>
+        <!-- Col 2 -->
+        <div>
+          <div>
+            <label>Employee Status</label>
+            <InputText v-model="form.employeeStatus" class="!w-full !mb-3" placeholder="Active/Inactive" autocomplete="off" />
           </div>
           <div>
-            <label>Joint Date</label>
-            <DatePicker v-model="form.joint_date" class="!w-full !mb-3" placeholder="Joint date" autocomplete="off" />
+            <label>CNIC</label>
+            <InputText v-model="form.cnic" class="!w-full !mb-3" placeholder="CNIC" autocomplete="off" />
+          </div>
+             <div>
+            <label>Date of Birth</label>
+            <DatePicker v-model="form.dateOfBirth" class="!w-full !mb-3" placeholder="Date of Birth" />
+          </div>
+             <div>
+            <label>Main Phone Number</label>
+            <InputText v-model="form.mainPhoneNumber" class="!w-full !mb-3" placeholder="Main Phone" autocomplete="off" />
           </div>
           <div>
-            <label>Address</label>
-            <InputText v-model="form.address" class="!w-full !mb-3" placeholder="Address" autocomplete="off" />
+            <label>Secondary Phone Number</label>
+            <InputText v-model="form.secondaryPhoneNumber" class="!w-full !mb-3" placeholder="Secondary Phone" autocomplete="off" />
+          </div>
+
+
+        </div>
+        <!-- Col 3 -->
+        <div>
+           <div>
+            <label>Current Address</label>
+            <Textarea v-model="form.currentAddress" class="!w-full !mb-3" placeholder="Current Address" autocomplete="off" />
+          </div>
+          <div>
+            <label>Permanent Address</label>
+            <Textarea v-model="form.permanentAddress" class="!w-full !mb-3" placeholder="Permanent Address" autocomplete="off" />
           </div>
         </div>
       </div>
@@ -188,6 +296,7 @@ import DataTable from 'primevue/datatable'
 import DatePicker from 'primevue/datepicker'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
+import Textarea from 'primevue/textarea'
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 
@@ -204,48 +313,61 @@ const searchField = ref('')
 const showAddEmployee = ref(false)
 const showUpdateDialog = ref(false)
 const employeeError = ref(null);
-const form = ref({ username: '', email: '', name: '', role: '', password: '' })
+const form = ref({
+  id: '',
+  email: '',
+  name: '',
+  companyId: '',
+  gender: '',
+  mainPhoneNumber: '',
+  secondaryPhoneNumber: '',
+  employeeStatus: '',
+  cnic: '',
+  currentAddress: '',
+  permanentAddress: '',
+  dateOfBirth: '',
+  department: ''
+})
 
 // Show employee details in Update dialog
 const showDetail = (data) => {
-  form.value.name = data.name;
-  form.value.username = data.username;
-  form.value.password = data.password;
-  form.value.role = data.role;
-  form.value.email = data.email;
-  form.value.company = data.company;
-  form.value.company = data.department;
-  form.value.company = data.contract;
-  form.value.company = data.joint_date;
-  form.value.company = data.address;
+  form.value.id = data.id || '';
+  form.value.name = data.employee_name || '';
+  form.value.email = data.employee_email || '';
+  form.value.companyId = data.employee_company_id || '';
+  form.value.gender = data.employee_gender || '';
+  form.value.mainPhoneNumber = data.employee_phone_number_main || '';
+  form.value.secondaryPhoneNumber = data.employee_phone_number_secondary || '';
+  form.value.employeeStatus = data.employee_status || '';
+  form.value.cnic = data.employee_cnic || '';
+  form.value.currentAddress = data.employee_address_current || '';
+  form.value.permanentAddress = data.employee_address_permanent || '';
+  form.value.dateOfBirth = data.employee_dob || '';
+  form.value.department = data.employee_department || '';
   showUpdateDialog.value = true;
 }
 
 // Add employee
 const addEmployee = async () => {
-  const name = form.value.name;
-  const username = form.value.username;
-  const password = form.value.password;
-  const role = form.value.role;
-  const email = form.value.email;
-
   const employeeData = {
-    name,
-    username,
-    password,
-    role,
-    email
+    employee_name: form.value.name,
+    employee_email: form.value.email,
+    employee_company_id: form.value.companyId,
+    employee_gender: form.value.gender,
+    employee_phone_number_main: form.value.mainPhoneNumber,
+    employee_phone_number_secondary: form.value.secondaryPhoneNumber,
+    employee_status: form.value.employeeStatus,
+    employee_cnic: form.value.cnic,
+    employee_address_current: form.value.currentAddress,
+    employee_address_permanent: form.value.permanentAddress,
+    employee_dob: form.value.dateOfBirth,
+    employee_department: form.value.department
   };
   const response = await createEmployee(employeeData);
   if (response && response.success) {
     showAddEmployee.value = false;
-    form.value.name = '';
-    form.value.username = '';
-    form.value.password = '';
-    form.value.role = '';
-    form.value.email = '';
-    fetchemployees();
     resetForm();
+    fetchemployees();
   } else {
     createEmployeeError.value = response.error;
   }
@@ -254,18 +376,26 @@ const addEmployee = async () => {
 
 // Delete employee
 const showDelete = (data) => {
-  form.value.name = data.name;
-  form.value.username = data.username;
-  form.value.password = data.password;
-  form.value.role = data.role;
-  form.value.email = data.email;
+  form.value.id = data.id || '';
+  form.value.name = data.employee_name || '';
+  form.value.email = data.employee_email || '';
+  form.value.companyId = data.employee_company_id || '';
+  form.value.gender = data.employee_gender || '';
+  form.value.mainPhoneNumber = data.employee_phone_number_main || '';
+  form.value.secondaryPhoneNumber = data.employee_phone_number_secondary || '';
+  form.value.employeeStatus = data.employee_status || '';
+  form.value.cnic = data.employee_cnic || '';
+  form.value.currentAddress = data.employee_address_current || '';
+  form.value.permanentAddress = data.employee_address_permanent || '';
+  form.value.dateOfBirth = data.employee_dob || '';
+  form.value.department = data.employee_department || '';
   showDeleteDialog.value = true;
 }
 const deleteEmployeeForm = async () => {
   if (!form.value) return;
 
-  const username = form.value.username;
-  const response = await deleteEmployee(username);
+  const id = form.value.id;
+  const response = await deleteEmployee(id);
 
   if (response && response.success) {
     showDeleteDialog.value = false;
@@ -280,17 +410,20 @@ const deleteEmployeeForm = async () => {
 // Update employee
 const updateEmployeeForm = async () => {
   if (!form.value) return;
-  const name = form.value.name;
-  const username = form.value.username;
-  const password = form.value.password;
-  const role = form.value.role;
-  const email = form.value.email;
   const employeeData = {
-    name,
-    username,
-    password,
-    role,
-    email
+    id: form.value.id,
+    employee_name: form.value.name,
+    employee_email: form.value.email,
+    employee_company_id: form.value.companyId,
+    employee_gender: form.value.gender,
+    employee_phone_number_main: form.value.mainPhoneNumber,
+    employee_phone_number_secondary: form.value.secondaryPhoneNumber,
+    employee_status: form.value.employeeStatus,
+    employee_cnic: form.value.cnic,
+    employee_address_current: form.value.currentAddress,
+    employee_address_permanent: form.value.permanentAddress,
+    employee_dob: form.value.dateOfBirth,
+    employee_department: form.value.department
   };
   const response = await updateEmployee(employeeData);
   if (response && response.success) {
@@ -303,11 +436,19 @@ const updateEmployeeForm = async () => {
 }
 const resetForm = () => {
   if (form.value) {
+    form.value.id = '';
     form.value.name = '';
-    form.value.username = '';
-    form.value.password = '';
-    form.value.role = '';
     form.value.email = '';
+    form.value.companyId = '';
+    form.value.gender = '';
+    form.value.mainPhoneNumber = '';
+    form.value.secondaryPhoneNumber = '';
+    form.value.employeeStatus = '';
+    form.value.cnic = '';
+    form.value.currentAddress = '';
+    form.value.permanentAddress = '';
+    form.value.dateOfBirth = '';
+    form.value.department = '';
   }
   updateEmployeeError.value = '';
   deleteEmployeeError.value = '';
@@ -316,7 +457,7 @@ const resetForm = () => {
 
 // Row highlight
 const rowClass = row =>
-  selected.value && selected.value.username === row.username
+  selected.value && selected.value.employee_name === row.employee_name
     ? '!bg-gray-600 !text-white !border-none'
     : 'hover:!bg-gray-600 hover:!text-white'
 

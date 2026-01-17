@@ -41,7 +41,7 @@ const authError = ref('');
 const handleLogin = async () => {
   const response = await login(username.value, password.value);
   if(response.success){
-    router.push('/employees');
+    router.push('/');
   }else{
     authError.value = response.error;
   }

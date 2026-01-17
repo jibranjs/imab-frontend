@@ -9,13 +9,18 @@ const router = useRouter()
 const menuItems = ref([
   {
     label: 'Employees',
-    icon: 'prime:key',
-    to: '/employees'
+    icon: 'prime:users',
+    to: '/'
   },
     {
     label: 'Payroll',
-    icon: 'prime:key',
+    icon: 'prime:receipt',
     to: '/payroll'
+  },
+     {
+    label: 'Company',
+    icon: 'prime:check-circle',
+    to: '/company'
   },
 ])
 
