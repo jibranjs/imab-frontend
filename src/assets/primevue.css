@@ -16,4 +16,7 @@
   --p-textarea-border-color:#6A7282 !important;
   --p-textarea-focus-border-color:none !important;
   --p-textarea-color:#FFFFFF !important;
+  --p-select-background:#111827 !important;
+  --p-select-border-color:#6A7282 !important;
+  --p-select-focus-border-color:#6A7282 !important
 }

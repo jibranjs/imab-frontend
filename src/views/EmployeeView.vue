@@ -47,7 +47,7 @@
       <template #body="slotProps">
         <div class="flex flex-col">
           <p>{{ slotProps.data.employee_address_current }}</p>
-          <p class="text-xs text-gray-400 ">Current ( {{ slotProps.data.employee_address_permanent }} )</p>
+          <p class="text-xs text-gray-400 ">Permanent ( {{ slotProps.data.employee_address_permanent }} )</p>
         </div>
       </template>
     </Column>
@@ -85,11 +85,11 @@
           </div>
           <div>
             <label>Department</label>
-            <InputText v-model="form.department" class="!w-full !mb-3" placeholder="Department" autocomplete="off" />
+            <Select v-model="form.department" :options="departmentOptions" optionLabel="label" optionValue="value" placeholder="Select Department" class="!w-full !mb-3" />
           </div>
           <div>
             <label>Gender</label>
-            <InputText v-model="form.gender" class="!w-full !mb-3" placeholder="Male/Female" autocomplete="off" />
+            <Select v-model="form.gender" :options="genderOptions" optionLabel="label" optionValue="value" placeholder="Select Gender" class="!w-full !mb-3" />
           </div>
           <div>
             <label>Email</label>
@@ -100,7 +100,7 @@
         <div>
           <div>
             <label>Employee Status</label>
-            <InputText v-model="form.employeeStatus" class="!w-full !mb-3" placeholder="Active/Inactive" autocomplete="off" />
+            <Select v-model="form.employeeStatus" :options="statusOptions" optionLabel="label" optionValue="value" placeholder="Select Status" class="!w-full !mb-3" />
           </div>
           <div>
             <label>CNIC</label>
@@ -131,7 +131,7 @@
           </div>
         </div>
       </div>
-      <div v-if="updateEmployeeError" class="bg-red-800 w-[300px] mx-auto  text-white p-2 rounded-md">
+      <div v-if="updateEmployeeError" class="bg-red-800 w-full mx-auto  text-white p-2 rounded-md">
         <p class="text-left">{{ updateEmployeeError }}</p>
       </div>
     </div>
@@ -195,7 +195,7 @@
           <label class="test-xl font-semibold">Department :</label>
           <p>{{ form.department }}</p>
         </div>
-        <div v-if="deleteEmployeeError" class="bg-red-800 w-[300px] mx-auto  text-white p-2 rounded-md col-span-2">
+        <div v-if="deleteEmployeeError" class="bg-red-800 w-full mx-auto  text-white p-2 rounded-md col-span-2">
           <p class="text-left">{{ deleteEmployeeError }}</p>
         </div>
       </div>
@@ -224,11 +224,11 @@
           </div>
              <div>
             <label>Department</label>
-            <InputText v-model="form.department" class="!w-full !mb-3" placeholder="Department" autocomplete="off" />
+            <Select v-model="form.department" :options="departmentOptions" optionLabel="label" optionValue="value" placeholder="Select Department" class="!w-full !mb-3" />
           </div>
           <div>
             <label>Gender</label>
-            <InputText v-model="form.gender" class="!w-full !mb-3" placeholder="Male/Female" autocomplete="off" />
+            <Select v-model="form.gender" :options="genderOptions" optionLabel="label" optionValue="value" placeholder="Select Gender" class="!w-full !mb-3" />
           </div>
            <div>
             <label>Email</label>
@@ -239,7 +239,7 @@
         <div>
           <div>
             <label>Employee Status</label>
-            <InputText v-model="form.employeeStatus" class="!w-full !mb-3" placeholder="Active/Inactive" autocomplete="off" />
+            <Select v-model="form.employeeStatus" :options="statusOptions" optionLabel="label" optionValue="value" placeholder="Select Status" class="!w-full !mb-3" />
           </div>
           <div>
             <label>CNIC</label>
@@ -272,7 +272,7 @@
           </div>
         </div>
       </div>
-      <div v-if="createEmployeeError" class="bg-red-800 w-[300px] mx-auto text-white p-2 rounded-md">
+      <div v-if="createEmployeeError" class="bg-red-800 w-full mx-auto text-white p-2 rounded-md">
         <p class="text-left">{{ createEmployeeError }}</p>
       </div>
     </div>
@@ -299,6 +299,23 @@ import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
+import Select from 'primevue/select'
+
+// Gender and Status Options
+const genderOptions = [
+  { label: 'Male', value: 'male' },
+  { label: 'Female', value: 'female' }
+]
+
+const statusOptions = [
+  { label: 'Permanent', value: 'permanent' },
+  { label: 'Trainee', value: 'trainee' },
+]
+
+const departmentOptions = [
+  { label: 'Management', value:'management'},
+  { label:'Maintenance', value:'maintenance'}
+]
 
 // State and composables
 const { employee, loading: employeeLoading, fetchemployees } = useEmployee()
