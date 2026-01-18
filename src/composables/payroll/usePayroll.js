@@ -21,7 +21,18 @@ export function usePayroll() {
           }
         });
 
-      const data = await response.json();
+      const contentType = response.headers.get('content-type');
+      let data;
+
+      if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
+      } else {
+        const text = await response.text();
+        console.error('Received non-JSON response:', text);
+        error.value = `Server error: ${response.status} ${response.statusText}`;
+        loading.value = false;
+        return;
+      }
 
       if (!response.ok) {
         error.value = "Failed to fetch payroll";
@@ -32,7 +43,7 @@ export function usePayroll() {
       payroll.value = data;
 
     } catch (err) {
-      console.log(err);
+      console.error(err);
       error.value = err.message;
       loading.value = false;
       return error.value;

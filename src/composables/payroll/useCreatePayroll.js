@@ -11,7 +11,7 @@ export function useCreatePayroll() {
 
     try {
       const response = await fetch(
-        "https://my-flask-9.vercel.app/payroll/create",
+        "https://myimab-2dccmz7le-siyabdevs-projects.vercel.app/payroll/create",
         {
           method: "POST",
           headers: {
@@ -23,12 +23,15 @@ export function useCreatePayroll() {
         }
       );
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        return { success: false, error: data.message || "Failed to create payroll" };
+      if (response.headers.get('content-type')?.includes('application/json')) {
+        const data = await response.json();
+        if (!response.ok) {
+          return { success: false, error: data.message || "Failed to create payroll" };
+        } else {
+          return { success: true, error: null };
+        }
       } else {
-        return { success: true, error: null };
+        return { success: false, error: `Server error: ${response.status}` };
       }
 
     } catch (error) {
