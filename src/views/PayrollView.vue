@@ -9,108 +9,67 @@
   </div>
 
 <!-- Create Payroll Dialog -->
-<Dialog v-model:visible="AddPayrollDialog" @hide="resetPayrollForm" modal header="Create Payroll" :style="{ width: '1200px' }">
+<Dialog v-model:visible="AddPayrollDialog" @hide="resetPayrollForm" modal header="Create Payroll" :style="{ width: '800px' }">
   <div class="text-white space-y-2 mb-6">
     <div class="grid grid-cols-3 justify-center gap-6">
       <!-- Col 1 -->
-      <div>
+       <div class="mb-4">
+        <h2 class="text-lg font-bold ">Employee Details</h2>
+        <hr class="mb-3 mt-2 border-[#6B7280]">
+          <div>
+            <label>Employee Id</label>
+            <InputText v-model="form.employee_id" class="!w-full !mb-3" placeholder="Employee ID" />
+          </div>
+          <div>
+            <label>Company ID</label>
+            <InputText v-model="form.company_id" class="!w-full !mb-3" placeholder="Company ID" />
+          </div>
+          <div>
+            <label>Batch Name</label>
+            <InputText v-model="form.batch_name" class="!w-full !mb-3" placeholder="Enter batch name" />
+          </div>
+       </div>
+        <div class="mb-4">
+          <h2 class="text-lg font-bold">Attendance</h2>
+          <hr class="mb-3 mt-2 border-[#6B7280]">
         <div>
-          <label>Employee Id</label>
-          <InputText v-model="form.employee_id" class="!w-full !mb-3" placeholder="Employee ID" />
-        </div>
-        <div>
-          <label>Company ID</label>
-          <InputText v-model="form.company_id" class="!w-full !mb-3" placeholder="Company ID" />
-        </div>
-        <div>
-          <label>Batch Name</label>
-          <InputText v-model="form.batch_name" class="!w-full !mb-3" placeholder="Enter batch name" />
-        </div>
-        <div>
-          <label>Batch Status</label>
-          <InputText v-model="form.batch_status" class="!w-full !mb-3" placeholder="Enter batch status" />
-        </div>
-              <div>
           <label>Lates</label>
-          <InputNumber v-model="form.employee_lates" class="!w-full !mb-3" placeholder="Enter Lates" />
+          <InputText v-model="form.employee_lates" class="!w-full !mb-3" placeholder="Enter Lates" />
         </div>
          <div>
           <label>Early</label>
-          <InputNumber v-model="form.employee_early" class="!w-full !mb-3" placeholder="Enter Early" />
+          <InputText v-model="form.employee_early" class="!w-full !mb-3" placeholder="Enter Early" />
         </div>
          <div>
           <label>Leaves</label>
-          <InputNumber v-model="form.employee_leaves" class="!w-full !mb-3" placeholder="Enter leaves hours" />
+          <InputText v-model="form.employee_leaves" class="!w-full !mb-3" placeholder="Enter leaves hours" />
         </div>
-      </div>
+        </div>
+
       <!-- Col 2 -->
-      <div>
+      <div class="mb-4">
+        <h2 class="text-lg font-bold">Hours</h2>
+        <hr class="mb-3 mt-2 border-[#6B7280]">
         <div>
           <label>Contract hours</label>
-          <InputNumber v-model="form.employee_contract_hours" class="!w-full !mb-3" placeholder="Enter leaves" />
+          <InputText v-model="form.employee_contract_hours" class="!w-full !mb-3" placeholder="Enter leaves" />
         </div>
         <div>
           <label>Rota hours</label>
-          <InputNumber v-model="form.employee_rota_hours" class="!w-full !mb-3" placeholder="Enter hourly rate" />
+          <InputText v-model="form.employee_rota_hours" class="!w-full !mb-3" placeholder="Enter hourly rate" />
         </div>
         <div>
           <label>Worked Hours</label>
-          <InputNumber v-model="form.employee_worked_hours" class="!w-full !mb-3" placeholder="Enter worked hours" />
-        </div>
-        <div>
-          <label>Net Hours</label>
-          <InputNumber v-model="form.employee_net_hours" class="!w-full !mb-3" placeholder="Enter Net hours" />
-        </div>
-         <div>
-          <label>Over / below</label>
-          <InputNumber v-model="form.employee_over_below" class="!w-full !mb-3" placeholder="Enter Over / Below" />
-        </div>
-         <div>
-          <label>Score</label>
-          <InputNumber v-model="form.employee_score" class="!w-full !mb-3" placeholder="Enter score" />
-        </div>
-      </div>
-      <!-- Col 3 -->
-      <div>
-        <div>
-          <label>Basic Salary</label>
-          <InputText v-model="form.employee_basic_salary" class="!w-full !mb-3" placeholder="Enter basic salary" />
-        </div>
-        <div>
-          <label>Hourly Rate</label>
-          <InputText v-model="form.employee_hourly_rate" class="!w-full !mb-3" placeholder="Enter hourly rate" />
-        </div>
-        <div>
-          <label>Addition</label>
-          <InputText v-model="form.total_addition" class="!w-full !mb-3" placeholder="Enter addition" />
-        </div>
-        <div>
-          <label>Deduction</label>
-          <InputText v-model="form.total_deduction" class="!w-full !mb-3" placeholder="Enter deduction" />
-        </div>
-        <div>
-          <label>Gross</label>
-          <InputText v-model="form.total_gross" class="!w-full !mb-3" placeholder="Enter gross salary" />
-        </div>
-        <div>
-          <label>Tax</label>
-          <InputText v-model="form.total_tax" class="!w-full !mb-3" placeholder="Enter tax amount" />
-        </div>
-        <div>
-          <label>Net</label>
-          <InputText v-model="form.employee_total_net" class="!w-full !mb-3" placeholder="Enter net salary" />
-        </div>
-        <div>
-          <label>Net Orion</label>
-          <InputText v-model="form.total_net_orion" class="!w-full !mb-3" placeholder="Enter net salary" />
+          <InputText v-model="form.employee_worked_hours" class="!w-full !mb-3" placeholder="Enter worked hours" />
         </div>
       </div>
     </div>
     <!-- Create Error -->
     <div v-if="createError" class="bg-red-800 w-full mx-auto text-white p-2 rounded-md">
-      <p class="text-left">{{ createError }}</p>
+      <p class="text-center">{{ createError }}</p>
     </div>
   </div>
+
   <div class="flex gap-2 justify-between mt-4">
     <Button label="Cancel" @click="AddPayrollDialog = false" :disabled="createLoading" class="!bg-gray-600 !border-none !text-white" />
     <Button label="Save" :loading="createLoading" @click="addPayroll" class="!bg-white !text-[#0A0E17] !border-none" />
@@ -353,7 +312,6 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Dialog from 'primevue/dialog';
 import Select from 'primevue/select';
-import InputNumber from 'primevue/inputnumber';
 import { usePayroll } from '@/composables/payroll/usePayroll.js';
 import { useCreatePayroll } from '@/composables/payroll/useCreatePayroll.js';
 import { useDeletePayroll } from '@/composables/payroll/useDeletePayroll.js';
@@ -379,35 +337,25 @@ const selectedPayrollRow = ref(null);
 
 // Add form
 const form = reactive({
- company_id: '', batch_name: '', batch_status: '', employee_lates: '',
-  employee_early: '', employee_leaves: '', employee_contract_hours: '', employee_rota_hours: '',
-  employee_worked_hours: '', employee_net_hours: '', employee_over_below: '', employee_score: '',
-  employee_basic_salary: '', employee_hourly_rate: '', total_addition: '', total_deduction: '',
-  total_gross: '', total_tax: '', employee_total_net: '', total_net_orion: ''
+ company_id: null, batch_name: '', batch_status: '', employee_lates: 0,
+  employee_early: 0, employee_leaves: 0, employee_contract_hours: 0, employee_rota_hours: 0,
+  employee_worked_hours: 0, employee_net_hours: 0, employee_over_below: 0, employee_score: 0,
+  employee_basic_salary: 0, employee_hourly_rate: 0, total_addition: 0, total_deduction: 0,
+  total_gross: 0, total_tax: 0, employee_total_net: 0, total_net_orion: 0
 });
 
 // Reset form function
 const resetPayrollForm = () => {
-  form.company_id = '';
+  form.employee_id = null;
+  form.company_id = null;
   form.batch_name = '';
-  form.batch_status = '';
-  form.employee_lates = '';
-  form.employee_early = '';
-  form.employee_leaves = '';
-  form.employee_contract_hours = '';
-  form.employee_rota_hours = '';
-  form.employee_worked_hours = '';
-  form.employee_net_hours = '';
-  form.employee_over_below = '';
-  form.employee_score = '';
-  form.employee_basic_salary = '';
-  form.employee_hourly_rate = '';
-  form.total_addition = '';
-  form.total_deduction = '';
-  form.total_gross = '';
-  form.total_tax = '';
-  form.employee_total_net = '';
-  form.total_net_orion = '';
+  form.employee_lates = 0;
+  form.employee_early = 0;
+  form.employee_leaves = 0;
+  form.employee_contract_hours = 0;
+  form.employee_rota_hours = 0;
+  form.employee_worked_hours = 0;
+  createError.value = ``;
 };
 
 // Edit form
@@ -446,36 +394,18 @@ const rowClass = row =>
 
 // Add new payroll
 const addPayroll = async () => {
-  if (!form.employee_id || !form.company_id) {
-    createError.value = "Employee ID and Company ID are required";
-    return;
-  }
-
   const payrollData = {
-    employee_id: form.employee_id,
-    company_id: form.company_id,
-    batch_name: form.batch_name || null,
-    batch_status: form.batch_status || null,
-    employee_lates: form.employee_lates || null,
-    employee_early: form.employee_early || null,
-    employee_leaves: form.employee_leaves || null,
-    employee_contract_hours: form.employee_contract_hours || null,
-    employee_rota_hours: form.employee_rota_hours || null,
-    employee_worked_hours: form.employee_worked_hours || null,
-    employee_net_hours: form.employee_net_hours || null,
-    employee_over_below: form.employee_over_below || null,
-    employee_score: form.employee_score || null,
-    employee_basic_salary: form.employee_basic_salary || null,
-    employee_hourly_rate: form.employee_hourly_rate || null,
-    total_addition: form.total_addition || null,
-    total_deduction: form.total_deduction || null,
-    total_gross: form.total_gross || null,
-    total_tax: form.total_tax || null,
-    employee_total_net: form.employee_total_net || null,
-    total_net_orion: form.total_net_orion || null
+    employee_id: parseInt(form.employee_id),
+    company_id: parseInt(form.company_id),
+    batch_name: form.batch_name,
+    employee_lates: parseInt(form.employee_lates),
+    employee_early: form.employee_early,
+    employee_leaves: form.employee_leaves,
+    employee_contract_hours: form.employee_contract_hours,
+    employee_rota_hours: form.employee_rota_hours,
+    employee_worked_hours: form.employee_worked_hours,
   };
 
-  console.log('Sending payroll data:', payrollData);
   const response = await createPayroll(payrollData);
   if(response && response.success){
     AddPayrollDialog.value = false;

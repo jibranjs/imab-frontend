@@ -31,7 +31,7 @@ export function useCreatePayroll() {
           return { success: true, error: null };
         }
       } else {
-        return { success: false, error: `Server error: ${response.status}` };
+        return { success: false, error:  response.message || "Failed to create payroll"  };
       }
 
     } catch (error) {
