@@ -148,16 +148,16 @@
   <!-- Delete Dialog -->
   <Dialog v-model:visible="showDelete" modal header="Delete Payroll" :style="{ width: '370px' }">
     <div>
-      <div class="flex flex-col gap-2 mb-4">
-        <label class="font-semibold text-white">Batch</label>
-        <InputText v-model="deleteForm.batch" placeholder="Batch" />
+      <div class="flex gap-4 mb-4 ">
+        <h2 class="font-semibold text-white">Batch Name :</h2>
+        <p class="text-white">{{ deleteForm.batch_name }}</p>
       </div>
-      <div class="flex flex-col gap-2 mb-4">
-        <label class="font-semibold text-white">Employee ID</label>
-        <InputText v-model="deleteForm.employee_id" placeholder="Employee ID" />
+      <div class="flex gap-4 mb-4">
+        <h2 class="font-semibold text-white">ID :</h2>
+        <p class="text-white">{{ deleteForm.id }}</p>
       </div>
       <div v-if="deleteLoading">
-        <div class="text-white text-center">Deleting...</div>
+        <div class="text-gray-300 font-semibold text-center">Deleting...</div>
       </div>
       <div v-if="deleteError">
         <div class="bg-red-500 text-white p-2 rounded-md">
@@ -399,11 +399,11 @@ const addPayroll = async () => {
     company_id: parseInt(form.company_id),
     batch_name: form.batch_name,
     employee_lates: parseInt(form.employee_lates),
-    employee_early: form.employee_early,
-    employee_leaves: form.employee_leaves,
-    employee_contract_hours: form.employee_contract_hours,
-    employee_rota_hours: form.employee_rota_hours,
-    employee_worked_hours: form.employee_worked_hours,
+    employee_early: parseInt(form.employee_early),
+    employee_leaves: parseInt(form.employee_leaves),
+    employee_contract_hours: parseInt(form.employee_contract_hours),
+    employee_rota_hours: parseInt(form.employee_rota_hours),
+    employee_worked_hours: parseInt(form.employee_worked_hours),
   };
 
   const response = await createPayroll(payrollData);
@@ -418,32 +418,24 @@ const addPayroll = async () => {
 
 // Delete payroll
 const deleteForm = reactive({
-  batch: '',
-  employee_id: ''
+ id: null, batch_name: ''
 });
 
 const ShowDelete = (data) =>{
-  deleteForm.batch = data.batch;
-  deleteForm.employee_id = data.employee_id;
+  deleteForm.id = data.id;
+  deleteForm.batch_name = data.batch_name;
   showDelete.value = true;
 }
 const DeletePayrollForm = async () => {
   if (!deleteForm) return;
-
-  const batch = deleteForm.batch;
-  const employee_id = deleteForm.employee_id;
-  const deletepayrollData = {
-    batch,
-    employee_id
-  };
-  const response = await deletePayroll(deletepayrollData);
+  const getPayrollId = deleteForm.id;
+  const response = await deletePayroll(getPayrollId);
   if (response && response.success){
     showDelete.value = false;
     fetchPayroll();
   } else {
     deleteError.value = response.message;
   }
-
 }
 
 // Update payroll

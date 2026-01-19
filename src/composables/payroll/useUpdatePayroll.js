@@ -10,7 +10,7 @@ export const useUpdatePayroll = () => {
     error.value = null;
 
     try {
-      const response = await fetch('https://myimab-2dccmz7le-siyabdevs-projects.vercel.app/payroll/update', {
+      const response = await fetch('https://myimab.vercel.app/payroll/create', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

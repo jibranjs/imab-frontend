@@ -12,7 +12,7 @@ export function usePayroll() {
 
     try {
       const response = await fetch(
-        "https://myimab-2dccmz7le-siyabdevs-projects.vercel.app/payroll/all",
+        "https://myimab.vercel.app/payroll/all",
         {
           method: "GET",
           headers: {
@@ -21,18 +21,7 @@ export function usePayroll() {
           }
         });
 
-      const contentType = response.headers.get('content-type');
-      let data;
-
-      if (contentType && contentType.includes('application/json')) {
-        data = await response.json();
-      } else {
-        const text = await response.text();
-        console.error('Received non-JSON response:', text);
-        error.value = `Server error: ${response.status} ${response.statusText}`;
-        loading.value = false;
-        return;
-      }
+      const data = await response.json();
 
       if (!response.ok) {
         error.value = "Failed to fetch payroll";
@@ -43,7 +32,7 @@ export function usePayroll() {
       payroll.value = data;
 
     } catch (err) {
-      console.error(err);
+      console.log(err);
       error.value = err.message;
       loading.value = false;
       return error.value;

@@ -5,20 +5,19 @@ export const useDeletePayroll = () => {
   const error = ref(null);
   const token = localStorage.getItem('token');
 
-  const deletePayroll = async () => {
+  const deletePayroll = async (getPayrollId) => {
     loading.value = true;
     error.value = null;
 
     try {
-      const response = await fetch('https://myimab-2dccmz7le-siyabdevs-projects.vercel.app/payroll/delete', {
+      const response = await fetch('https://myimab.vercel.app/payroll/delete', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
-          batch: data.batch,
-          employee_id: data.employee_id
+          payroll_id: getPayrollId
         })
       });
       const data = await response.json();

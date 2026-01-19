@@ -13,7 +13,7 @@ export function useAuth() {
 
     try {
       const response = await fetch(
-        "https://myimab-2dccmz7le-siyabdevs-projects.vercel.app/employee/login",
+        "https://myimab.vercel.app/employee/login",
         {
           method: "POST",
           headers: {

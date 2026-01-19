@@ -11,7 +11,7 @@ export function useCreatePayroll() {
 
     try {
       const response = await fetch(
-        "https://myimab-2dccmz7le-siyabdevs-projects.vercel.app/payroll/create",
+        "https://myimab.vercel.app/payroll/create",
         {
           method: "POST",
           headers: {
