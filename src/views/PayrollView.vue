@@ -290,8 +290,10 @@
   </Dialog>
 
   <!-- Loading & Error -->
-  <p v-if="loading" class="text-gray-400 font-bold text-center text-xl my-2">Loading...</p>
+<div class="justify-center flex items-center h-[40vh]">
+  <p v-if="loading" class="text-gray-400 font-bold text-center text-lg my-2">Loading...</p>
   <p v-if="error" class="text-red-300 text-center">{{ error }}</p>
+</div>
 
 
 </template>
