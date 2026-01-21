@@ -11,8 +11,7 @@
       class="!border-none !bg-gray-600 hover:!bg-white hover:!text-gray-600" />
 
   </div>
-  <p v-if="employeeLoading" class="text-white text-center text-xl mb-2">Loading...</p>
-  <p v-if="employeeError" class="text-red-300 text-center">{{ employeeError }}</p>
+
   <DataTable :value="employee" tableStyle="min-width: 50rem" rowHover :rowClass="rowClass">
     <Column field="id" header="ID" />
     <Column field="employee_name" header="Name">
@@ -66,6 +65,10 @@
       </template>
     </Column>
   </DataTable>
+   <div class="justify-center flex items-center h-[20vh]">
+      <p v-if="employeeLoading" class="text-white text-center text-xl mb-2">Loading...</p>
+      <p v-if="employeeError" class="text-red-300 text-center">{{ employeeError }}</p>
+   </div>
 
 
   <!-- Update Dialog -->
@@ -350,7 +353,7 @@ const form = ref({
   department: ''
 })
 
-// Show employee details in Update dialog
+// Show Detail Function Placeholders
 const showDetail = (data) => {
   form.value.id = data.id || '';
   form.value.name = data.employee_name || '';
@@ -474,6 +477,7 @@ const resetForm = () => {
     form.value.permanentAddress = '';
     form.value.dateOfBirth = '';
     form.value.department = '';
+    form.value.employee_basic_salary = '';
   }
   updateEmployeeError.value = '';
   deleteEmployeeError.value = '';
