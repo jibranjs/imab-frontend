@@ -5,18 +5,18 @@ export const useUpdatePayroll = () => {
   const error = ref(null);
   const token = localStorage.getItem('token');
 
-  const updatePayroll = async (data) => {
+  const updatePayroll = async (payrollData) => {
     loading.value = true;
     error.value = null;
 
     try {
-      const response = await fetch('https://myimab.vercel.app/payroll/create', {
+      const response = await fetch('https://myimab.vercel.app/payroll/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payrollData),
       });
 
       await response.json();

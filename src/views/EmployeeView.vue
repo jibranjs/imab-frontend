@@ -262,6 +262,10 @@
         </div>
         <!-- Col 3 -->
         <div>
+          <div>
+            <label>Basic Salary</label>
+            <InputText v-model="form.employee_basic_salary" class="!w-full !mb-3" placeholder="Enter Basic Salary" autocomplete="off" />
+          </div>
            <div>
             <label>Current Address</label>
             <Textarea v-model="form.currentAddress" class="!w-full !mb-3" placeholder="Current Address" autocomplete="off" />
@@ -361,6 +365,7 @@ const showDetail = (data) => {
   form.value.permanentAddress = data.employee_address_permanent || '';
   form.value.dateOfBirth = data.employee_dob || '';
   form.value.department = data.employee_department || '';
+  form.value.employee_basic_salary = data.employee_basic_salary || '';
   showUpdateDialog.value = true;
 }
 
@@ -378,7 +383,8 @@ const addEmployee = async () => {
     employee_address_current: form.value.currentAddress,
     employee_address_permanent: form.value.permanentAddress,
     employee_dob: form.value.dateOfBirth,
-    employee_department: form.value.department
+    employee_department: form.value.department,
+    employee_basic_salary: form.value.employee_basic_salary
   };
   const response = await createEmployee(employeeData);
   if (response && response.success) {
@@ -406,6 +412,7 @@ const showDelete = (data) => {
   form.value.permanentAddress = data.employee_address_permanent || '';
   form.value.dateOfBirth = data.employee_dob || '';
   form.value.department = data.employee_department || '';
+  form.value.employee_basic_salary = data.employee_basic_salary || '';
   showDeleteDialog.value = true;
 }
 const deleteEmployeeForm = async () => {
@@ -440,7 +447,8 @@ const updateEmployeeForm = async () => {
     employee_address_current: form.value.currentAddress,
     employee_address_permanent: form.value.permanentAddress,
     employee_dob: form.value.dateOfBirth,
-    employee_department: form.value.department
+    employee_department: form.value.department,
+    employee_basic_salary: form.value.employee_basic_salary
   };
   const response = await updateEmployee(employeeData);
   if (response && response.success) {

@@ -8,7 +8,6 @@ export const useDeletePayroll = () => {
   const deletePayroll = async (getPayrollId) => {
     loading.value = true;
     error.value = null;
-
     try {
       const response = await fetch('https://myimab.vercel.app/payroll/delete', {
         method: 'DELETE',
@@ -16,14 +15,12 @@ export const useDeletePayroll = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({
-          payroll_id: getPayrollId
-        })
+        body: JSON.stringify({ payroll_id: getPayrollId })
       });
       const data = await response.json();
 
       if (!response.ok) {
-        return { success: false, error: data.error || data.message || "Failed to delete payroll" };
+        return { success: false, error: data.message || "Failed to delete payroll" };
       } else {
         return { success: true, error: null };
       }
