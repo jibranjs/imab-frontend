@@ -404,7 +404,7 @@ const ShowDelete = (data) =>{
 }
 // Delete Submition
 const DeletePayrollForm = async () => {
-  if (!deleteForm) return;
+  if (!deleteForm.id) return;
   const getPayrollId = deleteForm.id;
   const response = await deletePayroll(getPayrollId);
   if (response && response.success){
@@ -417,7 +417,7 @@ const DeletePayrollForm = async () => {
 
 // Update payroll
 const updatePayrollForm = async () => {
-  const payroll_id = form.payroll_id;
+  const id = form.payroll_id;
   const employee_early = parseInt(form.employee_early) || 0;
   const employee_lates = parseInt(form.employee_lates) || 0;
   const employee_leaves = parseInt(form.employee_leaves) || 0;
@@ -425,7 +425,7 @@ const updatePayrollForm = async () => {
   const employee_worked_hours = parseInt(form.employee_worked_hours) || 0;
   const employee_rota_hours = parseInt(form.employee_rota_hours) || 0;
 // Data object to send
-  const payrollData = { payroll_id, employee_early, employee_lates, employee_leaves, employee_contract_hours, employee_worked_hours, employee_rota_hours };
+  const payrollData = { id, employee_early, employee_lates, employee_leaves, employee_contract_hours, employee_worked_hours, employee_rota_hours };
   const response = await updatePayroll(payrollData);
 
   if (response && response.success){
