@@ -11,7 +11,7 @@ export function useUpdateCompany() {
 
     try {
       const request = await fetch(
-        `https://panlogical-presemilunar-beulah.ngrok-free.dev/company/update`,
+        `https://myimab.vercel.app/company/update`,
         {
           method: "PUT",
           headers: {
