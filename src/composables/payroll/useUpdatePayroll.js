@@ -8,7 +8,7 @@ export const useUpdatePayroll = () => {
   const updatePayroll = async (payrollData) => {
     loading.value = true;
     error.value = null;
-
+    console.log(payrollData)
     try {
       const response = await fetch('https://myimab.vercel.app/payroll/update', {
         method: 'PUT',
@@ -16,7 +16,7 @@ export const useUpdatePayroll = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({payrollData}),
+        body: JSON.stringify(payrollData),
       });
 
       await response.json();
