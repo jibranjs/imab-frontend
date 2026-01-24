@@ -15,7 +15,7 @@ export const useDeletePayroll = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ payroll_id: getPayrollId })
+        body: JSON.stringify({ id: getPayrollId })
       });
       const data = await response.json();
 
