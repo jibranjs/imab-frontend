@@ -23,7 +23,7 @@
         </DataTable>
 
 <!-- Create Company Dialog -->
-<Dialog v-model:visible="showAddCompanyDialog" modal header="Create Company" :style="{ width: '800px' }">
+<Dialog v-model:visible="showAddCompanyDialog" @hide="resetform()" modal header="Create Company" :style="{ width: '800px' }">
   <div class="text-white space-y-2 mb-6">
     <div class="grid grid-cols-2 justify-center gap-6">
       <div class="mb-4">
@@ -185,6 +185,12 @@ const resetform = () => {
   form.value.company_email = '';
   form.value.company_address = '';
   form.value.company_joined = '';
+  // Errors
+  createError.value = "";
+  deleteError.value = "";
+  updateError.value = "";
+
+
 };
 
 // Add Company Function
@@ -207,7 +213,7 @@ if(response && response.success){
 
 // Delete Company Function
 const ShowDelete = (data) => {
-  form.value.id = data.id || "";
+  form.value.id = data.id;
   showDeleteDialog.value = true;
 }
 
@@ -225,6 +231,7 @@ const deleteCompanyForm = async () => {
 
 // Update Company Function
 const showUpdate = (data) => {
+  if(!form.value) return;
   form.value.id = data.id || "";
   form.value.company_name = data.company_name || "";
   form.value.company_email = data.company_email || "";

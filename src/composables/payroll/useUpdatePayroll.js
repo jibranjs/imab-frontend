@@ -16,7 +16,7 @@ export const useUpdatePayroll = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(payrollData),
+        body: JSON.stringify({payrollData}),
       });
 
       await response.json();

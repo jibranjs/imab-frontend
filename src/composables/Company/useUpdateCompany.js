@@ -11,21 +11,22 @@ export function useUpdateCompany() {
 
     try {
       const request = await fetch(
-        `https://myimab.vercel.app/company/update`,
+        `https://panlogical-presemilunar-beulah.ngrok-free.dev/company/update`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-            body: JSON.stringify({ companyData })
-          }
+            Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(companyData),
         }
       );
 
      const response = await request.json();
-
+         console.log(companyData)
       if (!request.ok) {
         return { success: false, error: response.message || "Failed to Update Company"};
+
       } else {
         return { success: true, error: null };
       }
@@ -34,6 +35,7 @@ export function useUpdateCompany() {
       return { success: false, error: error.message || "Unknown error" };
     } finally {
       loading.value = false;
+      console.log(companyData)
     }
   };
 

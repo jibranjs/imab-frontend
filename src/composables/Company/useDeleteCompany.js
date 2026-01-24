@@ -16,16 +16,16 @@ export function useDeleteCompany() {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`
+          },
             body: JSON.stringify({
               id: id
-              })
+            })
           }
-        }
       );
 
      const response = await request.json();
-
+      console.log(response);
       if (!request.ok) {
         return { success: false, error: response.message || "Failed to delete Company"};
       } else {

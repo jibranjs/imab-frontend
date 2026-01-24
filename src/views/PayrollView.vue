@@ -426,7 +426,6 @@ const updatePayrollForm = async () => {
   const employee_rota_hours = parseInt(form.employee_rota_hours) || 0;
 // Data object to send
   const payrollData = { payroll_id, employee_early, employee_lates, employee_leaves, employee_contract_hours, employee_worked_hours, employee_rota_hours };
- console.log('Updating payroll with data:', payrollData);
   const response = await updatePayroll(payrollData);
 
   if (response && response.success){
